@@ -1,23 +1,23 @@
-# Tiny Freight
-Tiny Freight is a library implementation of a generic cross-application data-exchange framework which can be seem as 'the freight service for data'. 
+# Simple Data Delivery
+Simple Data Delivery (SDD) is a generic cross-application data-exchange framework dubbed as "the Post Office service for data-exchange". 
 
-The core technology of the framework is an unconventional object-serialization method that uses a novel data format, called Recursive Delimited Array or RDA, as the data transport media.
+The key technology of the framework is an unconventional object-serialization method using a novel data format, called Recursive Delimited Array or RDA, as the data transport media.
 
-## The freight service for data (the concept)
-
-
-## A 'magic' data container (the requirement)
+## The concept: a "Post Office" service for data exchange
 
 
-## Using Tiny Freight to transport data (an example)
+## The key technology: an "universal" data container 
 
-## Why use Tiny Freight (the 'pros')
+
+## A step-by-step data-exchange example using SDD
+
+## What are the benefits (i.e. the 'pros')?
 
 ### simplicity
-.
+
 ### flexibility
 
-## What's the catch (the 'cons')
+## What's the catch (i.e. the 'cons')?
 
 The burden of packing and unpacking. 
 
@@ -27,6 +27,6 @@ Get used to a new way of thinking: there is no schema to design and to maintain.
 
 ## More details
 
-### About RDA
+* Project Wiki
 
-### About us
+* Test cases
