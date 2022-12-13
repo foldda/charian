@@ -11,13 +11,17 @@ The core technology of the framework is an unconventional object-serialization m
 
 ## Using Tiny Freight to transport data (an example)
 
-## Compared to the others I (the 'pros')
+## Why use Tiny Freight (the 'pros')
 
 ### simplicity
 .
 ### flexibility
 
-## Compared to the others II (the 'cons')
+## What's the catch (the 'cons')
+
+The burden of packing and unpacking. 
+
+Get used to a new way of thinking: there is no schema to design and to maintain. Your code is the schema and is where you maintain your data structure. 
 
 ## How to start
 
