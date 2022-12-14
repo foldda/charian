@@ -1,12 +1,16 @@
-# Simple Data Delivery
-Simple Data Delivery (SDD) is a generic cross-application data-exchange framework dubbed as "the Post Office service for data-exchange". 
+# Cordial
+Cordial is a data transport framework for generic cross-application data exchange.
 
-The key technology of the framework is an unconventional object-serialization method using a novel data format, called Recursive Delimited Array or RDA, as the data transport media.
+Cordial uses an unconventional data-serialization method for data transport, and it is capable to transfer data between applications in different programming languages and on different computer platforms. Compared to systems that use other data-serialization methods and solutions, Cordial is much simpler and extremely lightweight, thanks to its innovative approach and a new serializable data-encoding format called Recursive Delimited Array (RDA).
 
-## The concept: a "Post Office" service for data exchange
+## A "Post Office" style data-exchange scenario
 
 
-## The key technology: an "universal" data container 
+## An "universal" data container 
+
+## About this project
+
+This project provides a library that implements the  
 
 
 ## A step-by-step data-exchange example using SDD
