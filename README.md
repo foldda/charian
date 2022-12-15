@@ -1,7 +1,8 @@
-# Cordial
-Cordial is a data transport framework for generic cross-application data exchange.
+# Freightman
 
-Cordial uses an unconventional data-serialization method for data transport, and it is capable to transfer data between applications in different programming languages and on different computer platforms. Compared to systems that use other data-serialization methods and solutions, Cordial is much simpler and extremely lightweight, thanks to its innovative approach and a new serializable data-encoding format called Recursive Delimited Array (RDA).
+Freightman is a lightweight data transport system for cross-application data communication.
+
+Freightman's novel data-serialization method, using Recursive Delimited Array (RDA) as the data-encoding format, is capable to transfer data between applications in different programming languages and from different computer platforms, and is much simpler to implement and manage compared to the other data-serialization solutions.
 
 ## A "Post Office" style data-exchange scenario
 
@@ -10,7 +11,7 @@ Cordial uses an unconventional data-serialization method for data transport, and
 
 ## About this project
 
-This project provides a library that implements the  
+This project is a library implementation of the Freightman data transport system.
 
 
 ## A step-by-step data-exchange example using SDD
