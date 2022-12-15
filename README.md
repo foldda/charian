@@ -1,8 +1,8 @@
 # Freightman
 
-Freightman is a lightweight data transport system for cross-application data communication.
+Freightman is a lightweight data-transport system for cross-application data communication.
 
-Freightman's novel data-serialization method, using Recursive Delimited Array (RDA) as the data-encoding format, is capable to transfer data between applications in different programming languages and from different computer platforms, and is much simpler to implement and manage compared to the other data-serialization solutions.
+Freightman's unconventional data-serialization method, using Recursive Delimited Array (RDA) as the data-encoding format, allows seamlessly data transfer cross-language and cross-platform, and is much simpler to implement and manage compared to the other data-serialization solutions.
 
 ## A "Post Office" style data-exchange scenario
 
