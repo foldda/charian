@@ -39,27 +39,25 @@ A java program restores a person object from a python disk file
 
 ## What is "the catch"?
 
-Freightman is a philosorphy change of cross-application data transfer, and accordingly requires the change of the design of the communicating applications. 
+With Freightman, there is no schema to design and to maintain. Your code is the schema and is where you maintain the data structure and handle data validations. From software architecture design perspective, this means a responsibility-shift from the data transport layer to the sending and the receiving applications. The applications are now responsible for data packing and unpacking while the data transport layer is responsible for data delivery. This is compared to with the conventional methods, with which the data transport layer requires setting up pre-agreed schemas or managing pre-build proxy objects, while the applications are less involved in the data communications handling.
 
-With Freightman, there is no schema to design and to maintain. Your code is the schema and is where you maintain your data structure and handle data validation. This means a responsibility-shift the data transport layer (i.e. the protocol parser and encoder) to the sender and the receiver applications, which are now responsible for data packing and unpacking. This is compared to with the conventional methods, which require setting up pre-agreed schemas or having pre-build proxy objects maintained at the data transport layer, but the applications are less involved in the data communications handling.
+It is arguable that, with Freightman it allows the application to flexibaly and dynamically handle any data format changes or errors, at the places of data packing and unpacking, whilst with the conventional methods, the applications are stuck with what has been set, and any data format change will more likely break the data communication. 
 
-It is arguable that, with Freightman it allows the application flexibaly and dynamically handling of any data format changes or errors at the places of data packing and unpacking, whilst with the conventional methods, the applications have to stick with what has be set, and any data format change will more likely break the data communication. 
+For example, with Freightman, a receiving application can have several attempts when parsing an incoming data value, like this -
 
-It's like when you're moving house, do you prefer to pack and unpack the boxes yourself and the moving company is only responsible for the boxes' transportation (like using Freightman), or you can give the moving company a strict list to do the packing/unpacking and the transfer following the list (like in using a XML/Json schema); or let the moving company to automatically "discover" what needs be moved and does it for you (like using some other object-serialization framework)?
+```
 
-## Freightman's vision
+```
 
+It's like when you're moving house, do you prefer to pack and unpack the boxes yourself and the moving company is only responsible for transporting the boxes (like using Freightman), or you can give the moving company a strict list of items for packing, transport and unpacking (like serialization using a fixed XML/Json schema); or let the moving company to automatically "discover" what needs be moved and does it for you (like using some other object-serialization framework)?
 
+## Why use Freightman?
 
+You may consider using Freightman for its simplicity. 
 
+Freightman also makes your code more clear and easier to understand, thanks to the "post office" metaphor .
 
-### simplicity
-
-### flexibility
-
-## What's the catch (i.e. the 'cons')?
-
-
+Effortless handling storing and transporting arbitorily complex data cross-platform and cross-language.
 
 
 ## How to start
