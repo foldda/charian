@@ -1,8 +1,8 @@
 # Freightman
 
-Freightman is a lightweight data-transport system for cross-application data communication.
+Freightman is an object-serialization framework that converts an object of a program to a string, so that the object can be saved to a file, be stored in a database, or be transferred to another program over the network. 
 
-Thanks to its unconventional data-serialization method, Freightman allows effortless transfer of structured data (e.g. objects of nested classes) cross-language and cross-platform, and is much simpler to implement compared to solutions using other data-serialization methods.
+By using to a new, schemaless encoding called RDA, Freightman's unconventional serialization method allows effortless transfer of structured data (such as an object with nested classes) cross-language and cross-platform, and is much simpler to implement compared to the other object-serialization methods.
 
 ## The Freightman concept: a "Post Office" style data-exchange
 
@@ -21,14 +21,16 @@ Just like the Post office offers general delievery for anyone's posting needs in
 
 ## A serializable "universal" data container 
 
-Serializing a person object with address nested class
+
 
 
 To fulfill 
 
 ## Example: serializating a complex data object that has nested classes
 
-Base on RDA, Freightman is able to serialize and transfer arbitoryily complex data, using the following approach- 
+Serializing a person object with address nested class
+
+This example shows, with Freightman, you can easily store a complex data object to a file (or into database), and retsore it back.
 
 ## Example: cross-language and cross-platform object-serialization
 
