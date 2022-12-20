@@ -1,10 +1,10 @@
 # Freightman
 
-Freightman an object-serialization[^1] framework for application-level data exchange. 
+Freightman a lightweight object-serialization[^1] framework for application-level data exchange. 
 
-[^1]: Object-serialization is technology that converts an object of a program to a string, so the object can be saved to files or to a database, or be transferred to another program over the network.
+Object-serialization is technology that converts an object of a program to a string, so the object can be saved to files or to a database, or be transferred to another program over the network. With Freightman, an application can transfer complex data (e.g. objects with nested classes) cross-language and cross-platform.
 
-Freightman is able to transfer complex data objects (e.g. objects with nested classes) cross-language and cross-platform, and compared to other object-serialization methods, Freightman is generic, and application independent - meaning reusable, and is super lightweight and much simpler to implement. 
+Compared to other object-serialization methods, Freightman is generic and application-independent - meaning there is no application-specific customization, such as re-build and re-compile, or configuration, required for using Freightman. 
 
 ## A Post-office-style data-delivery service
 
