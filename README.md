@@ -1,10 +1,13 @@
 # Freightman
 
-Freightman a lightweight object-serialization[^1] framework for generic application-level data exchange. With Freightman, an application can transfer complex data (e.g. objects with nested classes) to another application, even it's in a different language or on another platform.
-
+Freightman a lightweight object-serialization[^1] framework for generic, application-level data exchange. 
 [^1]: Object-serialization is technology that converts an object of a program to a string, so the object can be saved to files or to a database, or be transferred to another program over the network. 
 
-Compared to other object-serialization methods, Freightman is application-independent - meaning using Freightman does not require any application-specific setup, any configuration, any re-build or re-compile. 
+With Freightman, an application can transfer complex data (e.g. objects with nested classes) to another application, even it's in a different language or on another platform[^2] .
+
+[^2]: Subject to the RDA parser's availability for the programming language and the computer platform. 
+
+Compared to other object-serialization methods, Freightman is application-independent - meaning using Freightman is much simpler because it does not require any application-specific setup, such as pre-defining schemas, or generating proxy objects. 
 
 ## A Post-office-style data-delivery service
 
