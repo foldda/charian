@@ -1,20 +1,20 @@
 # Freightman
 
-Freightman a supper lightweight object-serialization[^1] system, which is used for converting an object of a program to a string, so the object can be saved to files or to a database, or be transferred to another program over the network.
+Freightman a supper lightweight object-serialization system that is used for converting an object of a program to a string, so the object can be saved to files or to a database, or be transferred to another program over the network.
 
-With Freightman object-serialization, arbitorily complex data (e.g. objects with nested classes) can be easily transferred from one application to another application, even the applications are programmed in different languages and on different platforms[^2]. Freightman can be used for -
+Freightman uses the schema-less RDA data format for encoding, and allows transferring arbitorily complex data (e.g. objects with nested classes) from one application to another application, even if the applications are in different programming languages and on different platforms[^1]. 
+
+[^1]: Subject to the RDA parser's availability for the programming language and the computer platform. 
+
+Freightman can be used for -
 
 * storing the program's objects in a persistant storage, such as in files or databases. 
 * distributed computing - 
 * applications integration - 
 
-[^1]: Object-serialization is technology that converts an object of a program to a string,  
+Freightman is application-independent and does not require any application-specific setup, rebuild, or configuration, which is different to systems using schemas-based object-serialization methods. 
 
-[^2]: Subject to the RDA parser's availability for the programming language and the computer platform. 
-
-Freightman uses the schema-less RDA data format for encoding. Compared to other schemas-based object-serialization methods, Freightman is much simpler and easier to use, as it's application-independent and does not require any application-specific setup, rebuild, or configuration. 
-
-This project provides the Freightman implementation as API, available in C#, Java, and Python.
+This project provides the Freightman implementation as an API, available in C#, Java, and Python.
 
 ## Universal Data Transport: data-delivery like the Post office
 
