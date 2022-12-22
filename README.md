@@ -1,18 +1,21 @@
 # Freightman
 
-Freightman a supper lightweight object-serialization system that is used for converting an object of a program to a string, for easy data transportation. Freightman allows transferring arbitorily complex data (e.g. objects with nested classes) from one application to another application, even if the applications are in different programming languages and on different platforms[^1]. 
+Freightman a supper lightweight object-serialization[^1] solution, which can be used for - 
 
-[^1]: Subject to the RDA parser's availability for the programming language and the computer platform. 
-
-Freightman can be used for -
+[^1]: object-serialization is a technology for converting a programming object to a serial of bytes (or chars), so the programming object can be transported to and re-constructed in another program.
 
 * storing the program's objects in a persistant storage, such as in files or databases. 
 * distributed computing - 
 * applications integration - 
+* Other cross-application data transfer tasks
 
-Freightman uses the schema-less RDA data format for encoding and is application-independent, meaning using Freightman does not require any application-specific setup, rebuild, or configuration, which is different to systems using schemas-based object-serialization methods. 
+Freightman uses the schema-less RDA as its data-encoding format, which mades it application-independent, meaning using Freightman does not require any application-specific setup, unlike using schemas-based object-serialization solutions which normally will require configuration or rebuilt for the targetted applications. 
 
-This project provides the Freightman object-serialization implementation, as API, available in C#, Java, and Python.
+With merely around 800 lines of code in its implementation, and zero-dependency, Freightman is perhaps the simpliest object-serialization solution you will find, yet it still rivals the most sophiscated solutions out there, for being able to transfer arbitorily complex data (e.g. objects with nested classes) from one application to another application, even for applications are in different programming languages and on different platforms[^2]. 
+
+[^2]: Subject to RDA encoder and parser availablity for the language and the platform.
+
+This project provides the Freightman object-serialization implementation as API, available in C#, Java, and Python.
 
 ## Universal Data Transport: data-delivery like the Post office
 
