@@ -1,8 +1,6 @@
 # Freightman
 
-Freightman a supper lightweight object-serialization system that is used for converting an object of a program to a string, so the object can be saved to files or to a database, or be transferred to another program over the network.
-
-Freightman uses the schema-less RDA data format for encoding, and allows transferring arbitorily complex data (e.g. objects with nested classes) from one application to another application, even if the applications are in different programming languages and on different platforms[^1]. 
+Freightman a supper lightweight object-serialization system that is used for converting an object of a program to a string, for easy data transportation. Freightman allows transferring arbitorily complex data (e.g. objects with nested classes) from one application to another application, even if the applications are in different programming languages and on different platforms[^1]. 
 
 [^1]: Subject to the RDA parser's availability for the programming language and the computer platform. 
 
@@ -12,9 +10,9 @@ Freightman can be used for -
 * distributed computing - 
 * applications integration - 
 
-Freightman is application-independent and does not require any application-specific setup, rebuild, or configuration, which is different to systems using schemas-based object-serialization methods. 
+Freightman uses the schema-less RDA data format for encoding and is application-independent, meaning using Freightman does not require any application-specific setup, rebuild, or configuration, which is different to systems using schemas-based object-serialization methods. 
 
-This project provides the Freightman implementation as an API, available in C#, Java, and Python.
+This project provides the Freightman object-serialization implementation, as API, available in C#, Java, and Python.
 
 ## Universal Data Transport: data-delivery like the Post office
 
