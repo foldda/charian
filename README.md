@@ -1,6 +1,6 @@
 # Freightman
 
-Freightman a object-serialization[^1] API for building supper lightweight application-level data transport systems. Freightman is used for - 
+Freightman a object-serialization[^1] API for building supper lightweight application-level data transport systems, which are applicable for - 
 
 [^1]: object-serialization is a technology for converting a programming object to a serial of bytes (or chars), so the programming object can be transported to and re-constructed in another program.
 
