@@ -17,25 +17,38 @@ Compared to the other object-serialization technologies and solutions, Freightma
 * It is super lightweight: the API has only a handful of non-frill methods and has less than 800 lines of code.
 * It is easy to maintain: Freightman has no dependency, and with code-level integration, it can be compiled and built as part of your project with no extra requirement.
 
-Although Freightman is likely the simpliest object-serialization solution you will find, it rivals the most sophiscated competing solutions feature-wise. For example, Freightman is able to transfer arbitrarily complex data (e.g. objects with deeply nested classes) from one application to another, even when the applications are in different programming languages and on different platforms[^2]. 
+Despite its simplicity, Freightman's capability rivals the most sophiscated competing solutions. For example, Freightman is able to serialize data objects with arbitary complexicity (e.g. objects with deeply nested classes), and can be used for transferring data between applications in different programming languages and on different platforms[^2]. 
 
 [^2]: Subject to RDA encoder and parser availablity for the language and on the platform.
 
 This project provides the Freightman API implementation in C#, Java, and Python.
 
-## How does Freihtman work? A generic, universal data transport system
+## What problem does Freightman solve, and the others don't?
 
-The vision of Freightman-enabled data transport system is to provide generic, standardised data-delivery service to any application, for simple and efficient data exchange. 
+The way Freightman serialization works can be better explained in the context of data transportation, with an analogy of parcel delievery using the Post Office. The diagram below shows how a sender is posting a parcel to a receiver.
+
+Parcel sender => Post Office => Parcel Courier => Post Office => Parcel receiver
+
+By using the Post Office parcel delievery system, any sender and receiver can exchange goods easily with low cost, comparing to custom-made point-to-point parcel transport and delievery, but the key of using the Post Office system is to have a generic parcel packaging format that is **not** specific only to a sender, a receiver, or a courier.
+
+<picture of mutliple sender-receivers exchanges goods with adhoc custom mechanisim>
+  
+Cross-application data transportation system using Freightman works in the same way as the Post Office parcel delievery system:
+  
+Data sender => Freightman API => data-transport protocols => Freightman API => Data receiver
+
+
+is concepturally different to the other serialization solutions but achieves the same data transportation goal regardlessly, and -enabled data transport system is to provide generic, standardised data-delivery service to any application, for simple and efficient data exchange. 
 
 When sending a parcel via Post-office, there are three parties involved in the process - 
-* A sender:
+* A sender: 
 * The Post office:
 * A receiver:
 
 Freightman's role in the data-exchange process closely assembles this scenario -
 
 * A sending application:
-* Data transport using Freightman:
+* Freightman:
 * A receiving application:
 
 Just like a post office offering general delievery for anyone's posting needs in our normal life, it eliminates the need of building separate custom link for every data-exchange application.
