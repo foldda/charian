@@ -1,23 +1,29 @@
 # Freightman
 
-Freightman a object-serialization[^1] API for building supper lightweight application-level data transport systems, which are applicable for - 
+Freightman an object-serialization[^1] technology for building application-level data transport systems. 
 
-[^1]: object-serialization is a technology for converting a programming object to a serial of bytes (or chars), so the programming object can be transported to and re-constructed in another program.
+[^1]: object-serialization technology converts an object from a program into a serial of bytes (or chars), so the object can be easily transported to, and be re-constructed in, another program.
 
-* storing the program's data objects to a persistant storage, such as in files or databases. 
-* distributed computing - allowing separated parts of a distributed application to communicate with each other
-* systems integration - allowing applications from different vendor to exchange data
-* Other cross-application data transfer tasks
+Available as a simple API, Freightman can be used for - 
 
-Freightman is schema-less and application-independent, meaning using Freightman does not require any application-specific setup. This is advantagious compared to the other schemas-based object-serialization solutions which normally would require configuration or rebuilt for the targetted applications. 
+* Persistant storage - storing data objects of a program to a file or a database; 
+* Distributed computing - allowing separated parts of a distributed application to communicate with each other;
+* Systems integration - allowing applications from different vendors to exchange data;
+* Other cross-application data-transfer tasks.
 
-With merely around 800 lines of code in its implementation, and zero-dependency, Freightman is perhaps the simpliest object-serialization solution you will find, yet feature-wise it rivals the most sophiscated solutions out there. Freightman is able to transfer arbitrarily complex data (e.g. objects with nested classes) from one application to another, even when the applications are in different programming languages and on different platforms[^2]. 
+Compared to the other object-serialization technologies and solutions, Freightman offers these distinctive features - 
 
-[^2]: Subject to RDA encoder and parser availablity for the language and the platform.
+* It is easy to use: Freightman is schema-less and application-independent, meaning it does not require any application-specific setup, pre-build or rebuild; 
+* It is super lightweight: the API has only a handful of non-frill methods and has less than 800 lines of code.
+* It is easy to maintain: Freightman has no dependency, and with code-level integration, it can be compiled and built as part of your project with no extra requirement.
 
-This project provides the Freightman object-serialization implementation as API, available in C#, Java, and Python.
+Although Freightman is likely the simpliest object-serialization solution you will find, it rivals the most sophiscated competing solutions feature-wise. For example, Freightman is able to transfer arbitrarily complex data (e.g. objects with deeply nested classes) from one application to another, even when the applications are in different programming languages and on different platforms[^2]. 
 
-## A generic, universal data transport system
+[^2]: Subject to RDA encoder and parser availablity for the language and on the platform.
+
+This project provides the Freightman API implementation in C#, Java, and Python.
+
+## How does Freihtman work? A generic, universal data transport system
 
 The vision of Freightman-enabled data transport system is to provide generic, standardised data-delivery service to any application, for simple and efficient data exchange. 
 
