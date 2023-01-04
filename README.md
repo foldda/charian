@@ -1,31 +1,31 @@
 # Freightman
 
-Freightman an object-serialization[^1] technology for building application-level data transport systems. 
+Freightman an object-serialization[^1] system for application-level data transportation. 
 
 [^1]: object-serialization technology converts an object from a program into a serial of bytes (or chars), so the object can be easily transported to, and be re-constructed in, another program.
 
-Available as a simple API, Freightman can be used for - 
+Available as a simple API, Freightman can be used by a program for - 
 
 * Persistant storage - storing data objects of a program to a file or a database; 
 * Distributed computing - allowing separated parts of a distributed application to communicate with each other;
 * Systems integration - allowing applications from different vendors to exchange data;
 * Other cross-application data-transfer tasks.
 
-Compared to the other object-serialization technologies and solutions, Freightman offers these distinctive features - 
+Compared to the other object-serialization systems and solutions, Freightman offers these distinctive features - 
 
 * It is easy to use: Freightman is schema-less and application-independent, meaning it does not require any application-specific setup, pre-build or rebuild; 
 * It is super lightweight: the API has only a handful of non-frill methods and has less than 800 lines of code.
 * It is easy to maintain: Freightman has no dependency, and with code-level integration, it can be compiled and built as part of your project with no extra requirement.
 
-Despite its simplicity, Freightman's capability rivals the most sophiscated competing solutions. For example, Freightman is able to serialize data objects with arbitary complexicity (e.g. objects with deeply nested classes), and can be used for transferring data between applications in different programming languages and on different platforms[^2]. 
+Despite its simplicity, Freightman is capable to rival the most sophiscated data serialization solutions. For example, Freightman is able to serialize data objects with deeply nested classes, and can be used for transferring data between applications in different languages and on different platforms[^2]. 
 
 [^2]: Subject to RDA encoder and parser availablity for the language and on the platform.
 
 This project provides the Freightman API implementation in C#, Java, and Python.
 
-## What problem does Freightman solve, and the others don't?
+## An unique approach of data serialization
 
-How Freightman works can be better explained in the context of data transportation, with an analogy of parcel delievery using the Post Office. The diagram below shows how a sender is posting a parcel to a receiver.
+Freightman's data-serialization approach is differnt to all other solutions, and can be better explained in the context of data transportation, with an analogy of parcel delievery using the Post Office. The diagram below shows how a sender is posting a parcel to a receiver.
 
 Parcel senders <=> Post Office <=> Generic transport options <=> Post Office <=> Parcel receivers
 
@@ -39,9 +39,13 @@ Data-sending application => Freightman API => generic, unified data-transport =>
 
 Data-sending application => custom build, app-specific (i.e. schema-based) data link => Data receiving application
 
-As you may have realized, the key of the Post Office system is to have a generic parcel packaging format (i.e. a box or an envelop) that is **not** specific to a certain content, but is acceptable by all parties for storing any types of contents, and as such, the parcel transport system can be unified and shared. Similarily, Freightman does not serialize any specific data object, instead it provides the applications an universal container that is serializable, and the universal container is capable to store any specific data from an application that requires serialization and transportation. Freightman's approach avoids having to build dedicated data transport links for every application data exchange.
+As you may have realized, the key of the Post Office system is to have a generic parcel packaging format (i.e. a box or an envelop) that is **not** specific to a certain content, but is acceptable by all parties for storing any types of contents, and as such, the parcel transport system can be unified and shared. Similarily, Freightman does not serialize any specific data object, instead it provides the applications an universal container that is serializable, and the universal container is capable to store any specific data from an application that requires data serialization and transportation. Freightman's approach avoids having to build dedicated data transport links for every application data exchange.
 
 ## RDA, an universal serializable data container 
+
+RDA stands for Recursive Delimited Array. It is text-based data encoding format similar to XML or JSON. Unlike XML/JSON using a schema to restrict the data to the specifics of a certain application, RDA is a schema-less format for generic data. It means an RDA-encoded string (aka. "RDA container") can be used for storing any data from any application.
+
+Essentially, Freightman is an RDA encode/decode API, plus a
 
 is concepturally different to the other serialization solutions but achieves the same data transportation goal regardlessly, and -enabled data transport system is to provide generic, standardised data-delivery service to any application, for simple and efficient data exchange. 
 
