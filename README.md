@@ -25,18 +25,23 @@ This project provides the Freightman API implementation in C#, Java, and Python.
 
 ## What problem does Freightman solve, and the others don't?
 
-The way Freightman serialization works can be better explained in the context of data transportation, with an analogy of parcel delievery using the Post Office. The diagram below shows how a sender is posting a parcel to a receiver.
+How Freightman works can be better explained in the context of data transportation, with an analogy of parcel delievery using the Post Office. The diagram below shows how a sender is posting a parcel to a receiver.
 
-Parcel sender => Post Office => Parcel Courier => Post Office => Parcel receiver
+Parcel senders <=> Post Office <=> Generic transport options <=> Post Office <=> Parcel receivers
 
-By using the Post Office parcel delievery system, any sender and receiver can exchange goods easily with low cost, comparing to custom-made point-to-point parcel transport and delievery, but the key of using the Post Office system is to have a generic parcel packaging format that is **not** specific only to a sender, a receiver, or a courier.
+Parcel sender <=> custom, dedicated transport <=> Parcel receiver
 
-<picture of mutliple sender-receivers exchanges goods with adhoc custom mechanisim>
+By using the Post Office parcel delievery system, any sender and receiver can exchange goods easily with low cost, comparing to custom-made point-to-point parcel transport and delievery.
   
 Cross-application data transportation system using Freightman works in the same way as the Post Office parcel delievery system:
   
-Data sender => Freightman API => data-transport protocols => Freightman API => Data receiver
+Data-sending application => Freightman API => generic, unified data-transport => Freightman API => Data receiving application
 
+Data-sending application => custom build, app-specific (i.e. schema-based) data link => Data receiving application
+
+As you may have realized, the key of the Post Office system is to have a generic parcel packaging format (i.e. a box or an envelop) that is **not** specific to a certain content, but is acceptable by all parties for storing any types of contents, and as such, the parcel transport system can be unified and shared. Similarily, Freightman does not serialize any specific data object, instead it provides the applications an universal container that is serializable, and the universal container is capable to store any specific data from an application that requires serialization and transportation. Freightman's approach avoids having to build dedicated data transport links for every application data exchange.
+
+## RDA, an universal serializable data container 
 
 is concepturally different to the other serialization solutions but achieves the same data transportation goal regardlessly, and -enabled data transport system is to provide generic, standardised data-delivery service to any application, for simple and efficient data exchange. 
 
@@ -55,7 +60,7 @@ Just like a post office offering general delievery for anyone's posting needs in
 
 This is compared to the conventional methods of cross-application data exchange, which requires building custom dedicated data transport for the specific data requirements of the communicating applications.
 
-## An universal serializable data container 
+## An 
 
 
 
