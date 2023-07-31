@@ -74,10 +74,10 @@
     <li>
       <a href="#overview">Overview</a>
       <ul>
-        <li><a href="#built-with">Schema-based ad-hoc data exchange (The problem)</a></li>
-        <li><a href="#built-with">Universal Data Transport (The idea)</a></li>
-        <li><a href="#built-with">Implementing UDT (The challenge)</a></li>
-        <li><a href="#built-with">RDA Encoding (The invention)</a></li>
+        <li><a href="#schema-based-ad-hoc-data-exchange-the-problem">Schema-based ad-hoc data exchange (The problem)</a></li>
+        <li><a href="#universal-data-transport-the-idea">Universal Data Transport (The idea)</a></li>
+        <li><a href="#implementing-udt-the-challenge">Implementing UDT (The challenge)</a></li>
+        <li><a href="##rda-encoding-the-invention">RDA Encoding (The invention)</a></li>
         <li><a href="#built-with">Charian API (This project)</a></li>
       </ul>
     </li>
@@ -150,7 +150,7 @@ Universal Data Transport, or UDT, is a proposed "post-office-like" data transpor
 
 ![Charian-based UDT](Charian-data-transport.png?raw=true "Charian-based Universal Data Transport")
 
-### Implementing UDT (A proposed solution and the challenge)
+### Implementing UDT (The challenge)
 
 As with the Post Office, one “key technology” that enables its convenient and economical service is the standard packaging, as packing loose items in a box allows easy handling and modularized, more effective transportation using general courier companies. Inspired by this, UDT also includes using a data container for packaging irregular data items (e.g. properties of a data object) so they can be handled uniformly using general data transport protocols and methods. 
 
@@ -158,7 +158,7 @@ Technically, UDT is most suitable to be implemented as a messaging technology, w
 
 Unfortunately, schema-based data formats, such as XML and JSON, are not suitable for encoding the UDT container because having a schema assumes a certain data model - meaning the container would be restricted by what data can be stored rather than being "generic and universal". The more primitive CSV format also places restrictions on the intended data by having a fixed number of columns and a "header", and more importantly, CSV only allows encoding two-dimensional data - not enough for storing complex data structures. So our quest for a suitable encoding has led to the development of a new encoding data format - the RDA.
 
-### RDA encoding (The invention)
+### RDA Encoding (The invention)
 
 RDA stands for "Recursive Delimited Array". It is a delimited encoding format similar to CSV that uses delimiter chars for separating and denoting encoded data elements, except for RDA you can dynamically define multiple delimiters for encoding more complex, multidimensional data. Below is an example of a RDA format string[^3] that contains data elements of a 2D (3x3) table, using two delimiter chars for separating the data elements.
 
