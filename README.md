@@ -77,7 +77,7 @@
         <li><a href="#schema-based-ad-hoc-data-exchange-the-problem">Schema-based ad-hoc data exchange (The problem)</a></li>
         <li><a href="#universal-data-transport-the-idea">Universal Data Transport (The idea)</a></li>
         <li><a href="#implementing-udt-the-challenge">Implementing UDT (The challenge)</a></li>
-        <li><a href="##rda-encoding-the-invention">RDA Encoding (The invention)</a></li>
+        <li><a href="#rda-encoding-the-invention">RDA Encoding (The invention)</a></li>
         <li><a href="#built-with">Charian API (This project)</a></li>
       </ul>
     </li>
@@ -130,13 +130,15 @@ Yet, Charian is not just another data encoder or object serializer. By making cr
 
 Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data cross-program is normally more complicated and require extra effort. The conventional approach typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. a schema) for the data communication. 
 
-![Schema-based ad-hoc data exchange](Pre-Charian-data-transport.png?raw=true "Pre-Charian ad-hoc data exchange")
-
-<img src="Pre-Charian-data-transport.png" width="650">
+<div align="center">
+<img src="Pre-Charian-data-transport.png" width="650" align="center">
+</div>
 
 Developing a separate dedicated connection for every application that has a different data model is not cost-effective because of the duplicated effort and the high costs. In an analogy, it's like managing the parcel posting yourself without using the Post Office, meaning you’ll have to make ad-hoc transport and delivery arrangement on each occasion.
 
-![Pre-Post-office ad-hoc parcel exchange](Pre-Post-office-system.png?raw=true "Pre-Post-office-system")
+<div align="center">
+<img src="Pre-Post-office-system.png" width="550" align="center">
+</div>
 
 Data exchange using schema-based connections is also inflexible. If the connected programs have different data models, or one of the programs has evolved and the data model needs to be changed, it often requires a dedicated middleware system to mediate the data model transformation. Schema-based connections make the connected programs "tightly coupled" - meaning the programs are overly dependent on each other and will incur high costs when making changes.
 
@@ -144,11 +146,16 @@ Data exchange using schema-based connections is also inflexible. If the connecte
 
 As with the Post Office, the reason it’s convenient and can save money is that the standard parcel processing service it provides can be used to serve all the different clients and the shared common logistics and freight system helps cut down the cost.
 
-![Post-office parcel exchange](Post-office-system.png?raw=true "Post-office postal service")
+<div align="center">
+<img src="Post-office-system.png" width="550" align="center">
+</div>
 
 Universal Data Transport, or UDT, is a proposed "post-office-like" data transport service aiming for the same benefits - that is, by creating and sharing a common, generic data transport service to be shared by all programs that require exchanging data, we can avoid building ad-hoc dedicated data-exchange connections to make the operation simpler and also save money.
 
-![Charian-based UDT](Charian-data-transport.png?raw=true "Charian-based Universal Data Transport")
+
+<div align="center">
+<img src="Charian-data-transport.png" width="550">
+</div>
 
 ### Implementing UDT (The challenge)
 
