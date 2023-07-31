@@ -47,7 +47,7 @@
 [![MIT License][license-shield]][license-url]
 
 <!-- PROJECT LOGO -->
-<img src="Charian-logo-orange-h128.png" align="right" height="128">
+<img src="Charian-logo-orange-h128.png" align="right" height="128" padding="20">
 
 > *Charian allows "stored" arbitrarily complex structured data in a unified formatted string, so it can be easily transported with generic, non-proprietary tools and methods, and be freely exchanged between independent programs.* 
 
@@ -70,10 +70,10 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Setting up Charian</a></li>
-        <li><a href="#installation">Using the API (aka "Data packing")</a></li>
-        <li><a href="#installation">Exanple 1 - Transporting primitive data</a></li>
-        <li><a href="#installation">Exanple 2 - Serializing a simple data object</a></li>
-        <li><a href="#installation">Exanple 3 - Serializing a complex data object with nested classes</a></li>
+        <li><a href="#installation">Using the API (aka "data packing")</a></li>
+        <li><a href="#installation">Example 1 - Transporting primitive data</a></li>
+        <li><a href="#installation">Example 2 - Serializing a simple data object</a></li>
+        <li><a href="#installation">Example 3 - Serializing a complex data object with nested classes</a></li>
       </ul>
     </li>
     <li><a href="#roadmap">Other Usages</a></li>
@@ -101,9 +101,9 @@ Charian (pron. /ka-ri-en/) is a general-purpose data encoding API that uses the 
 
 Charian can be also used for object-serialization in developing distributed object-oriented programs. Compared to the other object-serialization systems and methods, Charien's schema-less, one-size-fits-all approach has many benefits including being -
 
-- **Flexible**: it does not impose a fixed data model on the objects being serialized, so it can be used in programs having different and evolving data models.
-- **Super compact**: it is written in around 800 lines of code, with no 3rd-party dependency;
-- **Zero maintenance**: the source code can be included and built as part of your project and it requires no setup or configuration;
+- **Flexible**: it does not impose a fixed data model on the serialized objects, and it can be used in programs with different and evolving data models.
+- **Minimal footprint**: the super compact Charian is written in around 800 lines of code, with no 3rd-party dependency;
+- **Low maintenance**: Charian is "one size fits all" - it is easy to set up and requires zero configuration;
 - **Universal**: Charian-serialized objects can be exchanged cross-application, cross-language, and cross-platform[^2];
 
 Yet, Charian is not just another data encoder or object serializer. By making cross-program data exchange much simpler and more flexible, it extends the reach where programs and devices can connect to each other and work together and inspires new methods and approaches to developing collaborative distributed solutions.
