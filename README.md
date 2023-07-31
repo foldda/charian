@@ -1,17 +1,17 @@
-<!-- MARKDOWN LINKS & IMAGES -->
+<!-- MARKDOWN LINKS & IMAGES 
+[# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
+-->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[contributors-shield]: https://img.shields.io/github/contributors/foldda/charian.svg?style=for-the-badge
+[contributors-url]: https://github.com/foldda/charian/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/foldda/charian.svg?style=for-the-badge
+[forks-url]: https://github.com/foldda/charian/network/members
+[stars-shield]: https://img.shields.io/github/stars/foldda/charian.svg?style=for-the-badge
+[stars-url]: https://github.com/foldda/charian/stargazers
+[issues-shield]: https://img.shields.io/github/issues/foldda/charian.svg?style=for-the-badge
+[issues-url]: https://github.com/foldda/charian/issues
+[license-shield]: https://img.shields.io/github/license/foldda/charian.svg?style=for-the-badge
+[license-url]: https://github.com/foldda/charian/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
@@ -30,10 +30,22 @@
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
 
+<div align="center">
+<p align="center">
+  <a href="https://github.com/othneildrew/Best-README-Template">C#</a>
+    ·
+    <a href="https://github.com/othneildrew/Best-README-Template/issues">Python</a>
+    ·
+    <a href="https://github.com/othneildrew/Best-README-Template/issues">Java</a>  
+</p>
+
+</div>
 
 
 
-[# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
+# Charian 
+
+
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -48,71 +60,55 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="Charian-logo-orange-h128.png" height="128">
-  </a>
+<img src="Charian-logo-orange-h128.png" align="right" height="128">
 
-  <h3 align="center">Charian</h3>
-
-  <p align="center">
-    A general-purpose data encoding API that "stores" arbitrarily complex structured data inside a string!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
-</div>
-
-
+> *Being able to be "stored in a unified formatted string" using Charian, arbitrarily complex structured data can be easily transported with non-proprietary, generic tools and methods, and be exchanged freely between independent programs.* 
 
 <!-- TABLE OF CONTENTS -->
+<p font='bold'>
 <details>
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#overview">Overview</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#built-with">Schema-based ad-hoc data exchange (The problem)</a></li>
+        <li><a href="#built-with">Universal Data Transport (The idea)</a></li>
+        <li><a href="#built-with">Implementing UDT (The challenge)</a></li>
+        <li><a href="#built-with">RDA Encoding (The invention)</a></li>
+        <li><a href="#built-with">Charian API (This project)</a></li>
       </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#prerequisites">Setup</a></li>
+        <li><a href="#installation">Using class Rda</a></li>
+        <li><a href="#installation">Using interface IRda</a></li>
+        <li><a href="#installation">Exanple 1 - Transporting primitive data</a></li>
+        <li><a href="#installation">Exanple 2 - Serializing a simple data object</a></li>
+        <li><a href="#installation">Exanple 3 - Serializing a complex data object with nested classes</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#roadmap">Other Usages</a></li>
+    <li><a href="#contributing">Final Thoughts</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
+</p>
 
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## Overview
 
-Charian (pron. /ka-ri-en/) is a general-purpose data encoding API that uses the new, schema-less RDA format[^1] in its encoding. By "storing" arbitrarily complex structured data in a formatted text string using Charian, it allows transporting the data easily using only generic tools and methods.
+Charian (pron. /ka-ri-en/) is a general-purpose data encoding API that uses the new, schema-less RDA format[^1] for the encoding. Available in C#, Python, and Java, Charian can be used for -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
-
-Available in C#, Python, and Java, Charian can be used for -
 
 - **Persistent data storage** - for conveniently storing structured data items (as strings) in files or databases;
 - **Distributed computing** - for, as a hack, passing any complex data structure as a "string parameter" in a remote call;
@@ -130,11 +126,13 @@ Yet, Charian is not just another data encoder or object serializer. By making cr
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-## Schema-based ad-hoc data exchange (The problem)
+### Schema-based ad-hoc data exchange (The problem)
 
 Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data cross-program is normally more complicated and require extra effort. The conventional approach typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. a schema) for the data communication. 
 
 ![Schema-based ad-hoc data exchange](Pre-Charian-data-transport.png?raw=true "Pre-Charian ad-hoc data exchange")
+
+<img src="Pre-Charian-data-transport.png" width="650">
 
 Developing a separate dedicated connection for every application that has a different data model is not cost-effective because of the duplicated effort and the high costs. In an analogy, it's like managing the parcel posting yourself without using the Post Office, meaning you’ll have to make ad-hoc transport and delivery arrangement on each occasion.
 
@@ -142,7 +140,7 @@ Developing a separate dedicated connection for every application that has a diff
 
 Data exchange using schema-based connections is also inflexible. If the connected programs have different data models, or one of the programs has evolved and the data model needs to be changed, it often requires a dedicated middleware system to mediate the data model transformation. Schema-based connections make the connected programs "tightly coupled" - meaning the programs are overly dependent on each other and will incur high costs when making changes.
 
-## Universal Data Transport (The idea)
+### Universal Data Transport (The idea)
 
 As with the Post Office, the reason it’s convenient and can save money is that the standard parcel processing service it provides can be used to serve all the different clients and the shared common logistics and freight system helps cut down the cost.
 
@@ -152,7 +150,7 @@ Universal Data Transport, or UDT, is a proposed "post-office-like" data transpor
 
 ![Charian-based UDT](Charian-data-transport.png?raw=true "Charian-based Universal Data Transport")
 
-## Implementing UDT (A proposed solution and the challenge)
+### Implementing UDT (A proposed solution and the challenge)
 
 As with the Post Office, one “key technology” that enables its convenient and economical service is the standard packaging, as packing loose items in a box allows easy handling and modularized, more effective transportation using general courier companies. Inspired by this, UDT also includes using a data container for packaging irregular data items (e.g. properties of a data object) so they can be handled uniformly using general data transport protocols and methods. 
 
@@ -160,7 +158,7 @@ Technically, UDT is most suitable to be implemented as a messaging technology, w
 
 Unfortunately, schema-based data formats, such as XML and JSON, are not suitable for encoding the UDT container because having a schema assumes a certain data model - meaning the container would be restricted by what data can be stored rather than being "generic and universal". The more primitive CSV format also places restrictions on the intended data by having a fixed number of columns and a "header", and more importantly, CSV only allows encoding two-dimensional data - not enough for storing complex data structures. So our quest for a suitable encoding has led to the development of a new encoding data format - the RDA.
 
-## RDA encoding (The invention)
+### RDA encoding (The invention)
 
 RDA stands for "Recursive Delimited Array". It is a delimited encoding format similar to CSV that uses delimiter chars for separating and denoting encoded data elements, except for RDA you can dynamically define multiple delimiters for encoding more complex, multidimensional data. Below is an example of a RDA format string[^3] that contains data elements of a 2D (3x3) table, using two delimiter chars for separating the data elements.
 
