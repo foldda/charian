@@ -30,22 +30,7 @@
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
 
-<div align="center">
-<p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">C#</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Python</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Java</a>  
-</p>
-
-</div>
-
-
-
 # Charian 
-
-
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -64,7 +49,7 @@
 <!-- PROJECT LOGO -->
 <img src="Charian-logo-orange-h128.png" align="right" height="128">
 
-> *Being able to be "stored in a unified formatted string" using Charian, arbitrarily complex structured data can be easily transported with non-proprietary, generic tools and methods, and be exchanged freely between independent programs.* 
+> *Charian allows "stored" arbitrarily complex structured data in a unified formatted string, so it can be easily transported with generic, non-proprietary tools and methods, and be freely exchanged between independent programs.* 
 
 <!-- TABLE OF CONTENTS -->
 <p font='bold'>
@@ -84,9 +69,8 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Setup</a></li>
-        <li><a href="#installation">Using class Rda</a></li>
-        <li><a href="#installation">Using interface IRda</a></li>
+        <li><a href="#prerequisites">Setting up Charian</a></li>
+        <li><a href="#installation">Using the API (aka "Data packing")</a></li>
         <li><a href="#installation">Exanple 1 - Transporting primitive data</a></li>
         <li><a href="#installation">Exanple 2 - Serializing a simple data object</a></li>
         <li><a href="#installation">Exanple 3 - Serializing a complex data object with nested classes</a></li>
@@ -131,13 +115,13 @@ Yet, Charian is not just another data encoder or object serializer. By making cr
 Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data cross-program is normally more complicated and require extra effort. The conventional approach typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. a schema) for the data communication. 
 
 <div align="center">
-<img src="Pre-Charian-data-transport.png" width="650" align="center">
+<img src="Pre-Charian-data-transport.png" width="550" align="center">
 </div>
 
 Developing a separate dedicated connection for every application that has a different data model is not cost-effective because of the duplicated effort and the high costs. In an analogy, it's like managing the parcel posting yourself without using the Post Office, meaning you’ll have to make ad-hoc transport and delivery arrangement on each occasion.
 
 <div align="center">
-<img src="Pre-Post-office-system.png" width="550" align="center">
+<img src="Pre-Post-office-system.png" width="470" align="center">
 </div>
 
 Data exchange using schema-based connections is also inflexible. If the connected programs have different data models, or one of the programs has evolved and the data model needs to be changed, it often requires a dedicated middleware system to mediate the data model transformation. Schema-based connections make the connected programs "tightly coupled" - meaning the programs are overly dependent on each other and will incur high costs when making changes.
@@ -179,7 +163,7 @@ The beginning of an RDA string is a substring section known as the "header" whic
 
 Following the header, the remaining RDA string is the 'payload' section that contains the encoded data. The RDA payload section provides a 'virtual' storage space of a multi-dimensional array where stored data elements are delimited using the delimiters defined in the header, and each data element is accessible via an index address comprised of an array of 0-based integers. In the above example, the top dimension of the array is delimited by delimiter '|' and the second dimension is delimited by delimiter ',', and in this 2D array the data element at the location [0,1] has a string value "B".
 
-### Compared to XML and JSON
+**Compared to XML and JSON**
 
 RDA has multi-dimensional array storage space that is dynamically expandable, that is, the size of each dimension and the number of dimensions can be increased or decreased as required, like an elastic bag. This is in contrast to the ‘fixed’ hierarchical space provided by schema-based encodings, like XML or JSON, which is restricted by a predefined data mode, like a rigid, fix-shaped box. 
 
