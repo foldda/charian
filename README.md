@@ -30,7 +30,7 @@
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
 
-# Charian 
+
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -46,15 +46,16 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
+# Charian 
+
 <!-- PROJECT LOGO -->
 <img src="Charian-logo-orange-h128.png" align="right" height="128" padding="20">
 
-> *After being "stored" in a unified formatted string using Charian, complex structured data can be easily transported with generic, non-proprietary tools and methods, and be freely exchanged between independent programs.* 
+> *Charian (pron. /ka-ri-en/) allows encoding arbitrarily complex structured data in a unified formatted string, so it can be easily transported with generic, non-proprietary tools and methods, and be freely exchanged between independent programs.* 
 
 <!-- TABLE OF CONTENTS -->
-<p font='bold'>
-<details>
-  <summary>Table of Contents</summary>
+## Table of Contents
+<div color='red' font='bold'>
   <ol>
     <li>
       <a href="#overview">Overview</a>
@@ -67,7 +68,8 @@
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <details>
+      <summary><a href="#getting-started">Getting Started</a></summary>
       <ul>
         <li><a href="#prerequisites">Setting up</a></li>
         <li><a href="#installation">The usage pattern (aka "data packing")</a></li>
@@ -76,13 +78,14 @@
         <li><a href="#installation">Example - Serializing a complex data object with nested classes</a></li>
         <li><a href="#roadmap">Other usages</a></li>
       </ul>
+      </details>
     </li>
     <li><a href="#contributing">Final Thoughts</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
-</details>
-</p>
+
+</div>
 
 
 
