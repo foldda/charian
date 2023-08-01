@@ -49,7 +49,7 @@
 <!-- PROJECT LOGO -->
 <img src="Charian-logo-orange-h128.png" align="right" height="128" padding="20">
 
-> *Charian allows "stored" arbitrarily complex structured data in a unified formatted string, so it can be easily transported with generic, non-proprietary tools and methods, and be freely exchanged between independent programs.* 
+> *After being "stored" in a unified formatted string using Charian, complex structured data can be easily transported with generic, non-proprietary tools and methods, and be freely exchanged between independent programs.* 
 
 <!-- TABLE OF CONTENTS -->
 <p font='bold'>
@@ -63,24 +63,23 @@
         <li><a href="#universal-data-transport-the-idea">Universal Data Transport (The idea)</a></li>
         <li><a href="#implementing-udt-the-challenge">Implementing UDT (The challenge)</a></li>
         <li><a href="#rda-encoding-the-invention">RDA Encoding (The invention)</a></li>
-        <li><a href="#built-with">Charian API (This project)</a></li>
+        <li><a href="#built-with">Charian API (The product)</a></li>
       </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Setting up Charian</a></li>
-        <li><a href="#installation">Using the API (aka "data packing")</a></li>
-        <li><a href="#installation">Example 1 - Transporting primitive data</a></li>
-        <li><a href="#installation">Example 2 - Serializing a simple data object</a></li>
-        <li><a href="#installation">Example 3 - Serializing a complex data object with nested classes</a></li>
+        <li><a href="#prerequisites">Setting up</a></li>
+        <li><a href="#installation">The usage pattern (aka "data packing")</a></li>
+        <li><a href="#installation">Example - Transporting primitive data</a></li>
+        <li><a href="#installation">Example - Serializing a simple composite data object</a></li>
+        <li><a href="#installation">Example - Serializing a complex data object with nested classes</a></li>
+        <li><a href="#roadmap">Other usages</a></li>
       </ul>
     </li>
-    <li><a href="#roadmap">Other Usages</a></li>
     <li><a href="#contributing">Final Thoughts</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 </p>
@@ -175,19 +174,15 @@ The other difference between RDA and XML/JSON is the allowed "data types". RDA h
 
 > In an analogy, the space from XML/JSON is like a wallet, where it has places specifically defined for holding cards, notes, and coins; whilst the space from RDA is like an enormous shelf, where you can place anything at anywhere in the unlimited space that is provided.
 
-But the most interesting and unique property of RDA is the **recursiveness** of its storage space. The multi-dimensional array structure is homogenous, and there can be only one 'unified' data type, so each sub-dimension in the space is itself a multi-dimensional space that has the same structure as its containing (parent dimension) space, and can be used in the same way. The recursiveness of the multi-dimensional space allows an arbitrarily complex data structure and its sub-components to be recursively decomposed and stored in the provided space. This feature is utilized by the Charian API in its usage pattern, a process known as “data packing”.
+But the most interesting and unique property of RDA is the **recursiveness** of its storage space. The multi-dimensional array structure is homogenous, and there can be only one 'unified' data type, so each sub-dimension in the space is itself a multi-dimensional space that has the same structure as its containing (parent dimension) space, and can be used in the same way. The recursiveness of the multi-dimensional space allows an arbitrarily complex data structure and its sub-components to be recursively decomposed and stored in the provided space. 
 
-## UDT “data packing” with Charian 
+### Charian API (The product)
 
-Imagine we’re moving house, we would need to pack and unpack the household items from boxes before and after the move. The steps of transporting data in a UDT container are similar, except in UDT a client would be packing and unpacking data items before and after the container being transported. 
-
-The Charian API is modeled for facilitating these analogical steps: for “packing”, a sender would use a provided container object to store and organize its data items, and serialize the container to a string using the API’s RDA encoding function, before sending the RDA-encoded string for transport; for “unpacking”, a receiver would deserialize and restore a container from a received RDA string using the RDA-decoding function from the API, and retrieve the stored data items from the container. 
-
-The Rda class and the IRda interface from the API are implemented with methods and properties for facilitating these activities, which are described and demonstrated below[^6].
+You may find an RDA-encoded string not very friendly to human eyes compared to XML and JSON, and that is where the Charian API comes to play. Charian hides away the RDA encoding decoding details, and presents an intuitive, easy-to-use programming interface for a client to utilize the flexible storage features an RDA formatted string provides, and more importantly, to be able to participate in UDT. The Rda class and the IRda interface from the API are implemented with methods and properties for UDT-oriented activities[^6].
 
 [^6]: The description and examples are given in C# syntax, but the illustrated methods can be easily translated to the Python and Java implementations which are also provided in this repo, and have identical functions.
 
-### Class Rda
+**Class Rda**
 
 The Rda class implements properties and methods that are modeled as a "container" object which internally has a multidimensional storage space. Locations in the multidimensional space are accessible via integer-based indexes addresses. The Rda class provides the following Getter/Setter methods for a client to store and retrieve data items at the locations inside the space:
 ```
@@ -207,7 +202,7 @@ public static Rda Parse(string rdaEncodedString)
 ```
 Data exchange using the Rda class typically would be in this sequence: the sender would 1) construct an Rda container object, 2) use the Setter methods to “pack” its data items that require transfer into the container, and 3) use the ToString method to convert the container to an RDA string which will be sent to the receiver. When the receiver has received the RDA string, it would 4) use the Parse method to convert the string back to an Rda container, then 5) use the Getter methods to "unpack" and consume the data items stored in the container.
 
-### Interface IRda
+**Interface IRda**
 
 The IRda interface has defined two methods:
 ```
@@ -216,15 +211,25 @@ IRda FromRda(Rda rda)
 ```
 These two methods, if implemented by a class, tell a client how the class can be serialized to and deserialized from an Rda object. In data-packing terms, the ToRda() method is where to "pack" data items into a Rda container; and the FromRda() method is where to "unpack" data items from a Rda container (and to consume the retrieved data items).
 
-## Setting up Charian
+The examples in the following section demonstrate how the Rda class and the IRda interface are used in storing and transporting data in UDT.
+
+## Getting Started
+
+Imagine we’re moving house, we would need to pack and unpack the household items from boxes before and after the move. The steps of transporting data in a UDT container are similar, except in UDT a client would be packing and unpacking data items before and after the container being transported. 
+
+The Charian API is modeled for facilitating these analogical steps: for “packing”, a sender would use a provided container object to store and organize its data items, and serialize the container to a string using the API’s RDA encoding function, before sending the RDA-encoded string for transport; for “unpacking”, a receiver would deserialize and restore a container from a received RDA string using the RDA-decoding function from the API, and retrieve the stored data items from the container. 
+
+
+
+### Setting up
 
 Charian has no setup or configuration or third-party dependency. Although you can build and maintain Charian as an external binary package, it's best to include Charian's source files directly  in your project so it can be compiled and built as an integral part of your program. 
 
-## Demo examples
+### Charian's usage pattern
 
 The following examples demonstrate some basic uses of Charian. The other good place for example usage of the API is the test cases which are included as part of the source code of this repo.
 
-### Example 1:  Packing and transporting primitive data values
+### Example - Transporting primitive data
 
 ```c#
     using Charian;
@@ -275,7 +280,7 @@ Takeaway: The sender and the receiver are expected to know where (placement) and
 
 Takeaway: Rda container has no schema and does not enforce data validation. Primitive type data are stored as strings, the client is responsible for type conversion and the associated error handling.
 
-### Example 2:  Serializing a simple data object
+### Example - Serializing a simple composite data object
 
 ```C#
     public class Person : IRda
@@ -331,7 +336,7 @@ Takeaway: Rda container has no schema and does not enforce data validation. Prim
 
 Takeaway: The IRda interface's ToRda() and FromRda() methods are the “standard” places of a class for packing and unpacking data.
 
-### Example 3: Serializing a complex data object with nested classes
+### Example - Serializing a complex data object with nested classes
 
 ```C#
     class Address : IRda
@@ -417,7 +422,7 @@ Takeaway: The IRda interface's ToRda() and FromRda() methods are the “standard
 
 Takeaway: Rda container has ‘unlimited space’ and supports recursion, which can accommodate the complexity of an evolving object to be extended indefinitely.
 
-## Other beneficial uses
+### Other usages
 
 **Maintain compatibility** As illustrated in the above examples, the ComplexPerson object extends the Person object while remaining backward compatible. This means you can have a connected network where some programs work with the Person object, and some other programs have evolved and use the ComplexPerson object, and these programs will remain compatible communicating with each other in the network.
 
@@ -433,7 +438,13 @@ UDT is a proposed universal, shareable data exchange system where exchanging dat
 
 RDA is a text-encoding format developed for implementing the UDT data container in the form of text messaging. Unlike XML and JSON, RDA is schemaless and has a storage space of a multidimensional array, which has a recurring nature. 
 
-Charian is an RDA-encoding API that is modeled arround the UDT data packing process. It includes features A client can   Data packing using Charian utilizes a container object from the API that can store arbitrarily complex data and also can be converted to and from a string. And by converting the data to string, Charian allows low-cost, easy-to-implement cross-program data exchange using the most common communication protocols and data-processing tools. 
+Charian is an RDA-encoding API that is modeled around the UDT data-packing process. It includes features A client can   Data packing using Charian utilizes a container object from the API that can store arbitrarily complex data and also can be converted to and from a string. And by converting the data to string, Charian allows low-cost, easy-to-implement cross-program data exchange using the most common communication protocols and data-processing tools. 
+
+## License and Contact
+
+* Project Wiki
+
+* Test cases
 
 ## Links
 
