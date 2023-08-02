@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <RootNamespace>UniversalDataTransport</RootNamespace>
+    <AssemblyName>UniversalDataTransport</AssemblyName>
+    <Company>Foldda Pty Ltd</Company>
+    <Authors>Michael Chen</Authors>
+    <PackageIcon>recurrsive_squares_128c.png</PackageIcon>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Docs\**" />
+    <Compile Remove="Src\**" />
+    <Compile Remove="UnitTests\**" />
+    <EmbeddedResource Remove="Docs\**" />
+    <EmbeddedResource Remove="Src\**" />
+    <EmbeddedResource Remove="UnitTests\**" />
+    <None Remove="Docs\**" />
+    <None Remove="Src\**" />
+    <None Remove="UnitTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Archives\recurrsive_squares_128c.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

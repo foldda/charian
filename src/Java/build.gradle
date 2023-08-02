@@ -1,0 +1,19 @@
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+}
+
+test {
+    useJUnitPlatform();
+}
+
+repositories { mavenCentral() }
+
+
+dependencies {
+    // Use JUnit test framework
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+sourceCompatibility = '11'
