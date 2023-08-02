@@ -101,7 +101,7 @@ Yet, Charian is not just another data encoder or object serializer. By making cr
 Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data cross-program is normally more complicated and require extra effort. The conventional approach typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. bound by a schema) for the data communication. 
 
 <div align="center">
-<img src="Pre-Charian-data-transport.png" width="550" align="center">
+<img src="img/Pre-Charian-data-transport.png" width="550" align="center">
 </div>
 
 Developing a separate dedicated connection for every application that has a different data model is not cost-effective because of the duplicated effort and the high costs. It's like sending a parcel to someone without using the Post Office, instead you'd manage everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
