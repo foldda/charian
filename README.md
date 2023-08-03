@@ -60,7 +60,7 @@
 
 Charian is a data encoding API that allows "storing" any complex structured data in a text string. Encoding with Charian does not require first establishing a fixed data model (aka. a schema), so the process is very simple and straightforward. 
 
-Available in [C#](https://github.com/foldda/charian/tree/main/src/CSharp), [Python](https://github.com/foldda/charian/tree/main/src/Python), and [Java](https://github.com/foldda/charian/tree/main/src/Java), Charian can be used for implementing -
+Available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java), Charian can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
 - **Distributed computing** - for, as a hack, passing any complex data structure as a "string parameter" in a remote call;
