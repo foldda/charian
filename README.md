@@ -60,7 +60,7 @@
 
 Charian is a data encoding API that allows "storing" any complex structured data in a text string. Encoding with Charian does not require first establishing a fixed data model (aka. a schema), so the process is very simple and straightforward. 
 
-Available in C#, Python, and Java, Charian can be used for implementing -
+Available in [C#](https://github.com/foldda/charian/tree/main/src/CSharp), [Python](https://github.com/foldda/charian/tree/main/src/Python), and [Java](https://github.com/foldda/charian/tree/main/src/Java), Charian can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
 - **Distributed computing** - for, as a hack, passing any complex data structure as a "string parameter" in a remote call;
@@ -184,17 +184,17 @@ The examples in the following section demonstrate how the Rda class and the IRda
 
 ## Getting Started
 
-It's very easy to get started with Charian, although it's beneficial to put the usage of the API under the context of UDT. 
+It's very easy to get started with Charian, although it's beneficial if one can put its usage in the context of UDT, as explained below. 
 
 ### Setup
 
-Charian has no setup or configuration or third-party dependency. Although you can build and maintain Charian as an external binary package, it's best to include Charian's source files directly  in your project so it can be compiled and built as an integral part of your program. 
+Charian has no installation nor it has any third-party dependency. Although you can maintain Charian as an external binary package, it's best to include Charian's two simple source files directly in your project so they can be compiled and built as an integral part of your program, and it'll give you better insight for debugging too. 
 
 ### Using the API (aka “data packing”)
 
-Data Packing is a term referring to the conceptual steps that are involved when using Charian for UDT. Imagine we’re moving house, we would need to pack and unpack the household items from boxes before and after the move. The steps of transporting data in a UDT container are similar, except in UDT a client would be packing and unpacking data items before and after the container being transported. 
+Data Packing is a term referring to the conceptual steps involved when using Charian for UDT. Imagine we’re moving house, we would need to pack and unpack the household items from boxes before and after the move. The steps of transporting data in a UDT container are similar, except in UDT a client would be using Charian for packing and unpacking data items before and after the container being transported. 
 
-The Charian API is modeled for facilitating these analogical steps: for “packing”, a sender would use a provided container object to store and organize its data items, and serialize the container to a string using the API’s RDA encoding function, before sending the RDA-encoded string for transport; for “unpacking”, a receiver would deserialize and restore a container from a received RDA string using the RDA-decoding function from the API, and retrieve the stored data items from the container. 
+The Charian API is modeled for facilitating this operation: the Rda class is the container to be used for “packing into” and "unpacking from"; the IRda interface simply signifies the methods to be implemented are the places to do data packing and unpacking.
 
 The following examples demonstrate some basic uses of Charian. The other good place for example usage of the API is the test cases which are included as part of the source code of this repo.
 
