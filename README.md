@@ -1,7 +1,8 @@
-<!-- MARKDOWN LINKS & IMAGES 
+
+<!--- MARKDOWN LINKS & IMAGES
 [# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
--->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+--->
+<!--- https://www.markdownguide.org/basic-syntax/#reference-style-links --->
 [contributors-shield]: https://img.shields.io/github/contributors/foldda/charian.svg?style=for-the-badge
 [contributors-url]: https://github.com/foldda/charian/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/foldda/charian.svg?style=for-the-badge
@@ -13,34 +14,13 @@
 [license-shield]: https://img.shields.io/github/license/foldda/charian.svg?style=for-the-badge
 [license-url]: https://github.com/foldda/charian/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
-
-
 
 <!-- PROJECT SHIELDS -->
 <!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
+*** these use markdown "reference style" links defined above
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -48,24 +28,22 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-
-
 <!--- PROJECT HEADER --->
-# Charian 
+# Charian
 
 <img src="img/Charian-logo-orange-h128.png" align="right" height="128" padding="20">
 
-> *Charian (pron. /ka-ri-en/) is a general-purpose data encoding API that uses the new, schemaless RDA format[^1] in the encoding. Structured data encoded in an RDA string can be easily transported using generic, non-proprietary protocols and methods, and be universally accepted for communications between independent programs.*
+> *Charian (pron. /ka-ri-en/) is a general-purpose data encoding API that uses the new, schemaless RDA format[^1] in its encoding. Structured data encoded in an RDA string can be easily transported using generic, non-proprietary protocols and methods, and be universally accepted for communications between independent programs.*
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
 <!--- TABLE OF CONTENTS --->
 ## Table of Contents
-1. [Overview](#overview)
+1. [About](#about)
     - [The problem - schema-bound data exchange](#the-problem---schema-bound-data-exchange)
     - [The idea - Universal Data Transport](#the-idea---universal-data-transport)
     - [The challenge - implementing UDT](#the-challenge---implementing-udt)
-    - [The new-tech - RDA encoding](#the-new-tech---rda-encoding)
+    - [The new and different - RDA encoding](#the-new-and-different---rda-encoding)
     - [The product - Charian API](#the-product---charian-api)
 2. [Getting Started](#getting-started)
     - [Setup](#setup)
@@ -79,13 +57,15 @@
 5. [Links](#links)
 
 <!-- OVERVIEW -->
-## Overview
+## About
 
-Available in C#, Python, and Java, Charian data encoding can be used for implementing -
+Charian is a data encoding API for "storing" any complex structured data in a text string. Encoding with Charian does not require establishing a predefined data model (aka. a schema), so the process is very simple and straightforward.
+
+Available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java), Charian can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
 - **Distributed computing** - for, as a hack, passing any complex data structure as a "string parameter" in a remote call;
-- **Systems integration** - for exchanging data between independent programs without using dedicated middleware;
+- **Systems integration** - for exchanging data between independent programs without using a dedicated middleware;
 - **ETL solutions** - for transforming and transferring data of various data models through simple programming.
 
 Charian can also be used for implementing object serialization in distributed object-oriented programs. Compared to the other object serialization systems and methods, Charien's schema-less, one-size-fits-all approach has many benefits including being -
@@ -95,29 +75,29 @@ Charian can also be used for implementing object serialization in distributed ob
 - **Easy to use**: Charian is "one size fits all" - it has no settings that require configuration;
 - **Universal**: Charian-serialized objects can be exchanged cross-application, cross-language, and cross-platform[^2].
 
-Yet, Charian is not just another data encoder or object serializer. By making cross-program data exchange much simpler and more flexible, it extends the reach where programs and devices can connect to each other and work together and gives new methods and options in developing collaborative distributed solutions.
-
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
+
+Yet, Charian is not just another data encoder or object serializer. By making cross-program data exchange much simpler and more flexible, it extends the reach where programs and devices can connect to each other and work together and opens doors to new methods in developing collaborative distributed solutions.
 
 ### The problem - schema-bound data exchange
 
-Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data cross-program is normally more complicated and require extra effort. The conventional approach typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. bound by a schema) for the data communication. 
+Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data between them is normally more complicated and requires extra effort. The conventional approach to cross-program data exchange typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. bound by a schema) for the data communication.
 
 <div align="center">
 <img src="img/Pre-Charian-data-transport.png" width="550" align="center">
 </div>
 
-Developing a separate dedicated connection for every application that has a different data model is not cost-effective because of the duplicated effort and the high costs. It's like sending a parcel to someone without using the Post Office, instead, you'd manage everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
+Developing a dedicated connection for every application that has a different data model is not cost-effective because of the duplicated effort and the high costs. It's like sending a parcel to someone without using the Post Office, but managing everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
 
 <div align="center">
 <img src="img/Pre-Post-office-system.png" width="470" align="center">
 </div>
 
-Data exchange using schema-based connections is also inflexible. If the connected programs have different data models, or one of the programs has evolved and the data model needs to be changed, it often requires a dedicated middleware system to mediate the data model transformation. Schema-based connections make the connected programs "tightly coupled" - meaning the programs are overly dependent on each other and will incur high costs when making changes.
+The cost of managing data exchange over schema-based connections can also be significant, because the connected programs become "tightly coupled" by these connections. If one of the programs has evolved and the data model needs to be changed, it often requires modifying the developped connections or using a dedicated middleware system to mediate the data model transformation.
 
 ### The idea - Universal Data Transport
 
-As with the Post Office, the reason it’s convenient and can save money is that the standard parcel processing service it provides suits all the different clients and the shared common logistics and freight system helps cut down the cost.
+As with the Post Office, the reason it’s convenient and can save money is because it provides a standard parcel processing service that covers the different requirements of all of its clients and it uses a shared common logistics and freight system helps cut down the cost.
 
 <div align="center">
 <img src="img/Post-office-system.png" width="550" align="center">
@@ -131,20 +111,20 @@ Universal Data Transport, or UDT, is a proposed "post-office-like" data transpor
 
 ### The challenge - implementing UDT
 
-One “key technology” that enables the Post Office's convenient and economical service is the standard packaging, because packaging loose items in a box allows easy handling and modularized, more effective transportation from general courier companies. It's also a key to UDT to use a data container for packaging (and regulating) various data items (e.g. properties of a data object) from different clients, so irregular data can be handled uniformly using general data transport protocols and methods. 
+One “difficulty” the Post Office had was to provide a single consistent service that can cater for the different requirements from all it clients, and the answer is the use of **standardized packaging**. Packaging loose items in a box also allows modularized, more effective transportation that can be carried out by a general courier company. Thus a key design to UDT's design is to have a data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
 
-Also, UDT is most suitable to be implemented as a messaging technology, where the data container would be a text message. That's because through data encoding, a text message can be used as a container to store data, and text (aka 'string') is one of the most supported data types by major computer systems and programming languages. If we can have a text encoding format that supports encoding **any data** into a string, we can use it to implement the UDT container. And data stored in such a container can be readily processed using generic tools and protocols, without the need for custom proprietary treatment. For example, it can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. 
+Also, UDT is most suitable to be implemented as a messaging technology, where the data container is an encoded text message. That's because through data encoding, a text message can be used as a container to store data, and text (i.e. 'string') is one of the most supported data types by major computer systems and programming languages. Data stored in a "string container" can be readily processed using generic tools and protocols, without the need for any custom proprietary treatment. For example, it can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. Thus the challenge to implementing UDT is to have a text encoding format that supports encoding **any data** into a string.
 
-Unfortunately, schema-based data formats, such as XML and JSON, are not suitable for encoding the UDT container because having a schema assumes a certain data model - meaning the container would be restricted by what data can be stored rather than being "generic and universal" that we want it to be. The more primitive CSV format also places restrictions on the intended data by having a fixed number of columns and a "header", and more importantly, CSV only allows encoding two-dimensional data - not enough for storing complex data structures. So our quest for a suitable encoding has led to the development of a new encoding data format, called RDA.
+Unfortunately, schema-based data formats, such as XML and JSON, are not suitable for encoding the UDT container. That's because having a schema assumes a certain data model - meaning the container would be restricted by what data can be stored rather than being "generic and universal" that we want it to be. The more primitive CSV format also places restrictions on the intended data by having a fixed number of columns and a "header", and more importantly, CSV only allows encoding two-dimensional data - not enough for storing complex data structures. So our quest for a suitable encoding has led to the development of a new encoding data format, called RDA.
 
-### The new-tech - RDA encoding
+### The new and different - RDA encoding
 
-RDA stands for "Recursive Delimited Array". It is a delimited encoding format similar to CSV where encoded data elements are separated by delimiter chars, except for RDA it allows dynamically defining multiple delimiters for encoding more complex, multidimensional data. Below is an example of a RDA format string that contains data elements of a 2D (3x3) table, using two delimiter chars for separating the data elements.
+RDA stands for "Recursive Delimited Array". It is a delimited encoding format similar to CSV where encoded data elements are separated by delimiter chars. Below is an example of a RDA format string that contains data elements of a 2D (3x3) table, using two delimiter chars for separating the data elements.
 
 ```
 |,\|A,B,C|a,b,c|1,2,3
 ```
-The beginning of an RDA string is a substring section known as the "header" which contains the definition of the RDA string’s encoding chars including one or many delimiter chars (“delimiters”) and one escape char. In the above example, the header is the substring "|,\\|", and the delimiters are the first two chars '|' and ','. The third char ‘\\’ is the ‘escape’ char, and the last char ‘|’ is the ‘end-of-section’ marker which marks the end of the header section. Every RDA string can have a different header which means the encoding can use different encoding chars as defined in its header[^4]. 
+The beginning of an RDA string is a substring section known as the "header" which contains the definition of the RDA string’s encoding chars including one or many delimiter chars (“delimiters”) and one escape char. In the above example, the header is the substring "|,\\|", and the delimiters are the first two chars '|' and ','. The third char ‘\\’ is the ‘escape’ char, and the last char ‘|’ is the ‘end-of-section’ marker which marks the end of the header section. The header structure allows dynamically defining multiple delimiters for encoding more complex, multidimensional data, which also means every RDA string can use a different set of chars for its encoding[^4].
 
 [^4]: According to the RDA encoding rule, the header section starts from the first letter of the string and finishes at the first repeat of the string's starting letter which is called the ‘end-of-section’ marker. Any char can be used as a delimiter or the escape char, the only requirement is they must be different to each other in an RDA string header. By placing the encoding chars in the header at the front of an RDA string allows a parser to be automatically configured when it starts parsing the string.
 
@@ -152,23 +132,19 @@ Following the header, the remaining RDA string is the 'payload' section that con
 
 **Compared to XML and JSON**
 
-RDA has multi-dimensional array storage space that is dynamically expandable, that is, the size of each dimension and the number of dimensions can be increased or decreased as required, like an elastic bag. This is in contrast to the ‘fixed’ hierarchical space provided by schema-based encodings, like XML or JSON, which is restricted by a predefined data mode, like a rigid, fix-shaped box. 
+> The space from XML/JSON is like a wallet, where it has places specifically defined for holding cards, notes, and coins; whilst the space from RDA is like an enormous shelf, where you can place anything at anywhere in the unlimited space that is provided.
 
-RDA uses integer-based indexes for addressing the storage locations in its multi-dimensional array storage space, which means, and combination of non-negative integers is a valid address referring to a valid storage location in the space. This is in contrast to XML and JSON, the address for accessing a storage location is a ‘path’ that has to be ‘validated’ against a pre-defined schema. 
+RDA is specifically designed to avoid targetting a certain data model and having to define and maintain a schema. Such design is reflected by the structure of RDA's encoded storage space, the way of addressing a location in the space, and the supported data types[^5].  
 
-The other difference between RDA and XML/JSON is the allowed "data types". RDA has defined a very generalized data type: the value stored at a location is called a “value expression” of the referred data and such an expression can only be a string[^5]; whilst XML and JSON attempt to define and include every possible data types and a data values stored at a location must conform with what has been defined in the schema.
+[^5]: First, RDA has multi-dimensional array storage space that is dynamically expandable, that is, the size of each dimension and the number of dimensions can be increased or decreased as required, like an elastic bag. This is in contrast to the ‘fixed’ hierarchical space provided by schema-based encodings, like XML or JSON, which is restricted by a predefined data mode, like a rigid, fix-shaped box. Second, RDA uses integer-based indexes for addressing the storage locations in its multi-dimensional array storage space, which means, and combination of non-negative integers is a valid address referring to a valid storage location in the space. This is in contrast to XML and JSON, the address for accessing a storage location is a ‘path’ that has to be ‘validated’ against a pre-defined schema. Third, RDA assumes all data (of any type) can be 'expressed as a string' and a value stored at a location (referred as “a data's value expression”) can only be a string; whilst XML and JSON attempt to define and include every possible data types and a data values stored at a location must conform with what has been defined in the schema.
 
-[^5]:  Charian encoding assumes all data (of any type) can be 'expressed as a string'. This means an RDA storage location is more tolerant for storing data, as long as the data can be converted to a string, and cunningly Charian has left its clients to bear this assumption and the responsibility of the data-type conversion.
-
-> In an analogy, the space from XML/JSON is like a wallet, where it has places specifically defined for holding cards, notes, and coins; whilst the space from RDA is like an enormous shelf, where you can place anything at anywhere in the unlimited space that is provided.
-
-But the most interesting and unique property of RDA is the **recursiveness** of its storage space. The multi-dimensional array structure is homogenous, and there can be only one 'unified' data type, so each sub-dimension in the space is itself a multi-dimensional space that has the same structure as its containing (parent dimension) space, and can be used in the same way. The recursiveness of the multi-dimensional space allows an arbitrarily complex data structure and its sub-components to be recursively decomposed and stored in the provided space. 
+Inheritively from RDA's schemaless design, the encoding is simpler, more space-efficient, and configuration-free compared to XML and JSON. But perhaps the most interesting and unique property of RDA is the **recursiveness** of the storage space: the multi-dimensional array structure is homogenous, and there can be only one 'unified' data type, so a sub-dimension in the space is itself a multi-dimensional space that has the same structure as its containing (parent dimension) space, and can be used in the same way. The recursiveness of the multi-dimensional space allows an arbitrarily complex data structure to be (recursively) decomposed into sub-components and be stored int the dimensions and their sub-dimensions from the provided space.
 
 ### The product - Charian API
 
-You may find an RDA-encoded string not very friendly, especially when it contains lots of data elements and has many dimensions, and that is where the Charian API comes to play. Charian hides away the RDA encoding decoding details, and presents an intuitive, easy-to-use programming interface for a client to utilize the flexible storage features an RDA formatted string provides, and more importantly, to be able to participate in UDT. 
+You may find an RDA-encoded string not very eyeball-friendly, especially when it contains lots of data elements and has many dimensions, and that is where the Charian API comes to play. Charian hides away the RDA encoding decoding details, and presents an intuitive, easy-to-use programming interface for a client to utilize the storage space that RDA encoding provides, for being able to participate in UDT.
 
-The Rda class and the IRda interface from the API are implemented with methods and properties for UDT-oriented operations[^6], and from a client's perspective, it only needs to deal with a simple, easy-to-access storage space, which is also serializable, through the API, it does not have to know or to deal with the RDA encoding at all.
+The **Rda class** and the **IRda interface** from the API are implemented with methods and properties for UDT-oriented operations[^6], and from a client's perspective, it only needs to deal with a simple, easy-to-access storage space, which is also serializable, through the API. A Charian client does not have to know or to deal with the RDA encoding at all.
 
 [^6]: The description and examples are given in C# syntax, but the illustrated methods can be easily translated to the Python and Java implementations which are also provided in this repo, and have identical functions.
 
@@ -205,19 +181,21 @@ The examples in the following section demonstrate how the Rda class and the IRda
 
 ## Getting Started
 
-It's very easy to get started with Charian, although it's beneficial to put the usage of the API under the context of UDT. 
+Setting up and using Charian are easy and intuitive, as explained below.
 
 ### Setup
 
-Charian has no setup or configuration or third-party dependency. Although you can build and maintain Charian as an external binary package, it's best to include Charian's source files directly  in your project so it can be compiled and built as an integral part of your program. 
+The recommended way to set up and use Charian is to include the (only) two source files directly in your project and make references in your code to the API. This means Charian's source code will be compiled and built as an integral part of your program, and will give you better insight and transparency during debugging too.
+
+Charian has nothing else that requires setup or installation, nor it has any 3rd party dependency.
 
 ### Using the API (aka “data packing”)
 
-Data Packing is a term referring to the conceptual steps that are involved when using Charian for UDT. Imagine we’re moving house, we would need to pack and unpack the household items from boxes before and after the move. The steps of transporting data in a UDT container are similar, except in UDT a client would be packing and unpacking data items before and after the container being transported. 
+Data Packing is a term referring to the conceptual steps involved when using Charian for UDT. Imagine you’re moving house, the freight company would only be responsible for transporting the packed boxes, while you would be responsible for packing and unpacking the household items into and from the boxes. This analogy makes it easy to understand data transport using Charian - what you need to do are really just "packing" and "unpacking" the data items into and from a provided container, and leave the job of transporting the container (i.e. a produced RDA string) as a separate task, which would vary depending on your preference and requirement of the data transport method to be used.
 
-The Charian API is modeled for facilitating these analogical steps: for “packing”, a sender would use a provided container object to store and organize its data items, and serialize the container to a string using the API’s RDA encoding function, before sending the RDA-encoded string for transport; for “unpacking”, a receiver would deserialize and restore a container from a received RDA string using the RDA-decoding function from the API, and retrieve the stored data items from the container. 
+The Charian API is modeled for facilitating such operation: the Rda class is the container to be used for “packing” and "unpacking" data items; the IRda interface simply specifies that the ToRda() method is the place to implement the data-packing logic, and the FromRda() method is where you "unpack" (i.e. retrieve and consume) data items from a received container. The examples below demonstrate these operations.
 
-The following examples demonstrate some basic uses of Charian. The other good place for example usage of the API is the test cases which are included as part of the source code of this repo.
+PS. The other good place for examples of using the API is the test cases which are included as part of the source code of this repo.
 
 ### Demo #1 - Transporting primitive data items in an RDA string
 
@@ -424,17 +402,17 @@ For example, an RDA container packed by a Java program contains the properties o
 
 ## Final Thoughts
 
-UDT is a proposed universal, shareable data exchange system where exchanging data includes data packing and data transportation, using a language and system neutral data container. The data packing step allows a sender and a receiver to freely arrange the data content in the container and flexibly manage data conversion and exception-handling, and the data transportation step makes the system more economical as it allows uniformed container handling utilizing a wide range of generic tools and protocols. 
+UDT is a proposed universal, shareable data exchange system where exchanging data includes data packing and data transportation, using a language and system-neutral data container. The data packing step allows a sender and a receiver to freely arrange the data content in the container and flexibly manage data conversion and exception-handling, and the data transportation step makes the system more economical as it allows uniform container handling utilizing a wide range of generic tools and protocols.
 
-RDA is a text-encoding format developed for implementing the UDT data container in the form of text messaging. Unlike XML and JSON, RDA is schemaless and has a storage space of a multidimensional array, which has a recurring nature. 
+RDA is a text-encoding format developed for implementing the UDT data container in the form of text messaging. Unlike XML and JSON, RDA is schemaless and has a storage space of a multidimensional array, which has a recurring nature.
 
-Charian is an RDA-encoding API that is modeled around the UDT data-packing process. It includes features A client can   Data packing using Charian utilizes a container object from the API that can store arbitrarily complex data and also can be converted to and from a string. And by converting the data to string, Charian allows low-cost, easy-to-implement cross-program data exchange using the most common communication protocols and data-processing tools. 
+Charian is an RDA-encoding API that is modeled around the UDT data-packing process. It includes features A client can   Data packing using Charian utilizes a container object from the API that can store arbitrarily complex data and also can be converted to and from a string. And by converting the data to string, Charian allows low-cost, easy-to-implement cross-program data exchange using the most common communication protocols and data-processing tools.
 
 ## License and Contact
 
-* Charian is Licensed under GPL -v3
+* Charian is licensed under GPL -v3
 
-* You may contact the Charian's developer by email - contact@foldda.com
+* You may contact Charian's developer by email - contact@foldda.com
 
 ## Links
 
