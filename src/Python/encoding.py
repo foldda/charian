@@ -1,6 +1,6 @@
 # Copyright (c) 2022 Foldda Pty Ltd
-# Licensed under the MIT License -
-# https://github.com/foldda/rda/blob/main/LICENSE
+# Licensed under the GPL License V3 -
+# https://github.com/foldda/charian/blob/main/LICENSE
 
 from typing import List, Optional
 
