@@ -1,3 +1,7 @@
+# Copyright (c) 2022 Foldda Pty Ltd
+# Licensed under the GPL License V3 -
+# https://github.com/foldda/charian/blob/main/LICENSE
+
 from __future__ import annotations
 from enum import Enum
 from typing import List, Optional

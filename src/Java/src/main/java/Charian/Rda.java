@@ -1,8 +1,8 @@
-// Copyright (c) 2020 Michael Chen
-// Licensed under the MIT License -
-// https://github.com/foldda/rda/blob/main/LICENSE
+// Copyright (c) 2022 Foldda Pty Ltd
+// Licensed under the GPL License -
+// https://github.com/foldda/charian/blob/main/LICENSE
 
-package UniversalDataTransport;
+package Charian;
 
 import java.util.ArrayList;
 import java.util.List;
