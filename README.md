@@ -1,26 +1,4 @@
-
-<!--- MARKDOWN LINKS & IMAGES
-[# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
---->
-<!--- https://www.markdownguide.org/basic-syntax/#reference-style-links --->
-[contributors-shield]: https://img.shields.io/github/contributors/foldda/charian.svg?style=for-the-badge
-[contributors-url]: https://github.com/foldda/charian/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/foldda/charian.svg?style=for-the-badge
-[forks-url]: https://github.com/foldda/charian/network/members
-[stars-shield]: https://img.shields.io/github/stars/foldda/charian.svg?style=for-the-badge
-[stars-url]: https://github.com/foldda/charian/stargazers
-[issues-shield]: https://img.shields.io/github/issues/foldda/charian.svg?style=for-the-badge
-[issues-url]: https://github.com/foldda/charian/issues
-[license-shield]: https://img.shields.io/github/license/foldda/charian.svg?style=for-the-badge
-[license-url]: https://github.com/foldda/charian/blob/master/LICENSE.txt
-[product-screenshot]: images/screenshot.png
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** these use markdown "reference style" links defined above
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
+<!--- PROJECT SHIELDS --->
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -36,6 +14,42 @@
 > *Charian is a general-purpose data encoding API that uses the new, schemaless RDA format[^1] in its encoding. Structured data encoded in an RDA string can be transported using generic, non-proprietary protocols and methods, and be exchanged freely between independent programs without using middleware.*
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
+
+<!--- TABLE OF CONTENTS --->
+# Table of Contents
+1. [About Charian]()
+    - [What's in the API?]()
+    - [How does it work?]()
+2. [Getting Started]()
+    - [Setup]()
+    - [Example #1 - Transporting primitive data items in an RDA string]()
+    - [Example #2 - Serializing a simple composite data object]()
+    - [Example #3 - Serializing a complex object with nested classes]()
+    - [More ideas]()
+3. [License, Etc.]()
+4. [Postface: The Big Picture]()
+    - [The problem - schema-bound data exchange]()
+    - [The idea - Universal Data Transport]()
+    - [The challenge - implementing UDT]()
+    - [The invention - RDA encoding]()
+    - [The product - Charian]()
+
+# About Charian
+## What’s in the API?
+## How does it work?
+# Getting Started
+## Setup
+## Example #1 - Transporting primitive data items in an RDA string
+## Example #2 - Serializing a simple composite data object
+## Example #3 - Serializing a complex object with nested classes
+## More ideas
+# License, Etc.
+# Postface: The Big Picture
+## The problem - schema-bound data exchange
+## The idea - Universal Data Transport
+## The challenge - implementing UDT
+## The invention - RDA encoding
+## The product - Charian
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
@@ -419,6 +433,23 @@ Charian is an RDA-encoding API that is modeled around the UDT data-packing proce
 * [Project Wiki] (coming soon)
 
 * [FAQ] (coming soon)
+* 
+
+<!--- MARKDOWN LINKS & IMAGES
+[# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
+--->
+<!--- https://www.markdownguide.org/basic-syntax/#reference-style-links --->
+[contributors-shield]: https://img.shields.io/github/contributors/foldda/charian.svg?style=for-the-badge
+[contributors-url]: https://github.com/foldda/charian/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/foldda/charian.svg?style=for-the-badge
+[forks-url]: https://github.com/foldda/charian/network/members
+[stars-shield]: https://img.shields.io/github/stars/foldda/charian.svg?style=for-the-badge
+[stars-url]: https://github.com/foldda/charian/stargazers
+[issues-shield]: https://img.shields.io/github/issues/foldda/charian.svg?style=for-the-badge
+[issues-url]: https://github.com/foldda/charian/issues
+[license-shield]: https://img.shields.io/github/license/foldda/charian.svg?style=for-the-badge
+[license-url]: https://github.com/foldda/charian/blob/master/LICENSE.txt
+[product-screenshot]: images/screenshot.png
 
 <END>
 
