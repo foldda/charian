@@ -17,22 +17,17 @@
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
-1. [About Charian]()
-    - [What's in the API?]()
-    - [How does it work?]()
-2. [Getting Started]()
-    - [Setup]()
-    - [Example #1 - Transporting primitive data items in an RDA string]()
-    - [Example #2 - Serializing a simple composite data object]()
-    - [Example #3 - Serializing a complex object with nested classes]()
-    - [More ideas]()
-3. [License, Etc.]()
-4. [Postface: The Big Picture]()
-    - [The problem - schema-bound data exchange]()
-    - [The idea - Universal Data Transport]()
-    - [The challenge - implementing UDT]()
-    - [The invention - RDA encoding]()
-    - [The product - Charian]()
+1. [About Charian](https://github.com/foldda/charian/tree/doco#about-charian)
+    - [What's in the API?](https://github.com/foldda/charian/tree/doco#whats-in-the-api)
+    - [How does it work?](https://github.com/foldda/charian/tree/doco#how-does-it-work)
+2. [Getting Started](https://github.com/foldda/charian/tree/doco#getting-started)
+    - [Setup](https://github.com/foldda/charian/tree/doco#setup)
+    - [Example #1 - Transporting primitive data items in an RDA string](https://github.com/foldda/charian/tree/doco#example-1---transporting-primitive-data-items-in-an-rda-string)
+    - [Example #2 - Serializing a simple composite data object](https://github.com/foldda/charian/tree/doco#example-2---serializing-a-simple-composite-data-object)
+    - [Example #3 - Serializing a complex object with nested classes](https://github.com/foldda/charian/tree/doco#example-3---serializing-a-complex-object-with-nested-classes)
+    - [More ideas](https://github.com/foldda/charian/tree/doco#more-ideas)
+3. [License, Etc.](https://github.com/foldda/charian/tree/doco#license-etc)
+4. [Postface: The Big Picture](https://github.com/foldda/charian/tree/doco#postface-the-big-picture)
 
 # About Charian
 ## What’s in the API?
