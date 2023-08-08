@@ -30,8 +30,63 @@
 4. [Postface: The Big Picture](https://github.com/foldda/charian/tree/doco#postface-the-big-picture)
 
 # About Charian
+Charian (pron. /ka-ri-en/) is a data encoding API for "storing" any complex structured data in a text string. Encoding with Charian does not require establishing a predefined data model (aka. a schema), so the process is very simple and straightforward.
+
+Available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java), Charian can be used for implementing -
+
+- **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
+- **Distributed computing** - for, as a hack, passing any complex data structure as a "string parameter" in a remote call;
+- **Systems integration** - for exchanging data between independent programs without using a dedicated middleware;
+- **ETL solutions** - for transforming and transferring data of various data models through simple programming.
+
+Charian can also be used for implementing object serialization in distributed object-oriented programs. Compared to the other object serialization systems and methods, Charien's schema-less, one-size-fits-all approach has many benefits including being -
+
+- **Flexible**: it does not impose or depend on a fixed schema, and it can be used in programs with different or evolving data models;
+- **Minimal and compact**: the API has one class and one interface, written in around 800 lines of code, with no 3rd-party dependency;
+- **Easy to use**: Charian is "one size fits all" - it has no settings that require configuration;
+- **Universal**: Charian-serialized objects can be exchanged cross-application, cross-language, and cross-platform[^2].
+
+[^2]: Subject to RDA encoder and parser availability for the language and the platform.
+
 ## What’s in the API?
+
+The **Rda class** and the **IRda interface** from the API are implemented with methods and properties for UDT-oriented operations[^6], and from a client's perspective, it only needs to deal with a simple, easy-to-access storage space, which is also serializable, through the API. A Charian client does not have to know or to deal with the RDA encoding at all.
+
+[^6]: The description and examples are given in C# syntax, but the illustrated methods can be easily translated to the Python and Java implementations which are also provided in this repo, and have identical functions.
+
+**Class Rda**
+
+The Rda class implements properties and methods that are modeled as a "container" object which internally has a multidimensional storage space. Locations in the multidimensional space are accessible via integer-based indexes addresses. The Rda class provides the following Getter/Setter methods for a client to store and retrieve data items at the locations inside the space:
+```
+public void SetValue(string value, int[] address)
+public string GetValue(int[] address)
+public void SetRda(Rda rda, int[] address)
+public Rda GetRda(int[] address)
+```
+The internal multidimensional space automatically expands to the required levels of dimension and the required size of a dimension when a location is accessed by a provided address, meaning from a client's perspective, the storage space is unlimited, and any addressed location in the space is always valid and available.
+
+Note the API indicates only two "types of data" can be stored inside an Rda container - it must be either a 'string' value or another Rda container object. This is because Charian assumes all primitive data, like an integer or a date, can be converted to a string; and all composite data, like a class or an array, can be converted to an Rda object (as illustrated below, through recursion).
+
+The Rda class also implements the following serialization and deserialization methods that covert itself to and from an RDA-encoded string:
+```
+public string ToString()
+public static Rda Parse(string rdaEncodedString)
+```
+Data exchange using the Rda class typically would be in this sequence: the sender would 1) construct an Rda container object, 2) use the Setter methods to “pack” its data items that require transfer into the container, and 3) use the ToString method to convert the container to an RDA string which will be sent to the receiver. When the receiver has received the RDA string, it would 4) use the Parse method to convert the string back to an Rda container, then 5) use the Getter methods to "unpack" and consume the data items stored in the container.
+
+**Interface IRda**
+
+The IRda interface has defined two methods:
+```
+Rda ToRda()
+IRda FromRda(Rda rda)
+```
+These two methods, if implemented by a class, tell a client how the class can be serialized to and deserialized from an Rda object. In data-packing terms, the ToRda() method is where to "pack" data items into a Rda container; and the FromRda() method is where to "unpack" data items from a Rda container (and to consume the retrieved data items).
+
+The examples in the following section demonstrate how the Rda class and the IRda interface are used in storing and transporting data in UDT.
 ## How does it work?
+
+
 # Getting Started
 ## Setup
 ## Example #1 - Transporting primitive data items in an RDA string
