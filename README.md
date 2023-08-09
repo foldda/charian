@@ -17,17 +17,17 @@
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
-1. [About Charian](https://github.com/foldda/charian/tree/doco#about-charian)
-    - [What's in the API?](https://github.com/foldda/charian/tree/doco#whats-in-the-api)
-    - [How does it work?](https://github.com/foldda/charian/tree/doco#how-does-it-work)
-2. [Getting Started](https://github.com/foldda/charian/tree/doco#getting-started)
-    - [Setup](https://github.com/foldda/charian/tree/doco#setup)
-    - [Example #1 - Transporting primitive data items in an RDA string](https://github.com/foldda/charian/tree/doco#example-1---transporting-primitive-data-items-in-an-rda-string)
-    - [Example #2 - Serializing a simple composite data object](https://github.com/foldda/charian/tree/doco#example-2---serializing-a-simple-composite-data-object)
-    - [Example #3 - Serializing a complex object with nested classes](https://github.com/foldda/charian/tree/doco#example-3---serializing-a-complex-object-with-nested-classes)
-    - [More ideas](https://github.com/foldda/charian/tree/doco#more-ideas)
-3. [License, Etc.](https://github.com/foldda/charian/tree/doco#license-etc)
-4. [Postface: The Big Picture](https://github.com/foldda/charian/tree/doco#postface-the-big-picture)
+1. [About Charian](#about-charian)
+    - [Inside the API](#inside-the-api)
+    - [How does it work?](#how-does-it-work)
+2. [Getting Started](#getting-started)
+    - [Setup](#setup)
+    - [Example #1 - Transporting primitive data items in an RDA string](#example-1---transporting-primitive-data-items-in-an-rda-string)
+    - [Example #2 - Serializing a simple composite data object](#example-2---serializing-a-simple-composite-data-object)
+    - [Example #3 - Serializing a complex object with nested classes](#example-3---serializing-a-complex-object-with-nested-classes)
+    - [More ideas](#more-ideas)
+3. [License, Etc.](#license-etc)
+4. [Postface - The Big Picture](#postface---the-big-picture)
 
 # About Charian
 Charian (pron. /ka-ri-en/) is a data encoding API for "storing" any complex structured data in a text string. Encoding with Charian does not require establishing a predefined data model (aka. a schema), so the process is very simple and straightforward.
@@ -48,7 +48,7 @@ Charian can also be used for implementing object serialization in distributed ob
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-## What’s in the API?
+## Inside the API?
 
 The **Rda class** and the **IRda interface** from the API are implemented with methods and properties for UDT-oriented operations[^6], and from a client's perspective, it only needs to deal with a simple, easy-to-access storage space, which is also serializable, through the API. A Charian client does not have to know or to deal with the RDA encoding at all.
 
@@ -95,11 +95,49 @@ The examples in the following section demonstrate how the Rda class and the IRda
 ## More ideas
 # License, Etc.
 # Postface: The Big Picture
+
+Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separated computer environments, exchanging data between them is normally complicated and requires extra effort. 
+
 ## The problem - schema-bound data exchange
-## The idea - Universal Data Transport
-## The challenge - implementing UDT
-## The invention - RDA encoding
+
+ The conventional approach to cross-program data exchange typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. bound by a schema) for the data communication.
+
+<div align=“center”>
+<img src=“img/Pre-Charian-data-transport.png” width=“550” align=“center”>
+</div>
+
+Developing a dedicated connection for every application that has a different data model is not cost-effective because of the duplicated effort and the high costs. The cost of managing data exchange over schema-based connections can also be significant, because the connected programs become “tightly coupled” by these connections. If one of the programs has evolved and the data model needs to be changed, a developped solution often requires significent modification or using a dedicated middleware system to mediate the data model transformation.
+
+In an anology, building adhoc schema-bound data exchange solution is like sending a parcel to someone without using the Post Office, but managing everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
+
+<div align=“center”>
+<img src=“img/Pre-Post-office-system.png” width=“470” align=“center”>
+</div>
+
+## The solution and the challenge - universal data transport
+
+As with the Post Office, the reason it’s convenient and can save money is because it provides a standard parcel processing service that covers the different requirements of all of its clients and it uses a shared common logistics and freight system helps cut down the cost.
+
+<div align=“center”>
+<img src=“img/Post-office-system.png” width=“550” align=“center”>
+</div>
+
+Universal Data Transport, or UDT, is a proposed “post-office-like” data transport service aiming for the benefit from the same approach - that is, by creating and sharing a common, generic data transport service to be shared by all programs that require exchanging data, we can avoid building ad-hoc dedicated data-exchange connections to make the operation simpler and also save money.
+
+<div align=“center”>
+<img src=“img/Charian-data-transport.png” width=“550”>
+</div>
+
+One “difficulty” the Post Office had was to provide a single consistent service that can cater for the different requirements from all it clients, and the answer is the use of standardized packaging. Packaging loose items in a box also allows modularized, more effective transportation that can be carried out by a general courier company. Thus a key design to UDT’s design is to have a data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
+
+Also, UDT is most suitable to be implemented as a messaging technology, where the data container is an encoded text message. That’s because through data encoding, a text message can be used as a container to store data, and text (i.e. ‘string’) is one of the most supported data types by major computer systems and programming languages. Data stored in a “string container” can be readily processed using generic tools and protocols, without the need for any custom proprietary treatment. For example, it can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. Thus the challenge to implementing UDT is to have a text encoding format that supports encoding any data into a string.
+
+Unfortunately, popular data formats, such as XML and JSON and CSV, are not suitable for encoding the UDT container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be “generic and universal” that we want for accomandating _any data_. So our quest for a suitable encoding has led to the development of RDA - a new schemaless data format.
+
+## The (new) technology - RDA encoding
 ## The product - Charian
+
+Charian is not just another data encoder or object serializer. By making cross-program data exchange much simpler and more flexible, programs and devices can connect to each other and work collaboratively, and play-part in an eco-system of distributed solutions that leverage the technology.
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
