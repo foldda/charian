@@ -86,14 +86,14 @@ A client object implements this interface to indicate that itself can be convert
 
 ## How does it work
 
-Imagine you're moving house and have lots of household items to be moved to the new place, you would first package these items rinto boxes before the courier company come and pick them up, and once the boxes are delivered to the new place, you would upack the boxes and retrive the items and place them to their designated places. 
+Imagine you're moving house and have lots of household items to be moved to the new place, you would first package these items into boxes before the courier company come and pick them up, and once the boxes are delivered to the new place, you would unpack the boxes and retrieve the items and place them to their designated places. 
 
 Exchanging data using Charian is easy to understand if we compare it to moving house, except in this case we are packing and moving data using an Rda container (in place of a 'box'). In such a process: a data-sending client would -
 1) construct an Rda container object, 
 2) use the Setter methods to “pack” its data items that require transfer into the container, and then 
 3) use the ToString method to convert the container to an RDA string. 
 
-Afterwards, a "courier process" takes over transporting the string "data container", which can be saving the string to a file or to a database table, or sending the string to a network destination via a suitable network protocol. 
+Afterward, a "courier process" takes over transporting the string "data container", which can be saving the string to a file or to a database table, or sending the string to a network destination via a suitable network protocol. 
 
 A data-receiving client, upon having received the RDA string, would -
 4) use the Parse method to convert the string back to an Rda container, then 
@@ -106,7 +106,7 @@ For object serialization, a class would implement the IRda interface, where in t
 Implementation of object serialization through using the IRda interface is demonstrated in Example #2 and Example #3 below. 
 
 # Getting Started
-It is recommanded to use Charian by including the provided source code in your project - that is, use the Rda class and the IRda interface as a native part of your project. The benefit is less "package dependency" meaning simpler build process and product distribution.
+It is recommended to use Charian by including the provided source code in your project - that is, use the Rda class and the IRda interface as a native part of your project. The benefit is less "package dependency" meaning simpler build process and product distribution.
 
 # Examples
 Here are some practical examples illustrating the uses of the API.
@@ -157,9 +157,9 @@ Here are some practical examples illustrating the uses of the API.
     }
 ```
 
-Takeaway: The sender and the receiver are expected to know where (placement) and what (types) the data items are, and handle exception if the expectation is not met.
+**Takeaway**: The sender and the receiver are expected to know where (placement) and what (types) the data items are, and handle exception if the expectation is not met.
 
-Takeaway: Rda container has no schema and does not enforce data validation. Primitive type data are stored as strings, the client is responsible for type conversion and the associated error handling.
+**Takeaway**: Rda container has no schema and does not enforce data validation. Primitive type data are stored as strings, the client is responsible for type conversion and the associated error handling.
 
 ## Serializing a simple composite data object
 
@@ -215,7 +215,7 @@ Takeaway: Rda container has no schema and does not enforce data validation. Prim
 
 ```
 
-Takeaway: The IRda interface's ToRda() and FromRda() methods are the “standard” places of a class for packing and unpacking data.
+**Takeaway**: The IRda interface's ToRda() and FromRda() methods are the “standard” places of a class for packing and unpacking data.
 
 ## Serializing a complex object with nested classes
 
@@ -301,17 +301,17 @@ Takeaway: The IRda interface's ToRda() and FromRda() methods are the “standard
 
 ```
 
-Takeaway: Rda container has ‘unlimited space’ and supports recursion, which can accommodate the complexity of an evolving object to be extended indefinitely.
+**Takeaway**: Rda container has ‘unlimited space’ and supports recursion, which can accommodate the complexity of an evolving object to be extended indefinitely.
 
 ## Other uses
 
-**Maintain compatibility** As illustrated in the above examples, the ComplexPerson object extends the Person object while remaining backward compatible. This means you can have a connected network where some programs work with the Person object, and some other programs have evolved and use the ComplexPerson object, and these programs will remain compatible communicating with each other in the network.
+**Maintain compatibility** As illustrated in the above examples, the ComplexPerson object extends the Person object while remaining backward compatible. This means you can have a connected network where some programs work with the Person object, and some other programs have evolved and use the ComplexPerson object, and these programs will remain compatible in communicating with each other in the network.
 
 **Cross-language data exchange** Because the schemaless RDA string is language and system neutral, it can be used as a data container for flexibly transferring data cross-language and cross-platform. Without having a fixed data model, the connected programs can flexibly place and use data items stored in an RDA container during the data packing and unpacking, and to be able to flexibly handle the data conversions and any associated exceptions, in these processes.
 
 For example, an RDA container packed by a Java program contains the properties of a Java 'Person', and these properties can be unpacked in a Python program and be used for constructing say a Python 'User' object, which may or may not have exactly the same properties as the Java Person object. If anything unexpected happens, such as an item is missing, or a data conversion has failed, the Python program can put exception handling in its 'unpacking' process e.g. sending out an alert or substituting the missing item with a default value.
 
-**Maintaining rich and diverse data sets in parallel** Take advantage of RDA's unrestricted and recursive feature. Each Rda data item stored in a Rda container is itself an isolated container. So multiple datasets or different versions of the same dataset can be stored or sent in one container "side-by-side", and a receiver can intelligently test and pick the correct verison to use.
+**Maintaining rich and diverse data sets in parallel** Take advantage of RDA's unrestricted and recursive feature. Each Rda data item stored in a Rda container is itself an isolated container. So multiple datasets or different versions of the same dataset can be stored or sent in one container "side-by-side", and a receiver can intelligently test and pick the correct version to use.
 
 # License, Etc.
 
@@ -337,17 +337,17 @@ Independent programs, such as a browser-hosted app and a Web server, or an IoT d
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
 </div>
 
-Developing a dedicated connection for every application that has a different data model is not cost-effective because of the duplicated effort and the high costs. The cost of managing data exchange over schema-based connections can also be significant, because the connected programs become “tightly coupled” by these connections. If one of the programs has evolved and the data model needs to be changed, a developped solution often requires significant modification or using a dedicated middleware system to mediate the data model transformation.
+Developing a dedicated connection for every application that has a different data model is not cost-effective because of the duplicated effort and the high costs. The cost of managing data exchange over schema-based connections can also be significant because the connected programs become “tightly coupled” by these connections. If one of the programs has evolved and the data model needs to be changed, a developed solution often requires significant modification or using a dedicated middleware system to mediate the data model transformation.
 
 In an analogy, building ad-hoc schema-bound data exchange solutions is like sending parcels to people without using the Post Office, but doing everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
 
-<div align=“center”>
-<img src=6'img/Pre-Post-office-system.png' width='470' align='center'>
+<div align='center'>
+<img src='img/Pre-Post-office-system.png' width='470' align='center'>
 </div>
 
 ## The solution and the challenge - universal data transport
 
-As with the Post Office, the reason it’s convenient and can save money is because it provides a standard parcel processing service that covers the different requirements of all of its clients and it uses a shared common logistics and freight system helps cut down the cost.
+As with the Post Office, the reason it’s convenient and can save money is that it provides a standard parcel processing service that covers the different requirements of all of its clients and it uses a shared common logistics and freight system helps cut down the cost.
 
 <div align='center'>
 <img src='img/Post-office-system.png' width='550' align='center'>
