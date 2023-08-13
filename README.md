@@ -11,17 +11,17 @@
 <img src="img/Charian-logo-orange-text.png" width="250" align="center">
 </div>
 
-> *Charian is a general-purpose data encoding API that uses the new, schemaless RDA format[^1] in its encoding. Structured data encoded in an RDA string can be transported using generic, non-proprietary protocols and methods, and be exchanged freely between independent programs without using middleware.*
+> *For easily exchanging arbitrary structured data between independent programs, with minimal overhead and complexity.*
 
-[^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
+
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
-1. [About Charian](#about-charian)
+1. [What Is Charian](#what-is-charian)
     - [Inside the API](#inside-the-api)
     - [How does it work](#how-does-it-work)
 2. [Getting Started](#getting-started)
-3. [Examples](#examples)
+3. [How-to](#how-to)
     - [Transporting primitive data items in an RDA string](#transporting-primitive-data-items-in-an-rda-string)
     - [Serializing a simple composite data object](#serializing-a-simple-composite-data-object)
     - [Serializing a complex object with nested classes](#serializing-a-complex-object-with-nested-classes)
@@ -29,20 +29,21 @@
 4. [License, Etc.](#license-etc)
 5. [Afterword: The Big Picture](#afterword-the-big-picture)
 
-# About Charian
-Charian (pron. /ka-ri-en/) is a data encoding API for "storing" any complex structured data in a text string. Encoding with Charian does not require pre-establishing a fixed data model (aka. a schema), which makes it simple and easy to use. 
+# What Is Charian
 
-Charian can be used for implementing -
+Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a formatted text string for easy data transportation. Charian can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
 - **Distributed computing** - for, as a hack, passing any complex data structure as a "string parameter" in a remote call;
-- **Systems integration** - for exchanging data between independent programs without using a dedicated middleware;
+- **Systems integration** - for exchanging data between independent programs simly and effciently;
 - **ETL solutions** - for transforming and transferring data of various data models through simple programming.
 
-Charian can also be used for implementing object serialization in distributed object-oriented programs. Compared to the other object serialization systems and methods, Charien's schema-less, one-size-fits-all approach has many benefits including being -
+Charian uses the schemaless RDA format[^1] in its encoding, and is designed to be generic and general-purpose. Charian allows simple and straightforward cross-program data exchange using only conventional methods and generic protocols, instead of using dedicated middleware or custom pipelines that requires establishing and maintaining a schema. Compared to the other data serialization systems and methods, Charian's simple, one-size-fits-all design has many advantages including being -
+
+[^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
 - **Flexible**: it is designed to be generic and fit any data model, ideal for evolving and dynamic programs;
-- **Minimal and compact**: the API is written with minimal code (around 800 lines of code), with no 3rd-party dependency;
+- **Minitual and compact**: the API only requires minimal code (around 800 lines) to implement, with no 3rd-party dependency;
 - **Easy to use**: Charian is "one size fits all" - there is no settings or configurations;
 - **Language and framework independent**: Charian-serialized objects can be exchanged cross-language and cross-platform[^2].
 
@@ -50,66 +51,64 @@ Charian can also be used for implementing object serialization in distributed ob
 
 ## Inside the API
 
-Charian is available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. C# syntax is used below to illustrate the content and the example usage of the API, which is also applicable to the other languages as they follow the same design and have near-identical structure and naming convention. 
+Charian is available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. We use C# syntax below to illustrate the content and the usage of the API, which is also applicable to the other language versions as they're clones with the same design and near-identical structure and naming convention. 
 
 **Class Rda**
 
-The Rda class is modeled as a "container" object. Internally it provides a multidimensional storage space where a storage location in the space is addressed by an integer-array index. A client can use the following Getter/Setter methods for accessing a data item stored at a given address[^3]:
+The Rda class is modeled as a "container" object which internally has a multidimensional storage space. Every storage location in the space can be addressed by a multidimensional index made by an integer array[^3]. A client uses the following Getter/Setter methods for accessing a data item for a given address:
 
-[^3]: The integer array address must contain only non-negative index values, and has a length limit of 40.
+[^3]: The index has a dimension limit of 40 in the current implementation, and the index value for each dimension must be a non-negative integer.
 ```
-public void SetValue(string value, int[] address)
-public string GetValue(int[] address)
-public void SetRda(Rda rda, int[] address)
-public Rda GetRda(int[] address)
+public void SetValue(string value, int[] address)  /* save a string value at the addressed location */
+public string GetValue(int[] address)  /* retrieve a string value from the addressed location */
+public void SetRda(Rda rda, int[] address)  /* save an Rda object at the addressed location */
+public Rda GetRda(int[] address)  /* retrieve an Rda object from the addressed location */
 ```
 
 Note only two "data types" are supported by an Rda container - a data item can only be either a string value or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string; and all composite data, like a class or an array, can be converted to an Rda object (through recursion as illustrated in Example #3 below).
 
-An Rda container object is also "serializable". The Rda class implements the following methods that allows itself to be coverted to and from an encoded text string:
+An Rda container object is also "serializable". The Rda class implements the following methods that allows itself to be coverted to and from an encoded text string in [the RDA format](#the-invention---rda-encoding):
 
 ```
-public string ToString()
-public static Rda Parse(string rdaEncodedString)
+public string ToString()  /* convert this Rda container object to an RDA string */
+public static Rda Parse(string rdaEncodedString) /* decode the RDA string and return an Rda container object  */
 ```
-
-The produced string is encoded in a special text format called RDA, which is a delimited data format similar to the more popular CSV format, but is enhanced to support encoding multidimensional data.
 
 **Interface IRda**
 
-The IRda interface has defined two methods:
+The IRda interface contaiuns definition of two methods:
 ```
-Rda ToRda()
-IRda FromRda(Rda rda)
+Rda ToRda()   /* returns this object's properties and state in an Rda container object */
+IRda FromRda(Rda rda) /* restores this object's properties and state from values in the Rda container object */
 ```
-A client object implements this interface to indicate that itself can be converted to and from an Rda object, which can be in turn converted to and from an RDA-encoded string.
+A client object implements this interface to indicate that itself can be converted to and from an Rda object, which in turn can be converted to an RDA-encoded string. In other words, a class implementing the IRda interface to make itself "serializable".
 
 ## How does it work
 
-Imagine you're moving house and have lots of household items to be moved to the new place, you would first package these items into boxes before the courier company come and pick them up, and once the boxes are delivered to the new place, you would unpack the boxes and retrieve the items and place them to their designated places. 
+Imagine you're moving house and have various household items to be moved to a new place, you would first package these items into boxes before handing them over to a courier company which will manage the transportation, and once the boxes are delivered to the new place, you would unpack the boxes and retrieve the items and place them to their designated places. 
 
-Exchanging data using Charian is easy to understand if we compare it to moving house, except in this case we are packing and moving data using an Rda container (in place of a 'box'). In such a process: a data-sending client would -
-1) construct an Rda container object, 
-2) use the Setter methods to “pack” its data items that require transfer into the container, and then 
+Exchanging data using Charian is easy to understand because the process is simplar to moving house, except in this case we are packing and moving data using an Rda container (in place of a 'box'). In such case, a data-sending client would -
+1) obtain an Rda container object, 
+2) use the Setter methods to “pack” data items that require transfer into the container, and then 
 3) use the ToString method to convert the container to an RDA string. 
 
-Afterward, a "courier process" takes over transporting the string "data container", which can be saving the string to a file or to a database table, or sending the string to a network destination via a suitable network protocol. 
+Then, a data "courier" process takes over transporting the data container which is in the form of a string. Such a process can be saving the string to a file or to a database table, or sending it to a network destination via a network protocol. 
 
 A data-receiving client, upon having received the RDA string, would -
-4) use the Parse method to convert the string back to an Rda container, then 
-5) use the Getter methods to "unpack" and consume the data items stored in the container. 
+1) use the Parse method to convert the string back to an Rda container, and 
+2) use the Getter methods to "unpack" and consume the data items from the container. 
 
-Storing and transporting arbitrary multiple data items using the Rda class is demonstrated in Example #1 below.
+For object serialization, a class would implement the IRda interface: in the ToRda method it would specify the data-packing logic that stores the class' properties and the state at designated places inside an Rda container; and in the FromRda method it'd specify the logic of unpacking a received Rda container, and using the received values to restore the class properties to make the object to the intended state. 
 
-For object serialization, a class would implement the IRda interface, where in the ToRda method it would specify the data-packing logic that "packs the essential properties of the class it self and places inside an Rda container"; and in the FromRda method it'd specify the logic of unpacking a received Rda container, and using the received values to restore the class properties to make the object to the intended state. 
-
-Implementation of object serialization through using the IRda interface is demonstrated in Example #2 and Example #3 below. 
+Examples of using the Rda class and IRda interface for storing and transporting arbitrary multiple data items in an RDA string, and for implementing object serialization, are demonstrated in [the "How-to" section below](#how---to).
 
 # Getting Started
-It is recommended to use Charian by including the provided source code in your project - that is, use the Rda class and the IRda interface as a native part of your project. The benefit is less "package dependency" meaning simpler build process and product distribution.
+You can use Charian's Rda class and IRda interface "natively" as if they are part of your own code. To do so, simply include the provided source code in your project, and depending on the language, the compiler would also require adding a reference to the API package/library in your code[^4]. Charian has no third-party dependency, so it can be built and distributed as part of your project with no extra setup requirement.
 
-# Examples
-Here are some practical examples illustrating the uses of the API.
+[^4]: You can use the test cases provided in this repos as examples of using Charian.
+
+# How-to
+Here are some practical code examples illustrating some typical uses of the API.
 
 ## Transporting primitive data items in an RDA string
 ```c#
@@ -215,7 +214,7 @@ Here are some practical examples illustrating the uses of the API.
 
 ```
 
-**Takeaway**: The IRda interface's ToRda() and FromRda() methods are the “standard” places of a class for packing and unpacking data.
+**Takeaway**: The IRda interface's ToRda() and FromRda() methods are the places for a class packing and unpacking its essential properties and state data that require to be serialized for transportation.
 
 ## Serializing a complex object with nested classes
 
@@ -301,13 +300,13 @@ Here are some practical examples illustrating the uses of the API.
 
 ```
 
-**Takeaway**: Rda container has ‘unlimited space’ and supports recursion, which can accommodate the complexity of an evolving object to be extended indefinitely.
+**Takeaway**: Rda container offers an ‘unlimited space’ and supports recursion, which can elegently accommodate the complex data of an evolving object that requires extension.
 
 ## Other uses
 
 **Maintain compatibility** As illustrated in the above examples, the ComplexPerson object extends the Person object while remaining backward compatible. This means you can have a connected network where some programs work with the Person object, and some other programs have evolved and use the ComplexPerson object, and these programs will remain compatible in communicating with each other in the network.
 
-**Cross-language data exchange** Because the schemaless RDA string is language and system neutral, it can be used as a data container for flexibly transferring data cross-language and cross-platform. Without having a fixed data model, the connected programs can flexibly place and use data items stored in an RDA container during the data packing and unpacking, and to be able to flexibly handle the data conversions and any associated exceptions, in these processes.
+**Cross-language data exchange** Because the schemaless RDA string is language and system neutral, it can be used as a data container for flexibly transferring data cross-language and cross-platform. The connected programs can flexibly deposite and consume data items stored in an RDA container without being constrained by a fixed data model, and be able to flexibly handle the data conversions and any associated exceptions, in the designated data-packing and unpacking operations.
 
 For example, an RDA container packed by a Java program contains the properties of a Java 'Person', and these properties can be unpacked in a Python program and be used for constructing say a Python 'User' object, which may or may not have exactly the same properties as the Java Person object. If anything unexpected happens, such as an item is missing, or a data conversion has failed, the Python program can put exception handling in its 'unpacking' process e.g. sending out an alert or substituting the missing item with a default value.
 
@@ -327,11 +326,11 @@ For example, an RDA container packed by a Java program contains the properties o
 
 # Afterword: The Big Picture
 
-Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data between them is normally complicated and requires extra effort. 
+Here let's talk about why we need Charian and RDA whilst there are many XML/JSON-based data transport solutions that already exist.
 
 ## The problem - schema-bound data exchange
 
- The conventional approach to cross-program data exchange typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. bound by a schema) for the data communication.
+Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data between them is normally complicated and requires extra effort. The conventional approach to cross-program data exchange typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. bound by a schema) for the data communication.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
@@ -363,7 +362,7 @@ One “difficulty” the Post Office had was to provide a single consistent serv
 
 Also, UDT is most suitable to be implemented as a messaging technology, where the data container is an encoded text message. That’s because through data encoding, a text message can be used as a container to store data, and text (i.e. ‘string’) is one of the most supported data types by major computer systems and programming languages. Data stored in a “string container” can be readily processed using generic tools and protocols, without the need for any custom proprietary treatment. For example, it can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. Thus the challenge to implementing UDT is to have a text encoding format that supports encoding any data into a string.
 
-Unfortunately, popular data formats, such as XML and JSON and CSV, are not suitable for encoding the UDT container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be “generic and universal” that we want for accomandating _any data_. So our quest for a suitable encoding has led to the development of RDA - a new schemaless data format.
+Unfortunately, popular data formats, such as XML, JSON and CSV, are not suitable for encoding the UDT container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. So our quest for a suitable encoding has led to the development of RDA - a new schemaless data format.
 
 ## The invention - RDA encoding
 
@@ -382,7 +381,7 @@ Following the header, the remaining RDA string is the 'payload' section that con
 
 > The space from XML/JSON is like a wallet, where it has places specifically defined for holding cards, notes, and coins; whilst the space from RDA is like an enormous shelf, where you can place anything at anywhere in the unlimited space that is provided.
 
-RDA is specifically designed to avoid targetting a certain data model and having to define and maintain a schema. Such design is reflected by the structure of RDA's encoded storage space, the way of addressing a location in the space, and the supported data types[^5].  
+RDA is specifically designed to avoid targeting a certain data model and having to define and maintain a schema. Such design is reflected by the structure of RDA's encoded storage space, the way of addressing a location in the space, and the supported data types[^5].  
 
 [^5]: First, RDA has multi-dimensional array storage space that is dynamically expandable, that is, the size of each dimension and the number of dimensions can be increased or decreased as required, like an elastic bag. This is in contrast to the ‘fixed’ hierarchical space provided by schema-based encodings, like XML or JSON, which is restricted by a predefined data mode, like a rigid, fix-shaped box. Second, RDA uses integer-based indexes for addressing the storage locations in its multi-dimensional array storage space, which means, and combination of non-negative integers is a valid address referring to a valid storage location in the space. This is in contrast to XML and JSON, the address for accessing a storage location is a ‘path’ that has to be ‘validated’ against a pre-defined schema. Third, RDA assumes all data (of any type) can be 'expressed as a string' and a value stored at a location (referred as “a data's value expression”) can only be a string; whilst XML and JSON attempt to define and include every possible data types and a data values stored at a location must conform with what has been defined in the schema.
 
@@ -394,7 +393,7 @@ The **Rda class** and the **IRda interface** from the API are implemented with m
 
 [^6]: The description and examples are given in C# syntax, but the illustrated methods can be easily translated to the Python and Java implementations which are also provided in this repo, and have identical functions.
 
-Thus, Charian is not just another data encoder or object serializer. By making cross-program data exchange much simpler and more flexible, programs and devices can connect to each other and work collaboratively, and play-part in an eco-system of distributed solutions that leverage the technology.
+Thus, Charian is not just another data encoder or object serializer. By making cross-program data exchange much simpler and more flexible, programs and devices can connect to each other and work collaboratively. There can be an ecosystem of distributed solutions that only use Charian for simple and effective data communication.
 
 <!--- MARKDOWN LINKS & IMAGES
 [# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
