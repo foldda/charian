@@ -9,10 +9,9 @@
 
 <div align="center">
 <img src="img/Charian-logo-orange-text.png" width="250" align="center">
+
+**_"Exchanging arbitrary structured data between independent programs with minimal overhead and complexity."_**
 </div>
-
-> *For easily exchanging arbitrary structured data between independent programs, with minimal overhead and complexity.*
-
 
 
 <!--- TABLE OF CONTENTS --->
@@ -21,13 +20,13 @@
     - [Inside the API](#inside-the-api)
     - [How does it work](#how-does-it-work)
 2. [Getting Started](#getting-started)
-3. [How-to](#how-to)
-    - [Transporting primitive data items in an RDA string](#transporting-primitive-data-items-in-an-rda-string)
-    - [Serializing a simple composite data object](#serializing-a-simple-composite-data-object)
-    - [Serializing a complex object with nested classes](#serializing-a-complex-object-with-nested-classes)
+    - [Setup Charian](#setup-charian)
+    - [How-to: Transporting primitive data items in an RDA string](#how-to-transporting-primitive-data-items-in-an-rda-string)
+    - [How-to: Serializing a simple composite data object](#how-to-serializing-a-simple-composite-data-object)
+    - [How-to: Serializing a complex object with nested classes](#how-to-serializing-a-complex-object-with-nested-classes)
     - [Other uses](#other-uses)
-4. [License, Etc.](#license-etc)
-5. [Afterword: The Big Picture](#afterword-the-big-picture)
+3. [License, Etc.](#license-etc)
+4. [Afterword: The Big Picture](#afterword-the-big-picture)
 
 # What Is Charian
 
@@ -35,10 +34,10 @@ Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured d
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
 - **Distributed computing** - for, as a hack, passing any complex data structure as a "string parameter" in a remote call;
-- **Systems integration** - for exchanging data between independent programs simly and effciently;
+- **Systems integration** - for exchanging data between independent programs simply and effciently;
 - **ETL solutions** - for transforming and transferring data of various data models through simple programming.
 
-Charian uses the schemaless RDA format[^1] in its encoding, and is designed to be generic and general-purpose. Charian allows simple and straightforward cross-program data exchange using only conventional methods and generic protocols, instead of using dedicated middleware or custom pipelines that requires establishing and maintaining a schema. Compared to the other data serialization systems and methods, Charian's simple, one-size-fits-all design has many advantages including being -
+Charian uses the schemaless RDA format[^1] in its encoding and is designed to be generic and general-purpose. Instead of using dedicated middleware or custom pipelines that requires establishing and maintaining a schema, Charian allows simple and straightforward cross-program data exchange using only conventional methods and generic protocols. Compared to the other data serialization systems and methods, Charian's simple, one-size-fits-all design has many advantages including being -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
@@ -103,14 +102,13 @@ For object serialization, a class would implement the IRda interface: in the ToR
 Examples of using the Rda class and IRda interface for storing and transporting arbitrary multiple data items in an RDA string, and for implementing object serialization, are demonstrated in [the "How-to" section below](#how---to).
 
 # Getting Started
+Charian is very easy to use thanks to its simplicity.
+## Setup Charian
 You can use Charian's Rda class and IRda interface "natively" as if they are part of your own code. To do so, simply include the provided source code in your project, and depending on the language, the compiler would also require adding a reference to the API package/library in your code[^4]. Charian has no third-party dependency, so it can be built and distributed as part of your project with no extra setup requirement.
 
 [^4]: You can use the test cases provided in this repos as examples of using Charian.
 
-# How-to
-Here are some practical code examples illustrating some typical uses of the API.
-
-## Transporting primitive data items in an RDA string
+## How-to: Transporting primitive data items in an RDA string
 ```c#
     using Charian;
 
@@ -160,7 +158,7 @@ Here are some practical code examples illustrating some typical uses of the API.
 
 **Takeaway**: Rda container has no schema and does not enforce data validation. Primitive type data are stored as strings, the client is responsible for type conversion and the associated error handling.
 
-## Serializing a simple composite data object
+## How-to: Serializing a simple composite data object
 
 ```C#
     public class Person : IRda
@@ -216,7 +214,7 @@ Here are some practical code examples illustrating some typical uses of the API.
 
 **Takeaway**: The IRda interface's ToRda() and FromRda() methods are the places for a class packing and unpacking its essential properties and state data that require to be serialized for transportation.
 
-## Serializing a complex object with nested classes
+## How-to: Serializing a complex object with nested classes
 
 ```C#
     class Address : IRda
@@ -326,11 +324,11 @@ For example, an RDA container packed by a Java program contains the properties o
 
 # Afterword: The Big Picture
 
-Here let's talk about why we need Charian and RDA whilst there are many XML/JSON-based data transport solutions that already exist.
+Here let's talk about why we developed Charian and RDA whilst there are already many XML/JSON-based data transport solutions.
 
 ## The problem - schema-bound data exchange
 
-Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data between them is normally complicated and requires extra effort. The conventional approach to cross-program data exchange typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. bound by a schema) for the data communication.
+Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data between them is normally complicated and requires extra effort. The conventional approach to cross-program data exchange typically involves building an ad hoc, dedicated connection between the communicating parties, based on an ‘agreed’ data model (i.e. a schema).
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
