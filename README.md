@@ -24,9 +24,10 @@
     - [How-to: Transporting primitive data items in an RDA string](#how-to-transporting-primitive-data-items-in-an-rda-string)
     - [How-to: Serializing a simple composite data object](#how-to-serializing-a-simple-composite-data-object)
     - [How-to: Serializing a complex object with nested classes](#how-to-serializing-a-complex-object-with-nested-classes)
-    - [Other uses](#other-uses)
-3. [License, Etc.](#license-etc)
-4. [Afterword: The Big Picture](#afterword-the-big-picture)
+    - [How-to: Exception handling](#how-to-exception-handling)
+3. [Other uses](#other-uses)
+4. [License, Etc.](#license-etc)
+5. [Afterword: The Big Picture](#afterword-the-big-picture)
 
 # What Is Charian
 
@@ -298,9 +299,59 @@ You can use Charian's Rda class and IRda interface "natively" as if they are par
 
 ```
 
-**Takeaway**: Rda container offers an ‘unlimited space’ and supports recursion, which can elegently accommodate the complex data of an evolving object that requires extension.
+## How-to: Exception handling
 
-## Other uses
+```C#
+
+    class ComplexPerson : Person
+    {
+        //.....
+
+        public override IRda FromRda(Rda rda)
+        {
+            try
+            {
+                //...
+    
+                //enforce mandatory residential address
+                if(string.IsNullOrEmpty(rda[(int)RDA_INDEX.RES_ADDRESS]))
+                {
+                    throw new Exception("Missing mandatory residential address.");
+                }
+                else
+                {
+                    this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
+                }
+
+                //if the postal address is missing in the container, default to use the residential address
+                if(string.IsNullOrEmpty(rda[(int)RDA_INDEX.POST_ADDRESS]))
+                {
+                    this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
+                }
+                else
+                {
+                    this.PostalAddress.FromRda(rda[(int)RDA_INDEX.POST_ADDRESS]);
+                }
+    
+                //...
+            }
+            catch
+            {
+                /*
+                    Anything that handles the error situation, eg -
+                    1) setting a default value
+                    2) escalate the error (i.e. re-throw)
+                    3) send a message to the sender about the error, and request a re-send
+                */
+            }
+        }
+    }
+
+```
+
+**Takeaway**: You can implement flexible and sophisticated error handling with Charian during "data unpacking".
+
+# Other uses
 
 **Maintain compatibility** As illustrated in the above examples, the ComplexPerson object extends the Person object while remaining backward compatible. This means you can have a connected network where some programs work with the Person object, and some other programs have evolved and use the ComplexPerson object, and these programs will remain compatible in communicating with each other in the network.
 
