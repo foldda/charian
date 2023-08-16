@@ -9,11 +9,9 @@
 
 <div align="center">
 <img src="img/Charian-logo-orange-text.png" width="250" align="center">
+
+**_"Exchanging data between independent programs with minimum overhead and complexity."_**
 </div>
-
-> *For easily exchanging arbitrary structured data between independent programs, with minimal overhead and complexity.*
-
-
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
@@ -21,97 +19,103 @@
     - [Inside the API](#inside-the-api)
     - [How does it work](#how-does-it-work)
 2. [Getting Started](#getting-started)
-3. [How-to](#how-to)
-    - [Transporting primitive data items in an RDA string](#transporting-primitive-data-items-in-an-rda-string)
-    - [Serializing a simple composite data object](#serializing-a-simple-composite-data-object)
-    - [Serializing a complex object with nested classes](#serializing-a-complex-object-with-nested-classes)
-    - [Other uses](#other-uses)
+    - [Setting up Charian](#setting-up-charian)
+    - [How-to: Transporting primitive data items in an RDA string](#how-to-transporting-primitive-data-items-in-an-rda-string)
+    - [How-to: Serializing a simple composite data object](#how-to-serializing-a-simple-composite-data-object)
+    - [How-to: Serializing a complex object with nested classes](#how-to-serializing-a-complex-object-with-nested-classes)
+    - [How-to: Exception handling](#how-to-exception-handling)
+3. [Other Applicable Uses](#other-applicable-uses)
 4. [License, Etc.](#license-etc)
 5. [Afterword: The Big Picture](#afterword-the-big-picture)
 
 # What Is Charian
 
-Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a formatted text string for easy data transportation. Charian can be used for implementing -
+Charian (pron. /ka-ri-en/) is a general-purpose data-serialization API for encoding structured data into a formatted text string.  Charian serialization can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
-- **Distributed computing** - for, as a hack, passing any complex data structure as a "string parameter" in a remote call;
-- **Systems integration** - for exchanging data between independent programs simly and effciently;
-- **ETL solutions** - for transforming and transferring data of various data models through simple programming.
+- **Distributed computing** - for passing complex data structure as a "string parameter" in RPC calls;
+- **Systems integration** - for exchanging structured data between independent programs in a serialized form;
+- **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-Charian uses the schemaless RDA format[^1] in its encoding, and is designed to be generic and general-purpose. Charian allows simple and straightforward cross-program data exchange using only conventional methods and generic protocols, instead of using dedicated middleware or custom pipelines that requires establishing and maintaining a schema. Compared to the other data serialization systems and methods, Charian's simple, one-size-fits-all design has many advantages including being -
+Charian uses the schemaless RDA format[^1] in its encoding and can be used to serialize objects of any data model. Charian allows cross-program data exchange via common data transport methods and protocols, as opposed to the conventional approach that requires dedicated middleware or custom-built pipelines for converting and maintaining data models. Compared to the other data serialization systems and methods, Charian's plain, one-size-fits-all approach has many advantages such as being -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
-- **Flexible**: it is designed to be generic and fit any data model, ideal for evolving and dynamic programs;
-- **Minitual and compact**: the API only requires minimal code (around 800 lines) to implement, with no 3rd-party dependency;
-- **Easy to use**: Charian is "one size fits all" - there is no settings or configurations;
+- **Flexible**: it is designed to be generic and fit any data model, ideal for connecting evolving and dynamic programs;
+- **Minimalism and compact**: the API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
+- **Easy to set up and maintain**: Charian is "one size fits all" - there are no settings or configurations for different situations;
 - **Language and framework independent**: Charian-serialized objects can be exchanged cross-language and cross-platform[^2].
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
 ## Inside the API
 
-Charian is available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. We use C# syntax below to illustrate the content and the usage of the API, which is also applicable to the other language versions as they're clones with the same design and near-identical structure and naming convention. 
+Charian is available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. C# syntax is used below to explain the content and the usage of the API, which are also applicable to the other language versions as they're clones from the same design and have near-identical structure and naming convention.
 
 **Class Rda**
 
-The Rda class is modeled as a "container" object which internally has a multidimensional storage space. Every storage location in the space can be addressed by a multidimensional index made by an integer array[^3]. A client uses the following Getter/Setter methods for accessing a data item for a given address:
+The Rda class is modeled as a "container" object which internally has a multidimensional storage space. Inside the space, each storage location is addressed by a multidimensional index of an integer array[^3]. A client uses the following Getter/Setter methods for accessing a data item for a given address:
 
 [^3]: The index has a dimension limit of 40 in the current implementation, and the index value for each dimension must be a non-negative integer.
-```
-public void SetValue(string value, int[] address)  /* save a string value at the addressed location */
-public string GetValue(int[] address)  /* retrieve a string value from the addressed location */
-public void SetRda(Rda rda, int[] address)  /* save an Rda object at the addressed location */
-public Rda GetRda(int[] address)  /* retrieve an Rda object from the addressed location */
+```csharp
+public void SetValue(string value, int[] address)     /* save a string value at the addressed location */
+public string GetValue(int[] address)        /* retrieve a string value from the addressed location */
+public void SetRda(Rda rda, int[] address)      /* save an Rda object at the addressed location */
+public Rda GetRda(int[] address)      /* retrieve an Rda object from the addressed location */
 ```
 
-Note only two "data types" are supported by an Rda container - a data item can only be either a string value or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string; and all composite data, like a class or an array, can be converted to an Rda object (through recursion as illustrated in Example #3 below).
+Note there are only two "data types" supported in an Rda container - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string; and all composite data, like a class or an array, can be converted to an Rda object (through recursion as illustrated in Example #3 below).
 
-An Rda container object is also "serializable". The Rda class implements the following methods that allows itself to be coverted to and from an encoded text string in [the RDA format](#the-invention---rda-encoding):
+An Rda container object is also "serializable". The Rda class implements the following methods that allow itself to be converted to and from an encoded text string in [the RDA format](#the-invention---rda-encoding):
 
+```csharp
+public string ToString()      /* convert this Rda container object to an RDA string */
+public static Rda Parse(string rdaEncodedString)   /* decode the RDA string and return an Rda container object  */
 ```
-public string ToString()  /* convert this Rda container object to an RDA string */
-public static Rda Parse(string rdaEncodedString) /* decode the RDA string and return an Rda container object  */
-```
+
+_**Note:** From the API, class Rda offers additional methods and properties to the above-described (core) methods. Please refer to the class' test cases from this repo for usage examples all the implemented features._
 
 **Interface IRda**
 
-The IRda interface contaiuns definition of two methods:
+The IRda interface contains definition of two methods:
+```csharp
+Rda ToRda()   /* returns properties and state of this object in an Rda container object */
+IRda FromRda(Rda rda) /* restores properties and state of this object from values in an Rda container */
 ```
-Rda ToRda()   /* returns this object's properties and state in an Rda container object */
-IRda FromRda(Rda rda) /* restores this object's properties and state from values in the Rda container object */
-```
-A client object implements this interface to indicate that itself can be converted to and from an Rda object, which in turn can be converted to an RDA-encoded string. In other words, a class implementing the IRda interface to make itself "serializable".
+A client object implements the IRda interface to indicate that itself can be converted to and from an Rda object, which in turn can be converted to an RDA-encoded string - in other words, a class implementing the IRda interface to make itself "serializable".
 
 ## How does it work
 
-Imagine you're moving house and have various household items to be moved to a new place, you would first package these items into boxes before handing them over to a courier company which will manage the transportation, and once the boxes are delivered to the new place, you would unpack the boxes and retrieve the items and place them to their designated places. 
+Imagine you're moving house and have various household items to be moved to a new place: the process would be first packing these items into boxes then handing them over to a courier company which will manage the transportation, and once the boxes are delivered to the new place, unpacking the boxes and placing the items to their designated places.
 
-Exchanging data using Charian is easy to understand because the process is simplar to moving house, except in this case we are packing and moving data using an Rda container (in place of a 'box'). In such case, a data-sending client would -
-1) obtain an Rda container object, 
-2) use the Setter methods to “pack” data items that require transfer into the container, and then 
-3) use the ToString method to convert the container to an RDA string. 
+Exchanging data using Charian is easy to understand because the process is similar to the process of moving house, except in this case we are packing and moving data items. In this case, a data-sending client would -
+1) obtain an Rda container object,
+2) use the Setter methods to “pack” data items that require transfer into the container, and then
+3) use the ToString method to convert the container to an RDA string.
 
-Then, a data "courier" process takes over transporting the data container which is in the form of a string. Such a process can be saving the string to a file or to a database table, or sending it to a network destination via a network protocol. 
+Then, a data "courier" process takes over transporting the data container in the form of a string. Such a process can be saving the string to a file or to a database table, or sending it to a network destination via a network protocol.
 
 A data-receiving client, upon having received the RDA string, would -
-1) use the Parse method to convert the string back to an Rda container, and 
-2) use the Getter methods to "unpack" and consume the data items from the container. 
+1) use the Parse method to convert the string back to an Rda container, and
+2) use the Getter methods to "unpack" and consume the data items from the container.
 
-For object serialization, a class would implement the IRda interface: in the ToRda method it would specify the data-packing logic that stores the class' properties and the state at designated places inside an Rda container; and in the FromRda method it'd specify the logic of unpacking a received Rda container, and using the received values to restore the class properties to make the object to the intended state. 
+In the above process, an Rda container plays the important role of being a 'box' for packaging data items, which also can be converted to a string for easy storage and transportation.
 
-Examples of using the Rda class and IRda interface for storing and transporting arbitrary multiple data items in an RDA string, and for implementing object serialization, are demonstrated in [the "How-to" section below](#how---to).
+For object serialization, a class would implement the IRda interface: in the ToRda method it would specify the data-packing logic that stores the class' properties and the state at designated places inside an Rda container; and in the FromRda method it'd specify the logic of unpacking a received Rda container, and using the received values to restore the class properties to make the object to the intended state.
+
+Examples of using the Rda class for storing and transporting arbitrary multiple data items in an RDA string, and using the IRda interface for implementing object serialization, are demonstrated in "How-to" examples below.
 
 # Getting Started
-You can use Charian's Rda class and IRda interface "natively" as if they are part of your own code. To do so, simply include the provided source code in your project, and depending on the language, the compiler would also require adding a reference to the API package/library in your code[^4]. Charian has no third-party dependency, so it can be built and distributed as part of your project with no extra setup requirement.
+Charian is very easy to use thanks to its simplicity.
+
+## Setting up Charian
+Charian has a minimal code base and has no third-party dependency. It is perfect for source-code level integration which is including the provided source code files in your project and, depending on the language, adding a reference to the API package/module/domain in your code[^4] as it would be required by the compiler. Source-code level integration would simplify your build process and allow native code-tracing in debugging if required.
 
 [^4]: You can use the test cases provided in this repos as examples of using Charian.
 
-# How-to
-Here are some practical code examples illustrating some typical uses of the API.
-
-## Transporting primitive data items in an RDA string
-```c#
+## How-to: Transporting primitive data items in an RDA string
+This example shows a bunch of discrete (and related) data items be bundled together and saved to a file as an RDA-encoded string. It shows a client can utilize the provided "unlimited" storage to store anything, without having to pre-define a schema. The underlying RDA-encoding is also transparent to the client.
+```csharp
     using Charian;
 
     class RdaDemo1
@@ -134,17 +138,17 @@ Here are some practical code examples illustrating some typical uses of the API.
 
             //data-packing involves item placement and type-conversion
             rda1.SetValue(0, "A string");  //storing a string value at index = 0
-            rda1.SetValue(1, 2.5.ToString());
-            rda1.SetValue(2, DateTime.Now.ToString());
+            rda1.SetValue(1, 2.5.ToString());  //storing a decimal value
+            rda1.SetValue(2, DateTime.Now.ToString());  //storing a date value
 
-            string encodedRdaString = rda1.ToString();     //serialize
+            string encodedRdaString = rda1.ToString();     //serialize the data container
 
-            File.WriteAllText(filePath, encodedRdaString);
+            File.WriteAllText(filePath, encodedRdaString);  //output to a physical media
         }
 
         void ReceiveSomeData(string filePath)
         {
-            string encodedRdaString = File.ReadAllText(filePath);
+            string encodedRdaString = File.ReadAllText(filePath);  //input from a physical media
 
             Rda rda1 = Rda.Parse(encodedRdaString);    //restore the container object from the RDA string
 
@@ -156,13 +160,11 @@ Here are some practical code examples illustrating some typical uses of the API.
     }
 ```
 
-**Takeaway**: The sender and the receiver are expected to know where (placement) and what (types) the data items are, and handle exception if the expectation is not met.
+**Takeaway**: Primitive type data are stored as strings. The sender and the receiver are expected to know where (placement) and what (types) the data items are in a container. Rda container has no schema and does not enforce data validation. The clients are responsible for type conversion and data validation, and [handle exception if unexpected data is encounted](#how-to-exception-handling).
 
-**Takeaway**: Rda container has no schema and does not enforce data validation. Primitive type data are stored as strings, the client is responsible for type conversion and the associated error handling.
-
-## Serializing a simple composite data object
-
-```C#
+## How-to: Serializing a simple composite data object
+This code example illustrates implementing object serialization by implementing the IRda interface. It includes implementing the logic of "packing" properties in the ToRda() method for serialization, and the logic of "unpacking" data in the FromRda() method for de-serialization.
+```csharp
     public class Person : IRda
     {
         public string FirstName = "John";
@@ -206,19 +208,19 @@ Here are some practical code examples illustrating some typical uses of the API.
         {
             string encodedRdaString = File.ReadAllText(filePath);
             Rda rda = Rda.Parse(encodedRdaString);
-            Person person = new Person();
-            person.FromRda(rda);
+            Person person = new Person();  //an initial "empty" person object
+            person.FromRda(rda);  //restores the Person's properties here.
             return person;
         }
     }
 
 ```
 
-**Takeaway**: The IRda interface's ToRda() and FromRda() methods are the places for a class packing and unpacking its essential properties and state data that require to be serialized for transportation.
+**Takeaway**: The IRda interface's ToRda() method is the place for a sender packing its "essential" properties and state data during serialization, and the FromRda() method is the place for a receiver unpacking a container and restore the "essential" properties and state data that "deserializes" the object. In between, the container is converted to a string for easy transportation by a 'courier' process.
 
-## Serializing a complex object with nested classes
-
-```C#
+## How-to: Serializing a complex object with nested classes
+Because you can store an Rda object inside another Rda object, it theoretically allows an arbitrarily complex object to be stored inside an Rda container, through recurrsive decomposition. The following example extends from the last example, and shows how a ComplexPerson object with two Address properties (which are also serializable) is packed into an Rda container.
+```csharp
     class Address : IRda
     {
         public enum RDA_INDEX : int { LINES = 0, ZIP = 1 }
@@ -269,8 +271,7 @@ Here are some practical code examples illustrating some typical uses of the API.
             //now person Rda is 2-dimensional
             //Console.Println(personRda[2][1].ScalarValue);   //prints ResidentialAddress.ZIP
 
-            //
-            //eg here we store a further “postal address” Rda to the person Rda, and so on ...
+            //.. here we store a further “postal address” Rda to the person Rda, and so on ...
             personRda[(int)RDA_INDEX.POST_ADDRESS] = this.PostalAddress.ToRda();
 
             return personRda;
@@ -278,10 +279,10 @@ Here are some practical code examples illustrating some typical uses of the API.
 
         public override IRda FromRda(Rda rda)
         {
-            //restore the base Person properties
-            base.FromRda(rda);  //restores FirstName and LastName
+            //restore the base 'Person' object
+            base.FromRda(rda);  //restores the FirstName and LastName properties
 
-            //de-serializing composite properties (embedded objects) recursively
+            //de-serialize and restore the address properties by invoking Address.FromRda()
             this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
             this.PostalAddress.FromRda(rda[(int)RDA_INDEX.POST_ADDRESS]);
             return this;
@@ -300,13 +301,63 @@ Here are some practical code examples illustrating some typical uses of the API.
 
 ```
 
-**Takeaway**: Rda container offers an ‘unlimited space’ and supports recursion, which can elegently accommodate the complex data of an evolving object that requires extension.
+## How-to: Exception handling
+The following code expands from the last example and illustrates certain techniques that can be applied during "unpacking" and if the received data is unexpected.
+```csharp
 
-## Other uses
+    class ComplexPerson : Person
+    {
+        //.....
 
-**Maintain compatibility** As illustrated in the above examples, the ComplexPerson object extends the Person object while remaining backward compatible. This means you can have a connected network where some programs work with the Person object, and some other programs have evolved and use the ComplexPerson object, and these programs will remain compatible in communicating with each other in the network.
+        public override IRda FromRda(Rda rda)
+        {
+            try
+            {
+                //...
+   
+                //enforce mandatory residential address
+                if(string.IsNullOrEmpty(rda[(int)RDA_INDEX.RES_ADDRESS]))
+                {
+                    throw new Exception("Missing mandatory residential address.");
+                }
+                else
+                {
+                    this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
+                }
 
-**Cross-language data exchange** Because the schemaless RDA string is language and system neutral, it can be used as a data container for flexibly transferring data cross-language and cross-platform. The connected programs can flexibly deposite and consume data items stored in an RDA container without being constrained by a fixed data model, and be able to flexibly handle the data conversions and any associated exceptions, in the designated data-packing and unpacking operations.
+                //if the postal address is missing in the container, default to use the residential address
+                if(string.IsNullOrEmpty(rda[(int)RDA_INDEX.POST_ADDRESS]))
+                {
+                    this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
+                }
+                else
+                {
+                    this.PostalAddress.FromRda(rda[(int)RDA_INDEX.POST_ADDRESS]);
+                }
+   
+                //...
+            }
+            catch
+            {
+                /*
+                    Anything that handles the error situation, eg -
+                    1) setting a default value
+                    2) escalate the error (i.e. re-throw)
+                    3) return the data back to the sender, and request a re-send
+                */
+            }
+        }
+    }
+
+```
+
+**Takeaway**: You can implement flexible and sophisticated error handling when "unpacking" the data container.
+
+# Other Applicable Uses
+
+**Maintain compatibility** As illustrated in the above examples, the ComplexPerson object extends the Person object while remaining backward compatible. This means if you have a connected network where some programs work with the Person object, and some other programs have evolved and become using the ComplexPerson object, these programs will remain compatible in communicating with each other in the network.
+
+**Cross-language data exchange** Because the schemaless RDA string is language and system neutral, it can be used as a data container for flexibly transferring data cross-language and cross-platform. The connected programs can flexibly deposit and consume data items stored in an RDA container without being constrained by a fixed data model, and be able to flexibly handle the data conversions and any associated exceptions, in the designated data-packing and unpacking operations.
 
 For example, an RDA container packed by a Java program contains the properties of a Java 'Person', and these properties can be unpacked in a Python program and be used for constructing say a Python 'User' object, which may or may not have exactly the same properties as the Java Person object. If anything unexpected happens, such as an item is missing, or a data conversion has failed, the Python program can put exception handling in its 'unpacking' process e.g. sending out an alert or substituting the missing item with a default value.
 
@@ -326,11 +377,11 @@ For example, an RDA container packed by a Java program contains the properties o
 
 # Afterword: The Big Picture
 
-Here let's talk about why we need Charian and RDA whilst there are many XML/JSON-based data transport solutions that already exist.
+Here let's talk about why we developed Charian and RDA whilst there are already many XML/JSON-based data serialization and transport solutions.
 
-## The problem - schema-bound data exchange
+## The problem - schema-based data exchange
 
-Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data between them is normally complicated and requires extra effort. The conventional approach to cross-program data exchange typically involves establishing an ad hoc, dedicated connection between the communicating parties, and use an ‘agreed’ data model (i.e. bound by a schema) for the data communication.
+Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other in a collaborative distributed solution. Because these programs are often developed by different parties and executed on separate computer environments, exchanging data between them is normally complicated and requires extra effort. The conventional approach to cross-program data exchange typically involves building an ad hoc, dedicated connection between the communicating parties, based on an ‘agreed’ data model (i.e. a schema).
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
@@ -410,6 +461,3 @@ Thus, Charian is not just another data encoder or object serializer. By making c
 [license-shield]: https://img.shields.io/github/license/foldda/charian.svg?style=for-the-badge
 [license-url]: https://github.com/foldda/charian/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
-
-<END>
-
