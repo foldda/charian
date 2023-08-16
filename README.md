@@ -10,9 +10,8 @@
 <div align="center">
 <img src="img/Charian-logo-orange-text.png" width="250" align="center">
 
-**_"Exchanging data between independent programs with minimal overhead and complexity."_**
+**_"Exchanging data between independent programs with minimum overhead and complexity."_**
 </div>
-
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
@@ -34,7 +33,7 @@
 Charian (pron. /ka-ri-en/) is a general-purpose data-serialization API for encoding structured data into a formatted text string.  Charian serialization can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
-- **Distributed computing** - for passing any complex data structure as a "string parameter" in RPC calls;
+- **Distributed computing** - for passing complex data structure as a "string parameter" in RPC calls;
 - **Systems integration** - for exchanging structured data between independent programs in a serialized form;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
@@ -51,11 +50,11 @@ Charian uses the schemaless RDA format[^1] in its encoding and is not restricted
 
 ## Inside the API
 
-Charian is available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. C# syntax is used below to explain the content and the usage of the API, which are also applicable to the other language versions of the API as they're clones with the same design and near-identical structure and naming convention. 
+Charian is available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. C# syntax is used below to explain the content and the usage of the API, which are also applicable to the other language versions as they're clones from the same design and have near-identical structure and naming convention. 
 
 **Class Rda**
 
-The Rda class is modeled as a "container" object which internally has a multidimensional storage space. Every storage location in the space is addressed using a multidimensional index which is an integer array[^3]. A client uses the following Getter/Setter methods for accessing a data item for a given address:
+The Rda class is modeled as a "container" object which internally has a multidimensional storage space. Inside the space, each storage location is addressed by a multidimensional index of an integer array[^3]. A client uses the following Getter/Setter methods for accessing a data item for a given address:
 
 [^3]: The index has a dimension limit of 40 in the current implementation, and the index value for each dimension must be a non-negative integer.
 ```csharp
