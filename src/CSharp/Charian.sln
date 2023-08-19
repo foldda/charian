@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{22B85503-B590-4DDA-9DF9-D709659B342B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversalDataTransport", "UniversalDataTransport.csproj", "{24B32922-1169-46FD-90E8-18072A57D37C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Charian", "Charian.csproj", "{5E1E29E7-2B16-4E32-9917-8F971AAD2040}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{22B85503-B590-4DDA-9DF9-D709659B342B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22B85503-B590-4DDA-9DF9-D709659B342B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22B85503-B590-4DDA-9DF9-D709659B342B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24B32922-1169-46FD-90E8-18072A57D37C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24B32922-1169-46FD-90E8-18072A57D37C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24B32922-1169-46FD-90E8-18072A57D37C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24B32922-1169-46FD-90E8-18072A57D37C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E1E29E7-2B16-4E32-9917-8F971AAD2040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E1E29E7-2B16-4E32-9917-8F971AAD2040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E1E29E7-2B16-4E32-9917-8F971AAD2040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E1E29E7-2B16-4E32-9917-8F971AAD2040}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
