@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UniversalDataTransport.csproj" />
+    <ProjectReference Include="..\Charian.csproj" />
   </ItemGroup>
 
 </Project>
