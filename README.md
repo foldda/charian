@@ -30,27 +30,27 @@
 
 # What Is Charian
 
-Charian (pron. /ka-ri-en/) is a general-purpose data-serialization API for encoding structured data into a formatted text string.  Charian serialization can be used for implementing -
-
-- **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
-- **Distributed computing** - for passing complex data structure as a "string parameter" in RPC calls;
-- **Systems integration** - for exchanging structured data between independent programs in a serialized form;
-- **ETL solutions** - for transferring and transforming data of various data models through simple programming.
-
-Charian uses the schemaless RDA format[^1] in its encoding and can be used to serialize objects of any data model. Charian allows cross-program data exchange via common data transport methods and protocols, as opposed to the conventional approach that requires dedicated middleware or custom-built pipelines for converting and maintaining data models. Compared to the other data serialization systems and methods, Charian's plain, one-size-fits-all approach has many advantages such as being -
+Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a formatted text string. Using the schemaless RDA format[^1] in its encoding, the general-purposed Charian can be used for serializing objects of any data model. Charian can be used for implementing -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
-- **Flexible**: it is designed to be generic and fit any data model, ideal for connecting evolving and dynamic programs;
-- **Minimalism and compact**: the API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
-- **Easy to set up and maintain**: Charian is "one size fits all" - there are no settings or configurations for different situations;
+- **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
+- **Distributed computing** - for passing programming object or data structure as a "string parameter" in RPC calls;
+- **Data communication** - for sending complex structured data in a serialized form over the network;
+- **ETL solutions** - for transferring and transforming data of various data models through simple programming.
+
+Being schemaless, Charian allows cross-program data exchange using only generic data transport methods and protocols, as opposed to the conventional approach of using dedicated middleware or custom-built pipelines that require maintaining pre-established data models. Charian's plain, one-size-fits-all approach has many advantages over other data serialization systems and methods, such as being -
+
+- **Generic and universal**: it is ideal for data exchange between programs with evolving and dynamic data models;
+- **Minimalism**: the API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
+- **Easy to use**: Charian is "one size fits all" and has no settings or configuration for different situations;
 - **Language and framework independent**: Charian-serialized objects can be exchanged cross-language and cross-platform[^2].
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
 ## Inside the API
 
-Charian is available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. C# syntax is used below to explain the content and the usage of the API, which are also applicable to the other language versions as they're clones from the same design and have near-identical structure and naming convention.
+Charian is available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. The API's content and usage are explained below using C#, but the explanation is also applicable to the other language implementations, as they're clones sharing the same design and have a near-identical structure and naming convention.
 
 **Class Rda**
 
@@ -430,21 +430,21 @@ Following the header, the remaining RDA string is the 'payload' section that con
 
 **Compared to XML and JSON**
 
-> The space from XML/JSON is like a wallet, where it has places specifically defined for holding cards, notes, and coins; whilst the space from RDA is like an enormous shelf, where you can place anything at anywhere in the unlimited space that is provided.
+> The space from XML/JSON is like a wallet, where it has places specifically defined for holding cards, notes, and coins; whilst the space from RDA is like an enormous shelf, where you can place anything anywhere in the unlimited space that is provided.
 
 RDA is specifically designed to avoid targeting a certain data model and having to define and maintain a schema. Such design is reflected by the structure of RDA's encoded storage space, the way of addressing a location in the space, and the supported data types[^5].  
 
-[^5]: First, RDA has multi-dimensional array storage space that is dynamically expandable, that is, the size of each dimension and the number of dimensions can be increased or decreased as required, like an elastic bag. This is in contrast to the ‘fixed’ hierarchical space provided by schema-based encodings, like XML or JSON, which is restricted by a predefined data mode, like a rigid, fix-shaped box. Second, RDA uses integer-based indexes for addressing the storage locations in its multi-dimensional array storage space, which means, and combination of non-negative integers is a valid address referring to a valid storage location in the space. This is in contrast to XML and JSON, the address for accessing a storage location is a ‘path’ that has to be ‘validated’ against a pre-defined schema. Third, RDA assumes all data (of any type) can be 'expressed as a string' and a value stored at a location (referred as “a data's value expression”) can only be a string; whilst XML and JSON attempt to define and include every possible data types and a data values stored at a location must conform with what has been defined in the schema.
+[^5]: First, RDA has multi-dimensional array storage space that is dynamically expandable, that is, the size of each dimension and the number of dimensions can be increased or decreased as required, like an elastic bag. This is in contrast to the ‘fixed’ hierarchical space provided by schema-based encodings, like XML or JSON, which is restricted by a predefined data mode, like a rigid, fixed-shaped box. Second, RDA uses integer-based indexes for addressing the storage locations in its multi-dimensional array storage space, which means, and combination of non-negative integers is a valid address referring to a valid storage location in the space. This is in contrast to XML and JSON, the address for accessing a storage location is a ‘path’ that has to be ‘validated’ against a pre-defined schema. Third, RDA assumes all data (of any type) can be 'expressed as a string' and a value stored at a location (referred to as “a data's value expression”) can only be a string; whilst XML and JSON attempt to define and include every possible data types and a data values stored at a location must conform with what has been defined in the schema.
 
-Inheritively from RDA's schemaless design, the encoding is simpler, more space-efficient, and configuration-free compared to XML and JSON. But perhaps the most interesting and unique property of RDA is the **recursiveness** of the storage space: the multi-dimensional array structure is homogenous, and there can be only one 'unified' data type, so a sub-dimension in the space is itself a multi-dimensional space that has the same structure as its containing (parent dimension) space, and can be used in the same way. The recursiveness of the multi-dimensional space allows an arbitrarily complex data structure to be (recursively) decomposed into sub-components and be stored in the dimensions and their sub-dimensions from the provided space.
+Inheritively from RDA's schemaless design, the encoding is simpler, more space-efficient, and configuration-free compared to XML and JSON. But perhaps the most interesting and unique property of RDA is the **recursiveness** of the storage space: the multi-dimensional array structure is homogenous, and there can be only one 'unified' data type, so a sub-dimension in the space is itself a multi-dimensional space that has the same structure as its containing (parent dimension) space, and can be used in the same way. The recursiveness of the multi-dimensional space allows an arbitrarily complex data structure to be (recursively) decomposed into sub-components and stored in the dimensions and their sub-dimensions from the provided space.
 
 ## The product - Charian
 
-The **Rda class** and the **IRda interface** from the API are designed specifically for the UDT operations[^6]. The implemented methods and properties have made the UDT operations simple and practical. For object serialization, a client only needs to deal with a simple container object and use the provided storage space in the intuitive process of "data packing", without having to know or deal with the RDA encoding at all.
+Backed by the RDA encoding, the **Rda class** and the **IRda interface** from Charian API are designed to make the UDT operations simple, intuitive, and practical[^6]. For object serialization, a client only needs to use a provided storage space (modeled as a simple container object) in the "data packing" process, without having to pre-establish and maintain a rigid data model or a schema.
 
 [^6]: The description and examples are given in C# syntax, but the illustrated methods can be easily translated to the Python and Java implementations which are also provided in this repo, and have identical functions.
 
-The "big picture" is that by making cross-program data exchange much simpler and more flexible, programs and devices can connect and work collaboratively like never before. So Charian is not just another data encoder or object serializer, rather, it is a key technology building block for new ways of developing distributed systems and solutions, with a vision of unified, universal data transportation.
+Yet, Charian is not just another data encoder or object serializer. By making cross-program data exchange much simpler and more flexible, Charian allows for building a "post-office-like" data transport eco-system through which more programs and devices can connect and work collaboratively like never before. Charian is a technology building block that inspires brand-new ways of developing creative distributed systems and solutions.
 
 <!--- MARKDOWN LINKS & IMAGES
 [# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
