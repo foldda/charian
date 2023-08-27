@@ -409,7 +409,7 @@ Universal Data Transport, or UDT, is a proposed “post-office-like” data tran
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-One “difficulty” the Post Office had was to provide a single consistent service that can cater for the different requirements from all it clients, and the answer is the use of standardized packaging. Packaging loose items in a box also allow modularized, more effective transportation that can be carried out by a general courier company. Thus a key design to UDT’s design is to have a data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
+One “difficulty” the Post Office had was to provide a single consistent service that can cater for the different requirements from all it clients, and the answer is to use standardized packaging - that is, by packaging loose items in a box, it would allow modularized, more effective transportation that can be carried out by a general courier company. Thus a key design to UDT’s design is to have a data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
 
 Also, UDT is most suitable to be implemented as a messaging technology, where the data container is an encoded text message. That’s because through data encoding, a text message can be used as a container to store data, and text (i.e. ‘string’) is one of the most supported data types by major computer systems and programming languages. Data stored in a “string container” can be readily processed using generic tools and protocols, without the need for any custom proprietary treatment. For example, it can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. Thus the challenge to implementing UDT is to have a text encoding format that supports encoding any data into a string.
 
@@ -440,11 +440,11 @@ Inheritively from RDA's schemaless design, the encoding is simpler, more space-e
 
 ## The product - Charian
 
-The **Rda class** and the **IRda interface** from the API are implemented with methods and properties for UDT-oriented operations[^6], and from a client's perspective, it only needs to deal with a simple, easy-to-access storage space, which is also serializable, through the API. A Charian client does not have to know or to deal with the RDA encoding at all.
+The **Rda class** and the **IRda interface** from the API are implemented with methods and properties designed for UDT-oriented operations[^6]. The API has made the UDT operations practical and intuitive: from a client's perspective, for object serialization, it only needs to deal with a simple, easy-to-access storage space from a container object. A Charian client does not have to know or deal with the RDA encoding at all.
 
 [^6]: The description and examples are given in C# syntax, but the illustrated methods can be easily translated to the Python and Java implementations which are also provided in this repo, and have identical functions.
 
-Thus, Charian is not just another data encoder or object serializer. By making cross-program data exchange much simpler and more flexible, programs and devices can connect to each other and work collaboratively. There can be an ecosystem of distributed solutions that only use Charian for simple and effective data communication.
+Thus, Charian is not just another data encoder or object serializer. The "big picture" is that by making cross-program data exchange much simpler and more flexible, programs and devices can connect to each other and work collaboratively. Charian is a low-cost yet effective technology for building innovative distributed systems and solutions.
 
 <!--- MARKDOWN LINKS & IMAGES
 [# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
