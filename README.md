@@ -30,7 +30,9 @@
 
 # What Is Charian
 
-Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a formatted text string. Charian uses the schemaless RDA format[^1] in its encoding, which makes it general-purposed and can be used for serializing objects of any data model. Charian can be used for implementing -
+Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a formatted text string. Charian uses the schemaless RDA format[^1] in its encoding, which makes it general-purposed and can be used for serializing objects of any data model without having to define and maintain a schema. 
+
+Charian can be used for implementing -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
@@ -39,7 +41,7 @@ Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured d
 - **Data communication** - for sending complex structured data in a serialized form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-Being schemaless, Charian allows cross-program data exchange using only generic data transport methods and protocols, as opposed to the conventional approach of using dedicated middleware or custom-built pipelines that require maintaining pre-established data models. Charian's plain, one-size-fits-all approach has many advantages over other data serialization systems and methods, such as being -
+Being schemaless, Charian allows cross-program data exchange using only generic data transport methods and protocols, as opposed to the conventional approach of using dedicated middleware or custom-built pipelines. Charian's plain, one-size-fits-all approach has many advantages over other data serialization systems and methods, such as being -
 
 - **Generic and universal**: it is ideal for data exchange between programs with evolving and dynamic data models;
 - **Minimalism**: the API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
