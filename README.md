@@ -38,7 +38,7 @@ Charian can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
 - **Distributed computing** - for passing programming object or data structure as a "string parameter" in RPC calls;
-- **Data communication** - for sending complex structured data in a serialized form over the network;
+- **Data communication** - for sending complex structured data in a serial form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
  Compared to the other data serialization systems and methods, Charian's plain, one-size-fits-all approach has many advantages, for being -
@@ -46,15 +46,15 @@ Charian can be used for implementing -
 - **Generic and universal**: It is ideal for data exchange between programs with evolving and dynamic data models;
 - **Minimalism**: The API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
 - **Easy to use**: Charian is "one size fits all" and has no settings or configuration for different situations;
-- **Language and framework independent**: Charian-serialized objects can be exchanged cross-language and cross-platform[^2].
+- **Language and system independent**: Charian-serialized objects can be exchanged cross-language and cross-platform[^2].
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-Being schemaless, Charian allows cross-program data exchange using only generic data transport methods and protocols, rather than using custom, data-model-dependent middleware or pipelines.
+Charian is designed for cross-program data exchange, using only common data transport methods and protocols rather than using middleware or custom pipelines that are high-cost to build and maintain.
 
 ## Inside the API
 
-The Charian API contains only two defined types: class Rda and interface IRda. It is available separately in three languages ([C#](src/CSharp), [Python](src/Python), and [Java](src/Java)) in this repo. These language implementations are clones to each other sharing the same design and have a near-identical structure and naming convention. We chose to use C# syntax to explain the API below. 
+The Charian API is very simple. It contains only two defined types, class Rda and interface IRda, which are explained below. It is implemented in three languages ([C#](src/CSharp), [Python](src/Python), and [Java](src/Java)) in this repo. We chose to use C# syntax in this doco to explain the concept and usage, which is applicable to the other language implementations as they share the same design and have a near-identical structure and naming convention. 
 
 **Class Rda**
 
