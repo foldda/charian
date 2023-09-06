@@ -41,18 +41,20 @@ Charian can be used for implementing -
 - **Data communication** - for sending complex structured data in a serialized form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-Being schemaless, Charian allows cross-program data exchange using only generic data transport methods and protocols, as opposed to the conventional approach of using dedicated middleware or custom-built pipelines. Charian's plain, one-size-fits-all approach has many advantages over other data serialization systems and methods, such as being -
+ Compared to the other data serialization systems and methods, Charian's plain, one-size-fits-all approach has many advantages, for being -
 
-- **Generic and universal**: it is ideal for data exchange between programs with evolving and dynamic data models;
-- **Minimalism**: the API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
+- **Generic and universal**: It is ideal for data exchange between programs with evolving and dynamic data models;
+- **Minimalism**: The API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
 - **Easy to use**: Charian is "one size fits all" and has no settings or configuration for different situations;
 - **Language and framework independent**: Charian-serialized objects can be exchanged cross-language and cross-platform[^2].
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
+Being schemaless, Charian allows cross-program data exchange using only generic data transport methods and protocols, rather than using custom, data-model-dependent middleware or pipelines.
+
 ## Inside the API
 
-Charian is available in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. The API's content and usage are explained below using C#, but the explanation is also applicable to the other language implementations, as they're clones sharing the same design and have a near-identical structure and naming convention.
+The Charian API is available separately in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) languages in this repo. These language implementations are clones to each other sharing the same design and have a near-identical structure and naming convention. The simple API contains only two defined types, class Rda and interface IRda, which are explained below using C# syntax. 
 
 **Class Rda**
 
@@ -66,7 +68,7 @@ public void SetRda(Rda rda, int[] address)      /* save an Rda object at the add
 public Rda GetRda(int[] address)      /* retrieve an Rda object from the addressed location */
 ```
 
-Note there are only two "data types" supported in an Rda container - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string; and all composite data, like a class or an array, can be converted to an Rda object (through recursion as illustrated in Example #3 below).
+Note there are only two "data types" supported in an Rda container - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string; and all composite data, like a class or an array, can be converted to an Rda object (through recursion as illustrated in [this example below](#how-to-serializing-a-complex-object-with-nested-classes)).
 
 An Rda container object is also "serializable". The Rda class implements the following methods that allow itself to be converted to and from an encoded text string in [the RDA format](#the-invention---rda-encoding):
 
@@ -79,7 +81,7 @@ _**Note:** From the API, class Rda offers additional methods and properties to t
 
 **Interface IRda**
 
-The IRda interface contains definition of two methods:
+The IRda interface contains the definition of two methods:
 ```csharp
 Rda ToRda()   /* returns properties and state of this object in an Rda container object */
 IRda FromRda(Rda rda) /* restores properties and state of this object from values in an Rda container */
@@ -111,7 +113,7 @@ Examples of using the Rda class for storing and transporting arbitrary multiple 
 Charian is very easy to use thanks to its simplicity.
 
 ## Setting up Charian
-Charian has a minimal code base and has no third-party dependency. It is perfect for source-code level integration which is including the provided source code files in your project and, depending on the language, adding a reference to the API package/module/domain in your code[^4] as it would be required by the compiler. Source-code level integration would simplify your build process and allow native code-tracing in debugging if required.
+Charian has a minimal code base and has no third-party dependency. It is perfect for source-code level integration by including the provided source code files in your project and adding a reference to the API package/module/name-space in your code[^4] as it would be required by the compiler. Source-code level integration would simplify your build process and allow native code tracing in debugging if required.
 
 [^4]: You can use the test cases provided in this repos as examples of using Charian.
 
