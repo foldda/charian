@@ -54,7 +54,7 @@ Being schemaless, Charian allows cross-program data exchange using only generic 
 
 ## Inside the API
 
-The Charian API is available separately in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) languages in this repo. These language implementations are clones to each other sharing the same design and have a near-identical structure and naming convention. The simple API contains only two defined types, class Rda and interface IRda, which are explained below using C# syntax. 
+The Charian API contains only two defined types: class Rda and interface IRda. It is available separately in three languages ([C#](src/CSharp), [Python](src/Python), and [Java](src/Java)) in this repo. These language implementations are clones to each other sharing the same design and have a near-identical structure and naming convention. We chose to use C# syntax to explain the API below. 
 
 **Class Rda**
 
