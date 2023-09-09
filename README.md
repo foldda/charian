@@ -30,7 +30,7 @@
 
 # What Is Charian
 
-Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a formatted text string. Charian uses the schemaless RDA format[^1] in its encoding, which makes it general-purposed and can be used for serializing objects of any data model without having to define and maintain a schema. 
+Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data into a text string. Charian uses the schemaless RDA format[^1] in its encoding, so it is general-purposed and can be used for serializing any objects of any data model without having to predefine and maintain a schema. 
 
 Charian can be used for implementing -
 
@@ -50,11 +50,11 @@ Charian can be used for implementing -
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-Charian is designed for cross-program data exchange, using only common data transport methods and protocols rather than using middleware or custom pipelines that are high-cost to build and maintain.
+Charian is designed for cross-program data exchange, by using only common data transport methods and protocols rather than using dedicated middleware or custom-built pipelines.
 
 ## Inside the API
 
-The Charian API is very simple. It contains only two defined types, class Rda and interface IRda, which are explained below. It is implemented in three languages ([C#](src/CSharp), [Python](src/Python), and [Java](src/Java)) in this repo. We will use C# syntax in this doco to explain the concept and the usage, which are applicable to the other language implementations as they share the same design and have a near-identical structure and naming convention. 
+Charian is a simple API that contains only two defined types: **class Rda** and **interface IRda**. It is implemented in three languages ([C#](src/CSharp), [Python](src/Python), and [Java](src/Java)) in this repo. C# syntax is used in this doco but the concept and the usage pattern are applicable to the other language implementations, as they share the same design and have a near-identical structure and naming convention. 
 
 **Class Rda**
 
@@ -77,7 +77,7 @@ public string ToString()      /* convert this Rda container object to an RDA str
 public static Rda Parse(string rdaEncodedString)   /* decode the RDA string and return an Rda container object  */
 ```
 
-_**Note:** From the API, class Rda offers additional methods and properties to the above-described (core) methods. Please refer to the class' test cases from this repo for usage examples all the implemented features._
+_**Note:** From the API, class Rda offers additional methods and properties to the above-described (core) methods. Please refer to the class test cases from this repo for usage examples all the implemented features._
 
 **Interface IRda**
 
