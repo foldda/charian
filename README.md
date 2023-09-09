@@ -30,7 +30,7 @@
 
 # What Is Charian
 
-Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data into a text string. Charian uses the schemaless RDA format[^1] in its encoding, so it is general-purposed and can be used for serializing any objects of any data model without having to predefine and maintain a schema. 
+Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a text string. Charian uses the schemaless RDA format[^1] in its encoding, so it is general-purposed and can be used for serializing any object of any data model without having to predefine and maintain a schema. 
 
 Charian can be used for implementing -
 
@@ -54,11 +54,11 @@ Charian is designed for cross-program data exchange, by using only common data t
 
 ## Inside the API
 
-Charian is a simple API that contains only two defined types: **class Rda** and **interface IRda**. It is implemented in three languages ([C#](src/CSharp), [Python](src/Python), and [Java](src/Java)) in this repo. C# syntax is used in this doco but the concept and the usage pattern are applicable to the other language implementations, as they share the same design and have a near-identical structure and naming convention. 
+Charian is a simple API that contains only two defined types: **class Rda** and **interface IRda**, which are implemented in three languages ([C#](src/CSharp), [Python](src/Python), and [Java](src/Java)) in this repo. C# syntax is used in this doco but the same concept and usage pattern are applicable to the other language implementations, as they share the same design and have a near-identical structure and naming convention. 
 
 **Class Rda**
 
-The Rda class is modeled as a "container" object which internally has a multidimensional storage space. Inside the space, each storage location is addressed by a multidimensional index of an integer array[^3]. A client uses the following Getter/Setter methods for accessing a data item for a given address:
+The Rda class is modeled as a "container" object which internally has a multidimensional storage space. Inside the space, each storage location is addressed by an integer array index[^3]. A client uses the following Getter/Setter methods for accessing a data item for a given address:
 
 [^3]: The index has a dimension limit of 40 in the current implementation, and the index value for each dimension must be a non-negative integer.
 ```csharp
@@ -68,7 +68,7 @@ public void SetRda(Rda rda, int[] address)      /* save an Rda object at the add
 public Rda GetRda(int[] address)      /* retrieve an Rda object from the addressed location */
 ```
 
-Note there are only two "data types" supported in an Rda container - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string; and all composite data, like a class or an array, can be converted to an Rda object (through recursion as illustrated in [this example below](#how-to-serializing-a-complex-object-with-nested-classes)).
+Note there are only two "data types" supported by an Rda container - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string; and all composite data, like a class or an array, can be decomposed and stored inside an Rda object - as arbitrarily complex data can be recursively decomposed into less complex structures or to primitive data items (as illustrated in [this example below](#how-to-serializing-a-complex-object-with-nested-classes)).
 
 An Rda container object is also "serializable". The Rda class implements the following methods that allow itself to be converted to and from an encoded text string in [the RDA format](#the-invention---rda-encoding):
 
