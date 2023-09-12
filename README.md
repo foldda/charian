@@ -30,9 +30,7 @@
 
 # What Is Charian
 
-Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a text string. Charian uses the schemaless RDA format[^1] in its encoding, so it is general-purposed and can be used for serializing any object of any data model without having to predefine and maintain a schema. 
-
-Charian can be used for implementing -
+Charian (pron. /ka-ri-en/) is a data-serialization API which is for encoding structured data in a text string. Charian can be used for implementing -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
@@ -41,7 +39,7 @@ Charian can be used for implementing -
 - **Data communication** - for sending complex structured data in a serial form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
- Compared to the other data serialization systems and methods, Charian's plain, one-size-fits-all approach has many advantages, for being -
+Charian uses the schemaless RDA format[^1] in its encoding, which makes it general-purposed and can be used for serializing any object of any data model without having to predefine and maintain a schema. Compared to the other data serialization systems and methods, Charian's simple, one-size-fits-all approach has many advantages, for being -
 
 - **Generic and universal**: It is ideal for data exchange between programs with evolving and dynamic data models;
 - **Minimalism**: The API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
@@ -50,7 +48,7 @@ Charian can be used for implementing -
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-Charian is designed for cross-program data exchange, by using only common data transport methods and protocols rather than using dedicated middleware or custom-built pipelines.
+Charian allows cross-program data exchange with minimum overhead and complexity, by using only common data transport methods and protocols rather than the conventional approach of using dedicated middleware or custom-built pipelines.
 
 ## Inside the API
 
