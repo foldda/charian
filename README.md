@@ -30,16 +30,16 @@
 
 # What Is Charian
 
-Charian (pron. /ka-ri-en/) is a data-serialization API which is for encoding structured data in a text string. Charian can be used for implementing -
-
-[^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
+Charian (pron. /ka-ri-en/) is a data-serialization API. By encoding structured data into a text string, Charian can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
 - **Distributed computing** - for passing programming object or data structure as a "string parameter" in RPC calls;
 - **Data communication** - for sending complex structured data in a serial form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-Charian uses the schemaless RDA format[^1] in its encoding, which makes it general-purposed and can be used for serializing any object of any data model without having to predefine and maintain a schema. Compared to the other data serialization systems and methods, Charian's simple, one-size-fits-all approach has many advantages, for being -
+Charian uses the schemaless RDA format[^1] in its encoding, which means it can be used for serializing any data object of any data structure without predefining (and maintaining) a schema. Compared to the other data serialization systems and methods, Charian's simple, one-size-fits-all approach has many advantages, for being -
+
+[^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
 - **Generic and universal**: It is ideal for data exchange between programs with evolving and dynamic data models;
 - **Minimalism**: The API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
@@ -48,11 +48,11 @@ Charian uses the schemaless RDA format[^1] in its encoding, which makes it gener
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-Charian allows cross-program data exchange with minimum overhead and complexity, by using only common data transport methods and protocols rather than the conventional approach of using dedicated middleware or custom-built pipelines.
+Charian is designed for cross-program data exchange using only common data transport methods and protocols, as opposed to the conventional approach of using dedicated middleware or custom-built pipelines.
 
 ## Inside the API
 
-Charian is a simple API that contains only two defined types: **class Rda** and **interface IRda**, which are implemented in three languages ([C#](src/CSharp), [Python](src/Python), and [Java](src/Java)) in this repo. C# syntax is used in this doco but the same concept and usage pattern are applicable to the other language implementations, as they share the same design and have a near-identical structure and naming convention. 
+Charian is a simple API that contains only two defined types: **class Rda** and **interface IRda**. It's implemented in three languages ([C#](src/CSharp), [Python](src/Python), and [Java](src/Java)) in this repo. C# syntax is used in this doco but the same concept and usage pattern are applicable to the other language implementations, as they share the same design and have a near-identical structure and naming convention. 
 
 **Class Rda**
 
