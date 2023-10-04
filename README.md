@@ -359,7 +359,7 @@ The following code expands from the last example and illustrates certain techniq
 
 **Maintain compatibility** As illustrated in the above examples, the ComplexPerson object extends the Person object while remaining backward compatible. This means if you have a connected network where some programs work with the Person object, and some other programs have evolved and become using the ComplexPerson object, these programs will remain compatible in communicating with each other in the network.
 
-**Cross-language data exchange** Because the schemaless RDA string is language and system neutral, it can be used as a data container for flexibly transferring data cross-language and cross-platform. The connected programs can flexibly deposit and consume data items stored in an RDA container without being constrained by a fixed data model, and be able to flexibly handle the data conversions and any associated exceptions, in the designated data-packing and unpacking operations.
+**Cross-language data exchange** Because the schemaless RDA string is language and system-neutral, it can be used as a data container for flexibly transferring data cross-language and cross-platform. The connected programs can flexibly deposit and consume data items stored in an RDA container without being constrained by a fixed data model, and be able to flexibly handle the data conversions and any associated exceptions, in the designated data-packing and unpacking operations.
 
 For example, an RDA container packed by a Java program contains the properties of a Java 'Person', and these properties can be unpacked in a Python program and be used for constructing say a Python 'User' object, which may or may not have exactly the same properties as the Java Person object. If anything unexpected happens, such as an item is missing, or a data conversion has failed, the Python program can put exception handling in its 'unpacking' process e.g. sending out an alert or substituting the missing item with a default value.
 
@@ -399,7 +399,7 @@ In an analogy, building ad-hoc schema-bound data exchange solutions is like send
 
 ## The solution and the challenge - universal data transport
 
-As we know, using the Post Office is convenient and cost-effective because the standard parcel processing service is able to cover various requirements of all of the clients, and the shared, common logistics and freight system helps cut down the cost.
+As we know, using the Post Office is convenient and cost-effective because the standard parcel processing meets the various requirements of its clients, such as posting of goods of different shapes and sizes, and the shared, common logistics and freight system helps cut down the cost.
 
 <div align='center'>
 <img src='img/Post-office-system.png' width='550' align='center'>
@@ -411,7 +411,7 @@ Universal Data Transport, or UDT, is a proposed data transport service that prov
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-One “challenge” the Post Office would have faced would be to provide a single consistent service that caters to the different parcel-posting requirements of all its clients, and the answer is to use standardized packaging. That is, by packaging loose items in a box, it would allow modularized, more effective transportation that can be carried out by a general courier company. Thus a key in UDT's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
+As mentioned, the Post Office's parcel-processing service must cater to the different parcel-posting requirements of all its clients, and the answer is to use standardized packaging. Packaging loose items in boxes simplifies parcel handling and allows modularized, more effective transportation that can be carried out by a general courier company. Similarly, a key in UDT's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
 
 Also, UDT is most suitable to be implemented as a messaging technology, where the data container is an encoded text message. That’s because through data encoding, a text message can be used as a container to store data, and text (i.e. ‘string’) is one of the most supported data types by major computer systems and programming languages. Data stored in a “string container” can be readily processed using generic tools and protocols, without the need for any custom proprietary treatment. For example, it can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. Thus the challenge to implementing UDT is to have a text encoding format that supports encoding any data into a string.
 
