@@ -10,7 +10,7 @@
 <div align="center">
 <img src="img/Charian-logo-orange-text.png" width="250" align="center">
 
-**_"Exchanging data between independent programs with minimum overhead and complexity."_**
+**_"Enabling data exchange between independent programs with minimum overhead and complexity."_**
 </div>
 
 <!--- TABLE OF CONTENTS --->
@@ -155,14 +155,14 @@ This example shows a bunch of discrete (and related) data items be bundled toget
             Rda rda1 = Rda.Parse(encodedRdaString);    //restore the container object from the RDA string
 
             //"unpacking" the data items from the container
-            string a = rda1.GetValue(0);  //storing value "One" at index = 0
+            string a = rda1.GetValue(0);  //retrieve the stored value ("A string") from location index = 0
             double b = double.Parse(rda1.GetValue(1));
             DateTime c = DateTime.Parse(rda1.GetValue(2));
         }
     }
 ```
 
-**Takeaway**: Primitive type data are stored as strings. The sender and the receiver are expected to know where (placement) and what (types) the data items are in a container. Rda container has no schema and does not enforce data validation. The clients are responsible for type conversion and data validation, and [handle exception if unexpected data is encounted](#how-to-exception-handling).
+**Takeaway**: Primitive type data are stored as strings. The sender and the receiver are expected to know where (placement) and what (types) the data items are in a container. Rda container has no schema and does not enforce data validation. The clients are responsible for type conversion and data validation, and [handle exceptions if any unexpected data is encountered](#how-to-exception-handling).
 
 ## How-to: Serializing a simple composite data object
 This code example illustrates implementing object serialization by implementing the IRda interface. It includes implementing the logic of "packing" properties in the ToRda() method for serialization, and the logic of "unpacking" data in the FromRda() method for de-serialization.
@@ -399,19 +399,19 @@ In an analogy, building ad-hoc schema-bound data exchange solutions is like send
 
 ## The solution and the challenge - universal data transport
 
-As with the Post Office, the reason it’s convenient and can save money is that it provides a standard parcel processing service that covers the different requirements of all of its clients and it uses a shared common logistics and freight system helps cut down the cost.
+As we know, using the Post Office is convenient and cost-effective because the standard parcel processing service is able to cover various requirements of all of the clients, and the shared, common logistics and freight system helps cut down the cost.
 
 <div align='center'>
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-Universal Data Transport, or UDT, is a proposed “post-office-like” data transport service aiming for the benefit from the same approach - that is, by creating and sharing a common, generic data transport service to be shared by all programs that require exchanging data, we can avoid building ad-hoc dedicated data-exchange connections to make the operation simpler and also save money.
+Universal Data Transport, or UDT, is a proposed data transport service that provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by creating and sharing a common, generic data transport service to be shared by all programs that require exchanging data, rather than building ad-hoc dedicated data-exchange connections.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-One “difficulty” the Post Office had was to provide a single consistent service that can cater for the different requirements from all it clients, and the answer is to use standardized packaging - that is, by packaging loose items in a box, it would allow modularized, more effective transportation that can be carried out by a general courier company. Thus a key design to UDT’s design is to have a data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
+One “challenge” the Post Office would have faced would be to provide a single consistent service that caters to the different parcel-posting requirements of all its clients, and the answer is to use standardized packaging. That is, by packaging loose items in a box, it would allow modularized, more effective transportation that can be carried out by a general courier company. Thus a key in UDT's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
 
 Also, UDT is most suitable to be implemented as a messaging technology, where the data container is an encoded text message. That’s because through data encoding, a text message can be used as a container to store data, and text (i.e. ‘string’) is one of the most supported data types by major computer systems and programming languages. Data stored in a “string container” can be readily processed using generic tools and protocols, without the need for any custom proprietary treatment. For example, it can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. Thus the challenge to implementing UDT is to have a text encoding format that supports encoding any data into a string.
 
