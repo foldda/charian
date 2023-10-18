@@ -30,14 +30,16 @@
 
 # What Is Charian
 
-Charian (pron. /ka-ri-en/) is a data-serialization API. By encoding structured data into a text string, Charian can be used for implementing -
+Charian (pron. /ka-ri-en/) is a data-serialization API, for encoding arbitrarily structured data into a text string. 
+
+Charian data-serialization can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing structured data (as strings) in files or databases;
 - **Distributed computing** - for passing programming object or data structure as a "string parameter" in RPC calls;
 - **Data communication** - for sending complex structured data in a serial form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-Charian uses the schemaless RDA format[^1] in its encoding, which means it can be used for serializing any data object of any data structure without predefining (and maintaining) a schema. Compared to the other data serialization systems and methods, Charian's simple, one-size-fits-all approach has many advantages, for being -
+Charian uses the schemaless RDA format[^1] in its encoding, which has the ability to serialize any data object of any data structure without predefining (and maintaining) a schema. Compared to the other data serialization systems and methods, Charian's simple, one-size-fits-all approach has many advantages, for being -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
