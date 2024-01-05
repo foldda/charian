@@ -32,12 +32,14 @@
 
 Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a formatted text string, which can be used for implementing -
 
-- **Persistent data storage** - for conveniently storing arbitory structured data in files or databases (as strings);
+- **Persistent data storage** - for conveniently storing arbitrary structured data in files or databases (as strings);
 - **Distributed computing** - for passing programming object or data structure (as a "string parameter") in RPC calls;
 - **Data communication** - for sending complex structured data in a serialized form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-By using the newly-developped, schemaless RDA format[^1] in its encoding, Charian provides a general-purposed serialization, meaning without any "schema change" it can be used for serializing objects of any data model. Being schemaless, Charian allows cross-program data exchange using only common data transport methods and protocols, as opposed to the conventional approaches that require dedicated custom-built pipelines that depend on pre-established data models. Charian's generic, one-size-fits-all approach gives it many advantages over the other serialization systems and methods, such as being -
+By using the new, schemaless RDA format[^1] in its encoding, Charian implements so-called "general-purpose" serialization, meaning it can be used for serializing any data without being bound (limited) to a pre-established data model. Being schemaless, Charian is most suitable for flexible and dynamic data exchange between independent programs, as it only uses common data transport methods and protocols, as opposed to the conventional approaches that require dedicated custom pipelines that are built for specific applications and data models. 
+
+Charian's generic, one-size-fits-all approach gives it many advantages over the other serialization systems and methods, such as being -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
