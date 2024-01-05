@@ -388,11 +388,11 @@ For example, an RDA container packed by a Java program contains the properties o
 
 # Afterword: The Big Picture
 
-Here let's talk about why we developed Charian and RDA whilst there are already many XML/JSON-based data serialization and transport solutions.
+Why do we need Charian and RDA while there are already many XML/JSON-based data serialization and transport solutions? 
 
 ## The problem - schema-based data exchange
 
-Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, typically execute on separate computer environments but often need to communicate with each other in a collaborative distributed solution. Exchanging data between independent programs is normally complicated and requires extra effort, especially when they are developed and maintained by different parties. The conventional approach for cross-program data exchange typically involves building an ad hoc, dedicated pipeline connecting the communicating parties, which need to 'agree’ on a data structure (i.e. a schema).
+Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other to form a collaborative distributed solution. Exchanging data in such cases is normally complicated and requires extra effort because of the implied diversity and uncertainty - the programs can have a different design, be written in different languages, execute in separate computer environments, and can be developed and maintained by different parties. The conventional approach for cross-program data exchange typically involves building a dedicated pipeline connecting the communicating parties and having an 'agreed' format (i.e. a schema) for the data exchange.
 
 <div align='center'>
 <img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
@@ -408,7 +408,7 @@ In an analogy, building ad-hoc schema-bound data exchange solutions is like send
 
 ## The solution and the challenge - universal data transport
 
-As we know, using the Post Office is convenient and cost-effective because the standard parcel processing meets the various requirements of its clients, such as posting of goods of different shapes and sizes, and the shared, common logistics and freight system helps cut down the cost.
+As we know, using the Post Office is convenient and cost-effective for posting goods of different shapes and sizes, because the standard parcel processing can meet the client's wide range of requirements, and the shared logistics and freight system helps cut down the cost.
 
 <div align='center'>
 <img src='img/Post-office-system.png' width='550' align='center'>
@@ -420,9 +420,9 @@ Universal Data Transport, or UDT, is a proposed data transport service that prov
 <img src='img/Charian-data-transport.png' width='550'>
 </div>
 
-As mentioned, the Post Office's parcel-processing service must cater to the different parcel-posting requirements of all its clients, and the answer is to use standardized packaging. Packaging loose items in boxes simplifies parcel handling and allows modularized, more effective transportation that can be carried out by a general courier company. Similarly, a key in UDT's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
+As mentioned, the Post Office's parcel-processing service must cater to the different parcel-posting requirements of all its clients, and it's achieved through the use of standardized packaging. Packaging loose items in boxes simplifies parcel handling and allows modularized, more effective transportation that can be carried out by a general courier company. Similarly, a key in UDT's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
 
-Messaging technology, where the data container is an encoded text message, is most suitable for implementing UDT because data stored in a “string container” can be readily processed using generic tools and protocols, without the need for any custom proprietary treatment, and text (aka. ‘string’) is one of the most supported data types by major computer systems and programming languages. Through data encoding, a text message can be used as a container to store data, and it can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. 
+Messaging technology, where the data is encoded in a text message, is most suitable for implementing UDT because when the data is stored in a “string container” it can be readily processed using generic tools and protocols because string is one of the most supported data types by major computer systems and programming languages. In other words, UDT can use a text message to store data, and the message string can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. 
 
 Thus the challenge to implementing UDT is to have a text encoding format that supports encoding any data into a string. Unfortunately, popular data formats, such as XML, JSON and CSV, are not suitable for encoding the UDT container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. So our quest for a suitable encoding has led to the development of RDA - a new schemaless data format.
 
