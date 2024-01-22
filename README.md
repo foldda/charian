@@ -15,7 +15,7 @@
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
-1. [What Is Charian](#what-is-charian)
+1. [Introducing Charian](#introducing-charian)
     - [Inside the API](#inside-the-api)
     - [How does it work](#how-does-it-work)
 2. [Getting Started](#getting-started)
@@ -28,18 +28,18 @@
 4. [License, Etc.](#license-etc)
 5. [Afterword: The Big Picture](#afterword-the-big-picture)
 
-# What Is Charian
+# Introducing Charian
 
-Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a formatted text string, which can be used for implementing -
+Charian (pron. /ka-ri-en/) is a data-serialization API for encoding structured data in a text string. It can be used for implementing -
 
 - **Persistent data storage** - for conveniently storing arbitrary structured data in files or databases (as strings);
 - **Distributed computing** - for passing programming object or data structure (as a "string parameter") in RPC calls;
 - **Data communication** - for sending complex structured data in a serialized form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-By using the new, schemaless RDA format[^1] in its encoding, Charian implements the so-called "general-purpose" serialization, meaning it can be used for serializing any data without being bound (and limited) to a pre-established data model. Being schemaless, Charian is most suitable for flexible and dynamic data exchange between independent programs, as it only uses common data transport methods and protocols, as opposed to the conventional approaches that require dedicated custom pipelines that are built for specific applications and data models. 
+Charian uses the new, schemaless RDA format[^1] in its encoding, and can be used for serializing arbitrary data without a pre-established data model or schema. Being schemaless, Charian is most suitable for building flexible and dynamic data exchange between independent programs, using only common data transport methods and protocols, as opposed to the conventional approaches that require dedicated custom pipelines that are built for specific applications and data models. 
 
-Charian's generic, one-size-fits-all approach gives it many advantages over the other serialization systems and methods, such as being -
+Charian's generic, one-size-fits-all approach gives it many advantages over conventional serialization systems and methods, such as being -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
@@ -50,7 +50,7 @@ Charian's generic, one-size-fits-all approach gives it many advantages over the 
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-Perhaps more importantly, because of these characteristics, Charian is more of just another serializer, but a technology for building [an exciting universal data transportation framework](#afterword-the-big-picture) that allows unified data exchange between all programs. 
+Indeed, Charian is more of just another serializer, but a technology for building [a system that allows unified data exchange between all programs](#afterword-the-big-picture). 
 
 ## Inside the API
 
