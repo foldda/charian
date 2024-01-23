@@ -54,7 +54,7 @@ Because of these, Charian is more than just another serializer, but an enabling 
 
 ## Inside the API
 
-Charian API is implemented in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) from this repo. These implementations are clones that share a near-identical programming design/structure/naming convention. Below we'll use C# syntax to explain the API's concept and usage pattern.  
+Charian API is implemented in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) from this repo. These implementations are clones of each other, meaning they share a near-identical programming design/structure/naming convention. Below we'll use C# syntax to explain the API's concept and usage pattern.  
 
 The C# API contains only two defined types: **class Rda** and **interface IRda**. 
 
