@@ -94,15 +94,15 @@ A client object implements the IRda interface to indicate that itself can be con
 
 ## How does it work
 
-Imagine you're moving house and have various household items to be moved to a new place: you would firstly pack these items into boxes then hand them over to a courier company which would manage the transportation, and once the boxes are delivered to the new place, you would unpack the boxes and placing the items to their designated places.
+Imagine you're moving house and have various household items to be moved to a new place: you would first pack these items into boxes, then the boxes would be transported by a courier company to the new place, and once the boxes are delivered, you would unpack the boxes and placing the items to their designated places.
 
-Exchanging data using Charian is similar to packing and transporting household stuff of moving house, except in this case we are packing and moving data items. In this case, a data-sending client would -
+Exchanging data using Charian is similar to the process of moving house, except in this case we are packing and moving data items rather than household stuff. In this case, a data-sending client would -
 
 1) create an Rda object and use it as a container,
 2) use the Setter methods to “pack” data items that require transfer into the container, and then
 3) use the ToString method to convert the container to an RDA string.
 
-Then, a data "courier" process takes over transporting the data container in the form of a string. Such a process can be saving the string to a file or to a database table, or sending it to a network destination via a network protocol.
+Then, a data "courier" process takes over transporting the data container in the form of a string. Such a process can be saving the string to a file or a database table, or sending it to a network destination via a network protocol.
 
 A data-receiving client, upon having received the RDA string, would -
 
