@@ -92,9 +92,9 @@ A client object implements the IRda interface to indicate that itself can be con
 
 ## How does it work
 
-Imagine you're moving house and have various household items to be moved to a new place: you would first pack these items into boxes, then the boxes would be transported by a courier company to the new place, and once the boxes are delivered, you would unpack the boxes and placing the items to their designated places.
+Imagine you're moving house and have many household items to be moved to a new place. In this process, you would first pack these items into boxes, then transport the boxes to the new place by a courier company, and once the boxes are delivered, you would unpack the boxes and place the items to their designated places.
 
-Exchanging data using Charian is similar to the process of moving house, except in this case we are packing and moving data items rather than household stuff. In this case, a data-sending client would -
+Exchanging data using Charian is similar to moving house, except we are packing and moving data items rather than household items. In this case, a data-sending program would -
 
 1) create an Rda object and use it as a container,
 2) use the Setter methods to “pack” data items that require transfer into the container, and then
@@ -102,7 +102,7 @@ Exchanging data using Charian is similar to the process of moving house, except 
 
 Then, a data "courier" process takes over transporting the data container in the form of a string. Such a process can be saving the string to a file or a database table, or sending it to a network destination via a network protocol.
 
-A data-receiving client, upon having received the RDA string, would -
+A data-receiving program, upon having received the RDA string, would -
 
 1) use the Parse method to convert the string back to an Rda container, and
 2) use the Getter methods to "unpack" and consume the data items from the container.
@@ -122,7 +122,8 @@ Charian has a minimal code base and has no third-party dependency. It is perfect
 [^4]: Tip: you can use the test cases provided in this repo as examples of using Charian.
 
 ## How-to: Transporting primitive data items in an RDA string
-This example shows relating and bundling a collection of discrete data items together and saved to a file as an RDA-encoded string. It shows a client can utilize the provided "unlimited" storage to store arbitrary data, without having to pre-define a schema. Note the underlying RDA-encoding is transparent to the client.
+This example shows grouping a collection of discrete data items and saving them to a file as an RDA-encoded string. The program utilizes the provided "unlimited" storage to store arbitrary data, without having to pre-define a schema. Note through the API, the underlying RDA-encoding is transparent to the client.
+
 ```csharp
     using Charian;
 
