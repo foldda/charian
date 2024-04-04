@@ -26,7 +26,7 @@
     - [How-to: Exception handling](#how-to-exception-handling)
 3. [Other Applicable Uses](#other-applicable-uses)
 4. [License, Etc.](#license-etc)
-5. [Afterword: The Big Picture](#afterword-the-big-picture)
+5. [The Big Picture](#the-big-picture)
 
 # Introducing Charian
 
@@ -385,7 +385,7 @@ For example, an RDA container packed by a Java program contains the properties o
 
 * [FAQ] (coming soon)
 
-# Afterword: The Big Picture
+# The Big Picture
 
 Why do we need Charian and RDA while there are already many XML/JSON-based data serialization and transport solutions? 
 
@@ -405,7 +405,7 @@ In an analogy, building ad-hoc schema-bound data exchange solutions is like send
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
 </div>
 
-## The solution and the challenge - universal data exchange
+## The solution and the challenge - Unified Data Exchange
 
 As we know, using the Post Office is convenient and cost-effective for posting goods of different shapes and sizes, because the standard parcel processing can meet the client's wide range of requirements, and the shared logistics and freight system helps cut down the cost.
 
@@ -413,7 +413,7 @@ As we know, using the Post Office is convenient and cost-effective for posting g
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-Universal Data Exchange, or UDX, is a proposed data exchange service that provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by creating and sharing a common, generic data collection and delivery service to all programs that require exchanging data, rather than building ad-hoc dedicated data-exchange solutions.
+Unified Data Exchange, or UDX, is a proposed data exchange service that provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by creating and sharing a common, generic data collection and delivery service to all programs that require exchanging data, rather than building ad-hoc dedicated data-exchange solutions.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
@@ -450,11 +450,11 @@ Inheritively from RDA's schemaless design, the encoding is simpler, more space-e
 
 ## The product - Charian
 
-Backed by the RDA encoding, the **Rda class** and the **IRda interface** from Charian API are designed to make the UDX operations simple, intuitive, and practical[^6]. For object serialization, a client only needs to use a provided storage space (modeled as a simple container object) for "data packing", without having to pre-establish and maintain a rigid data model or a schema.
+Backed by the RDA encoding, the **Rda class** and the **IRda interface** from Charian API are designed to make the UDX operations practical, simple, and intuitive[^6]. For object serialization, a client only needs to use a provided storage space (modeled as a simple container object) for "data packing", without having to pre-establish and maintain a rigid data model or schema.
 
 [^6]: The description and examples are given in C# syntax, but the illustrated methods can be easily translated to the Python and Java implementations which are also provided in this repo, and have identical functions.
 
-Indeed, Charian is not just another data encoder or object serializer. By making cross-program data exchange much simpler and more flexible, Charian allows for building a "post-office-like" data exchange eco-system through which more programs and devices can connect and work collaboratively like never before, and it is a key technology for developing flexible and large-scale distributed systems and solutions.
+Indeed, Charian is not just another data encoder or object serializer. By making cross-program data exchange simpler and more flexible, Charian allows for building a "post-office-like" data exchange eco-system through which more programs and devices can connect and work collaboratively like never before. It's the enabling technology of a new way of data communication that can have a wide range of uses.
 
 <!--- MARKDOWN LINKS & IMAGES
 [# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
