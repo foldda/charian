@@ -37,18 +37,18 @@ Charian (pron. /ka-ri-en/) is an API for encoding structured data to a text stri
 - **Data communication** - for sending complex structured data in a serialized form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-Compared to conventional serialization systems and methods, Charian uses the schemaless RDA format[^1] in its encoding, meaning the serialization does not require a pre-established data model or schema. Rather, Charian's one-size-fits-all approach brings many advantages such as -
+Charian serialization uses a new, schemaless RDA format[^1] in its data encoding, meaning the process does not require pre-establishing a data model or schema. Compared to conventional approaches, Charian's one-size-fits-all approach has many advantages such as being -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format. The encoding uses multiple delimiters, which can be dynamically defined and expanded, and provides an encoded storage space that is accessible as a multidimensional array.
 
 - **Simple and universal**: It is ideal for data exchange between programs with evolving and dynamic data models;
-- **Minimalism**: The API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
+- **Minimalism and lightweight**: The API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
 - **Easy to use**: Charian is "one size fits all" and has no settings or configuration for different situations;
 - **Language and system independent**: Charian-serialized objects can be exchanged cross-language and cross-platform[^2].
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-Charian allows lightweight and flexible cross-program data exchange by using only common data transport methods and protocols, as opposed to the conventional approaches of building and maintaining custom pipelines that are bound to specific applications and data models. The vision of Charian is to be the foundation technology of [a Universal Data Exchange system for unified data communication between all programs](#afterword-the-big-picture). 
+By serializing arbitrary data objects into strings, Charian allows flexible cross-program data exchange using only generic data exchange methods and protocols, as opposed to the traditional approach of building data model-dependent custom pipelines, Charian allows envisioning of [a new data communication ecosystem that provides unified data communication between collaborative programs](#the-big-picture). 
 
 ## Inside the API
 
