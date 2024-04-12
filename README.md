@@ -47,13 +47,13 @@ Charian serialization uses a new, schemaless format called RDA[^1] in its encodi
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-In contrast to the traditional approach of building data-model-dependent custom pipelines, Charian allows flexible cross-program data exchange using only generic data exchange methods and protocols and paves the way for [a new data communication ecosystem that simplifies and unifies data communication between collaborative programs](#the-big-picture). 
+In contrast to the traditional approach of building custom, data-model-dependent pipelines, Charian [simplifies and unifies data communication between collaborative programs](#the-big-picture), by allowing flexible cross-program data exchange using only generic data exchange methods and protocols. 
 
 Charian API is implemented in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java) in this repo. These implementations are clones of each other, meaning they share a near-identical programming design/structure/naming convention. Below we'll use the C# API as an example to explain Charian's concept and usage pattern. 
 
 ## Inside the API
 
-The C# API contains only two defined types: **class Rda** and **interface IRda**. 
+The C# API contains only two object types: **class Rda** and **interface IRda**. 
 
 **Class Rda**
 
@@ -67,31 +67,31 @@ public void SetRda(Rda rda, int[] address)      /* save an Rda object at the add
 public Rda GetRda(int[] address)      /* retrieve an Rda object from the addressed location */
 ```
 
-Note through the API only two "data types" are supported by the Rda container - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string; and all composite data, like a class or an array, can be stored as an Rda object (by recursively decomposing a complex data into less complex structures or to primitive data items, as illustrated in [this example below](#how-to-serializing-a-complex-object-with-nested-classes)).
+Note only two "data types" can be stored in the Rda container - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string and all composite data, like a class or an array, can be stored as an Rda object (by recursively decomposing the data object to less complex structures or primitive data items, as in [this example below](#how-to-serializing-a-complex-object-with-nested-classes)).
 
-An Rda object is also "serializable". The Rda class implements the following methods that allow itself to be converted to and from a text string that is encoded in [the RDA format](#the-invention---rda-encoding):
+In addition, the Rda class implements the following methods that allow itself to be converted to and from a text string that is encoded in [the RDA format](#the-invention---rda-encoding):
 
 ```csharp
 public string ToString()      /* convert this Rda container object to an RDA string */
 public static Rda Parse(string rdaEncodedString)   /* decode the RDA string and return an Rda container object  */
 ```
 
-_**Note:** From the API, class Rda offers additional methods and properties to the above-described (core) methods. Please refer to the class test cases from this repo for usage examples all the implemented features._
+_**Note:** From the API, class Rda offers additional methods and properties to the above-described (core) methods. Please refer to the class test cases from this repo for usage examples of all the implemented features._
 
 **Interface IRda**
 
-The IRda interface contains the definition of two methods:
+The IRda interface defines two methods:
 
 ```csharp
 Rda ToRda()   /* returns properties and state of this object in an Rda container object */
 IRda FromRda(Rda rda) /* restores properties and state of this object from values in an Rda container */
 ```
 
-A client object implements the IRda interface to indicate that itself can be converted to and from an Rda object, which in turn can be converted to an RDA-encoded string - in other words, a class implementing the IRda interface to make itself "serializable".
+A class implements the IRda interface to mark itself "serializable", in the Charian way ...
 
 ## How does it work
 
-Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and then transport the boxes using a courier company. Once the boxes are delivered to the new place, you would unpack the boxes, reassemble the items, and place them to their designated places.
+Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and then transport the boxes using a courier company. Once the boxes are delivered to the new place, you would unpack the boxes, reassemble the items, and replace them to their designated places.
 
 Serializing data using Charian is similar to the moving house exercise, except we are packing and moving data rather than household items. In Charian serialization, a data-sending program would -
 
@@ -108,7 +108,7 @@ In the deserializing process, a data-receiving program, upon having received the
 
 In the above process, the Rda class plays the important role of being a 'container box' for packing and unpacking data items; because it can be turned into a string, it effectively serializes the data it contains.
 
-The IRda interface is a signature indicating an object implements serialization and deserialization in "the Charian way": in the **ToRda** method it would specify the data-packing logic that stores the class' properties and the state at designated places inside an Rda container, and in the **FromRda** method it'd specify the logic of unpacking a received Rda container and restoring the object's properties and state using the received data values.
+The IRda interface is a signature indicating an object implements serialization and deserialization (in "the Charian way"): in the **ToRda** method it would specify the data-packing logic that stores the class' properties and the state at designated places inside an Rda container, and in the **FromRda** method it'd specify the logic of unpacking a received Rda container and restoring the object's properties and state using the received data values.
 
 The "how-to" examples in the next section demonstrate these concepts and operations.
 
