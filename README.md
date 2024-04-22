@@ -47,7 +47,7 @@ Inside Charian, it uses the new, schemaless RDA[^1] format in the encoding, mean
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-Charian serialization allows flexible cross-program data exchange using only generic data exchange methods and protocols. This results in much simplified and more efficient data communication between collaborative programs than the traditional approach of building custom, data-model-dependent pipelines between these programs. Indeed, Charian opens the door towards [universal data exchange](#the-big-picture). 
+Charian serialization allows flexible cross-program data exchange using only generic data exchange methods and protocols. This results in much simplified and more efficient data communication between collaborative programs than the traditional approach of building custom, data-model-dependent pipelines between these programs. Indeed, Charian opens the door towards [a vision of universal data exchange](#the-big-picture). 
 
 In this repo, Charian API is implemented in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java). These implementations are clones of each other, meaning they share a near-identical programming design/structure/naming convention. Below we'll use the C# API as an example to explain Charian's concept and usage pattern. 
 
@@ -401,7 +401,7 @@ In an analogy, building ad-hoc schema-bound data exchange solutions is like send
 <img src='img/Pre-Post-office-system.png' width='470' align='center'>
 </div>
 
-## The solution and the challenge - Unified Data Exchange
+## The solution and the challenge - Universal Data Exchange
 
 As we know, using the Post Office is convenient and cost-effective for posting goods of different shapes and sizes, because the standard parcel processing can meet the client's wide range of requirements, and the shared logistics and freight system helps cut down the cost.
 
@@ -409,7 +409,7 @@ As we know, using the Post Office is convenient and cost-effective for posting g
 <img src='img/Post-office-system.png' width='550' align='center'>
 </div>
 
-Unified Data Exchange, or UDX, is an envisioned data exchange service that provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by creating and sharing a common, generic data collection and delivery service to all programs that require exchanging data, rather than building ad-hoc dedicated data-exchange solutions.
+Universal Data Exchange, or UDX, is an envisioned data exchange service that provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by creating and sharing a common, generic data collection and delivery service to all programs that require exchanging data, rather than building ad-hoc dedicated data-exchange solutions.
 
 <div align='center'>
 <img src='img/Charian-data-transport.png' width='550'>
