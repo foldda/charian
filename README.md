@@ -47,7 +47,7 @@ Inside Charian, it uses the new, schemaless RDA[^1] format in the encoding, mean
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-When used in cross-program data exchange, in contrast to the traditional approach of building custom, data-model-dependent pipelines, Charian serialization allows flexible cross-program data exchange using only generic data exchange methods and protocols, resulting in much simplified and efficient data communication between collaborative programs. Indeed, Charian opens the door towards [universal data exchange](#the-big-picture). 
+Charian serialization allows flexible cross-program data exchange using only generic data exchange methods and protocols. This results in much simplified and more efficient data communication between collaborative programs than the traditional approach of building custom, data-model-dependent pipelines between these programs. Indeed, Charian opens the door towards [universal data exchange](#the-big-picture). 
 
 In this repo, Charian API is implemented in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java). These implementations are clones of each other, meaning they share a near-identical programming design/structure/naming convention. Below we'll use the C# API as an example to explain Charian's concept and usage pattern. 
 
