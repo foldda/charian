@@ -39,39 +39,70 @@ namespace Charian
         private string _scalarValue = null;
         //Children are for storing the "composite" content, when RDA's Dimension > 0, where each child is a sub-RDA
         public List<Rda> Elements { get; } = new List<Rda>();
-        public Rda Home { get; private set; } // the upper-level RDA of which this RDA is a child
+        public Rda Parent { get; private set; } // the upper-level RDA of which this RDA is a child
 
         //for the whole RDA structure, encoding is fixed and shared amongs parent and children
-        private RdaEncoding _encoding;
-        public RdaEncoding GlobalEncoding => Home == null ? _encoding : Home.GlobalEncoding;   
+        private RdaEncoding _encoding = null;
+        public RdaEncoding GlobalEncoding => Parent == null ? _encoding : Parent.GlobalEncoding;
+
+        public int OriginalDelimitersLength => GlobalEncoding.CustomParsingDelimiters.Length;
+
+        internal char[] AvaliableEncodingDelimiters { get; private set; } = RdaEncoding.DEFAULT_DELIMITER_CANDIDATES;
+
 
         /**
-         * Constructors
+         * Root-level Rda constructor
          */
         public Rda(RdaEncoding encoding)
         {
             _encoding = encoding;
+            AvaliableEncodingDelimiters 
+                = CombineDelimiters(encoding.CustomParsingDelimiters, RdaEncoding.DEFAULT_DELIMITER_CANDIDATES, encoding.EscapeChar);
         }
+
+        char[] CombineDelimiters(char[] delimitersSet1, char[] delimitersSet2, char escapeChar)
+        {
+            HashSet<char> uniqueChars = new HashSet<char>();
+
+            foreach (char c in delimitersSet1)
+            {
+                if (c != escapeChar) { uniqueChars.Add(c); }
+            }
+
+            foreach (char c in delimitersSet2)
+            {
+                if (c != escapeChar) { uniqueChars.Add(c); }
+            }
+
+            char[] result = new char[uniqueChars.Count];
+            uniqueChars.CopyTo(result);
+            return result;
+        }
+
 
         //use default encoding
         public Rda() : this(new RdaEncoding()) { }
 
-        private Rda(Rda parent) 
+        public Rda MakeChild(Rda parent) 
         {
-            Home = parent;    //inherites parent's encoding
+            return new Rda()
+            {
+                Parent = parent,    //inherites parent's encoding
+                AvaliableEncodingDelimiters = parent.AvaliableEncodingDelimiters
+            };
         }
 
         public static Rda Parse(string rdaString)
         {
             RdaEncoding encoding = GetHeaderSectionEncoder(rdaString);
             Rda rda = new Rda(encoding);
-            if(encoding.Delimiters.Length == 0)
-            {
+            if(encoding.CustomParsingDelimiters.Length == 0)
+            {   //dimension = 0
                 rda.ScalarValue = rdaString;
             }
             else
             {
-                string payload = rdaString.Substring(encoding.Delimiters.Length + 2);
+                string payload = rdaString.Substring(encoding.CustomParsingDelimiters.Length + 2);
                 rda.ParsePayload(payload, DetermineParsingFormatVersion(payload) == FORMATTING_VERSION.V2);
             }
 
@@ -82,29 +113,62 @@ namespace Charian
          * Derived properties from the "storage fields" and the encoding field
          */
 
-        public string PayLoad => GetPayload(DelimitersInUse, FORMATTING_VERSION.V1);
-        public string PayLoadV2 => GetPayload(DelimitersInUse, FORMATTING_VERSION.V2);
+        public string PayLoad => GetPayload(EncodingDelimiters, FORMATTING_VERSION.V1);
+        public string PayLoadV2 => GetPayload(EncodingDelimiters, FORMATTING_VERSION.V2);
 
-        //it's the max-depth towards the bottom, it determines the number of delimiters required for encoding this RDA, 
+        //determines the number of delimiters required for encoding this RDA, 
+        private int MinDelimiterDimension
+        {
+            get
+            {
+                int maxChildDimemsion = -1;
+                if(Elements.Count == 1)
+                {
+                    return Elements[0].MinDelimiterDimension;
+                }
+                else
+                {
+                    foreach (var e in Elements)
+                    {
+                        maxChildDimemsion = Math.Max(maxChildDimemsion, e.MinDelimiterDimension);
+                    }
+                }
+
+                return maxChildDimemsion + 1;   //dimension will be 0 when there is no children. 
+            }
+        }
+
+        public char[] MinimumEncodingDelimiters
+        {
+            get
+            {
+                int delimitersLength = Dimension;   // Math.Max(OriginalDelimitersLength, MinDelimiterDimension);
+                char[] result = new char[delimitersLength];
+                Array.Copy(AvaliableEncodingDelimiters, Level, result, 0, delimitersLength);
+                return result;
+            }
+        }
+
+        //it's the max-depth towards the bottom
         public int Dimension
         {
             get
             {
-                //if (Children.Count == 1) { return Children[0].Dimension; }
                 int maxChildDimemsion = -1;
-                foreach (var c in Elements)
+
+                foreach (var e in Elements)
                 {
-                    maxChildDimemsion = Math.Max(maxChildDimemsion, c.Dimension);
+                    maxChildDimemsion = Math.Max(maxChildDimemsion, e.Dimension);
                 }
 
-                return maxChildDimemsion + 1;
+                return maxChildDimemsion + 1;   //dimension will be 0 when there is no children. 
             }
         }
 
 
         //the number of steps from the root Parent RDA
         //it's used as the index to Delimiters array for determing the next-level delimiter
-        private int Level => Home == null ? 0 : Home.Level + 1;
+        private int Level => Parent == null ? 0 : Parent.Level + 1;
 
         /**
          * API Properties and Methods - when using RDA as a storage container
@@ -128,14 +192,14 @@ namespace Charian
         //NB, for Dimension-0 RDA, it outputs the stored scalar value (i.e. the header-section is an empty string for Dimension-0 RDA)
         public override string ToString()
         {
-            return Dimension == 0 ? ScalarValue : $"{new string(DelimitersInUse)}{EscapeChar}{DelimitersInUse[0]}{PayLoad}";
+            return MinimumEncodingDelimiters.Length == 0 ? ScalarValue : $"{new string(MinimumEncodingDelimiters)}{EscapeChar}{MinimumEncodingDelimiters[0]}{PayLoad}";
         }
 
         //this rda's 'string expression', with version-2 formatting applied.
         //version-2 formatting uses redundant formatting chars such as white-space, line-breaks, and double-quotes in the payload's encoding
         public string ToStringFormatted()
         {
-            return Dimension == 0 ? ScalarValue : $"{new string(DelimitersInUse)}{EscapeChar}{DelimitersInUse[0]}{LINE_BREAK} {PayLoadV2}";
+            return Dimension == 0 ? ScalarValue : $"{new string(MinimumEncodingDelimiters)}{EscapeChar}{MinimumEncodingDelimiters[0]}{LINE_BREAK} {PayLoadV2}";
         }
 
 
@@ -146,15 +210,15 @@ namespace Charian
 
             if (childRda != null)
             {
-                GlobalEncoding.TryExtendRequiredDelimiters(Level + childRda.Dimension + 1); //throws Exception if limit is reached
-                childRda.Home = this;
+                //make the child-Rda encoding the same as this Rda
+                childRda.Parent = this;
 
                 Elements[index] = childRda; //set or replace the child at the addressed position
             }
             else
             {
-                GlobalEncoding.TryExtendRequiredDelimiters(Level + 1);  //throws Exception if limit is reached
-                Elements[index] = new Rda(this);    //make a dummy
+                //GlobalEncoding.TryExtendRequiredDelimiters(Level + 1);  //throws Exception if limit is reached
+                Elements[index] = MakeChild(this);    //make a dummy
             }
         }
 
@@ -162,18 +226,20 @@ namespace Charian
         //NB: by indexing over an RDA having no children (i.e. Dim-0) would automatically increases its dimension
         public Rda GetRda(int index)
         {
-            GlobalEncoding.TryExtendRequiredDelimiters(Level + 1);  //throws Exception if limit is reached
+            //GlobalEncoding.TryExtendRequiredDelimiters(Level + 1);  //throws Exception if limit is reached
             
             if(Dimension == 0)
             {
                 //push this RDA's scalar-value to become the left-most child's value
-                Elements.Add(new Rda(this) { ScalarValue = _scalarValue }); ;
+                var child = MakeChild(this);
+                child.ScalarValue = _scalarValue;
+                Elements.Add(child); ;
             }
 
             EnsureArrayLength(index);   //creates dummies if required
 
             //the indexed child can be safely retrived
-            return Elements[index];
+            return Elements[index];     //NB, if this element is-dummy, the supposed value would be NULL if IRda.FromRda() is called.
         }
 
         //set a child RDA at the index'd location, extend the max index if required 
@@ -247,7 +313,10 @@ namespace Charian
                 List<string> result = new List<string>();
                 if (Elements.Count == 0)
                 {
-                    result.Add(_scalarValue);
+                    if (!string.IsNullOrEmpty(_scalarValue))
+                    {
+                        result.Add(_scalarValue);   //single child, not dummy node
+                    }
                 }
                 else
                 {
@@ -266,11 +335,17 @@ namespace Charian
                 {
                     _scalarValue = null;
                 }
+                else if(value.Length == 1)
+                {
+                    _scalarValue = value[0];
+                }
                 else
                 {
+                    _scalarValue = null;
                     foreach (var s in value)
                     {
-                        var child = new Rda(this) { ScalarValue = s };
+                        var child = MakeChild(this);
+                        child.ScalarValue = s;
                         Elements.Add(child);
                     }
                 }
@@ -302,20 +377,21 @@ namespace Charian
 
         /* this is the end of the main API, below are helper methods */
 
-        public char ChildDelimiter => GlobalEncoding.Delimiters[Level];  //the char that separates the immediate children elements
-        public char EscapeChar => GlobalEncoding.EscapeChar;
-
-        public int Length => Elements.Count;
-
-        public char[] DelimitersInUse
+        //the encoding delimiters (used by ToString()) for the given Rda
+        public char[] EncodingDelimiters
         {
             get
             {
-                char[] subArray = new char[Dimension];
-                Array.Copy(GlobalEncoding.Delimiters, Level, subArray, 0, Dimension);
-                return subArray;
+                char[] result = new char[Dimension];
+                Array.Copy(AvaliableEncodingDelimiters, Level, result, 0, result.Length);
+                return result;
             }
         }
+
+        public char ChildDelimiter => AvaliableEncodingDelimiters[Level];  //the char that separates the immediate children elements
+        public char EscapeChar => GlobalEncoding.EscapeChar;
+
+        public int Length => Elements.Count;
 
         //decode the delimited values in payload and apply unescaping to restore the 'original' value
         //and store these unescaped values to the scalar_value variable of an rda
@@ -323,31 +399,34 @@ namespace Charian
         {
             Elements.Clear();
 
-            //apply maximun unescape to "string-value" before it's stored
-            //this will be reversed (escaped) when the value is used for assembling a payload section.
-            _scalarValue = UnEscape(payloadString, GlobalEncoding.Delimiters, EscapeChar, v2Formatted);
-
-            //... then continue to (recurrsively) parse the rda-encoded payload string ..
-
-            //make sure the parsing doesn't go beyond the RDA-string "levels" limit (set by the encoding header section)
-            if (Level < GlobalEncoding.Delimiters.Length)
+            //make sure the parsing doesn't go beyond the RDA-string "levels" limit (set by the encoding header section)
+            if (GlobalEncoding.CustomParsingDelimiters.Length > Level)
             {
+                //... then continue to (recurrsively) parse the rda-encoded payload string ..
                 var sections = ParseChildrenContentSections(payloadString);
- 
+
                 foreach (string childPayLoad in sections)
                 {
-                    var child = new Rda(this);
-                    child.ParsePayload(childPayLoad, v2Formatted); 
+                    var child = MakeChild(this);
+                    child.ParsePayload(childPayLoad, v2Formatted);  //recursion
 
                     Elements.Add(child);
                 }
             }
+            else
+            {
+                //apply maximun unescape to "string-value" before it's stored
+                //this will be reversed (escaped) when the value is used for assembling a payload section.
+                _scalarValue = UnEscape(payloadString, GlobalEncoding.CustomParsingDelimiters, EscapeChar, v2Formatted);
+            }
         }
 
-        //shrink (shortening) each branch to its minimun required dimension
+        //dimensions can be expended automatically when accessing dummy elements (ie. it dynamically creates elements/levels)
+        //this method reverse the effect (of expending) and shorten each branch to its minimun required dimension
         public void CompressDimension()
         {
-            if (Dimension > 0)
+            _encoding = new RdaEncoding();
+            if (Dimension > 0)  /* Elements.Count > 0 */
             {
                 //compress all children (recursion)
                 foreach (var element in Elements)
@@ -362,15 +441,67 @@ namespace Charian
                     { 
                         return; /* no compression - if non-dummy child found before index 0 */
                     }
+                    else
+                    {
+                        Elements.RemoveAt(i);
+                    }
                 }
 
-                //reduce the dimension if these is only one non-dummy child, and its dimension is 0,
-                //... by bringing the child's scalar value up, which also deletes all children
+                //reduce this Rda's dimension if there is only one child, and its dimension is 0,
+                //... by bringing the child's scalar value up, and deletes all children
+                //note if Elements[0] is dummy, this will also become a dummy
                 if (Elements[0].Dimension == 0)
                 {
                     this.ScalarValue = Elements[0].ScalarValue;  
+                    Elements.Clear();
                 }
             }
+        }
+
+        //test if an Rda object contains no data.
+        public static bool IsNullOrEmpty(Rda rda)
+        {
+            if(rda == null)
+            {
+                return true;
+            }
+            else if (rda.Dimension > 0)
+            {
+                foreach (var element in rda.Elements)
+                {
+                    if (IsNullOrEmpty(element) == false)
+                    {
+                        return false; /* no compression - if non-null child found before index 0 */
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                return string.IsNullOrEmpty(rda.ScalarValue);
+            }
+        }
+
+        //since in an encoded RDA string an empty slot is representing logical NULL (scalar or composite) payload, there is a limitation that an empty (zero-length)
+        //string cannot be encoded as a scalar value, as a work-around convention, a one-char (non-printable) string is used to "represent" an empty-string value.
+        //this convention is not inforced, as the communicating parties can choose their own convention for work-arounds that allows passing empty-string value
+        //(eg using quoted strings "")
+
+        public readonly static string EMPTY_SCALAR_VALUE = new string(new char[] { (char)0 });
+        protected static string AssignScalarStringValue(string sInput)
+        {
+            if (sInput == null) { return string.Empty; /* logical NULL */}
+            else if (sInput.Length == 0) { return EMPTY_SCALAR_VALUE;  /* logical EMPTY */}
+            else { return sInput; }
+        }
+
+        protected static string RetrieveScalarString(string sOutput)
+        {
+            if (sOutput == null) { throw new Exception("Invalid property scalar value (stored as NULL), NULL value should be stored as string.Empty."); }
+            else if (EMPTY_SCALAR_VALUE.Equals(sOutput)) { return string.Empty; /* translate logical-empty to physical-empty */}
+            else if (sOutput.Length == 0) { return null; /* translate logical-null to physical-null */}
+            else { return sOutput; }
         }
 
         //this indexing syntax is used in C#, it utilizes the GetRda/SetRda API methods above, 
@@ -542,8 +673,8 @@ namespace Charian
         {
             get
             {
-                if (Home == null || Home.Elements.Count == 1) { return string.Empty; }
-                else { return Home.Indent + INDENT; }
+                if (Parent == null || Parent.Elements.Count == 1) { return string.Empty; }
+                else { return Parent.Indent + INDENT; }
             }
         }
 
@@ -569,9 +700,10 @@ namespace Charian
                         result.Append(GetFormattingPrefix(i)); //TODO replace the below.
                     }
 
-                    //recurrsion ...
-                    result.Append(i == 0? string.Empty : ChildDelimiter.ToString())
-                        .Append(child.GetPayload(delimiterChars, formattingVersion));
+                    //append a leading delimiter - except for the first element 
+                    if (i != 0) { result.Append(ChildDelimiter); } 
+                                      
+                    result.Append(child.GetPayload(delimiterChars, formattingVersion)); //recurrsion ...
                 }
             }
 
@@ -583,7 +715,7 @@ namespace Charian
             //if this is the first child ...
             if(index == 0)
             {
-                return Elements.Count > 1 && Home != null ? INDENT : string.Empty;
+                return Elements.Count > 1 && Parent != null ? INDENT : string.Empty;
             }
             else
             {
@@ -591,7 +723,7 @@ namespace Charian
             }
         }
 
-        //dummy child is 'place-holder' that is created when accessor 'over-indexed' the RDA existing values
+        //dummy child (holds a NULL Rda value here?) - is 'place-holder' that is created when accessor 'over-indexed' the RDA existing values
         public bool IsDummy
         {
             get
@@ -626,6 +758,8 @@ namespace Charian
             }
         }
 
+        //public char[] DelimitersInUse => Delimiters;
+
         private void EnsureArrayLength(int index)
         {
             //1. turns a "leaf" node to a "composite" node - that is, a node that have children that can be indexed.
@@ -640,7 +774,7 @@ namespace Charian
 
             while (diff > 0)
             {
-                var dummy = new Rda(this);/*dummy*/
+                var dummy = MakeChild(this);/*dummy*/
                 Elements.Add(dummy);
                 diff--;
             }
@@ -735,16 +869,34 @@ namespace Charian
             return this;
         }
 
-        public IRda FromRda(Rda rda)
+        /// <summary>
+        /// Make a new Rda object that has copied data from another Rda
+        /// </summary>
+        /// <param name="originalRda">The source Rda</param>
+        public Rda(Rda originalRda)
         {
-            if (rda.Dimension == 0) 
-            { 
-                ScalarValue = rda.ScalarValue; 
+            FromRda(originalRda);
+        }
+
+        //This only clones a "top-level" Rda as it does not have the
+        //reference to Parent
+        public IRda FromRda(Rda sourceRda)
+        {
+            if(sourceRda == null) { return null; }
+
+            _encoding = sourceRda.GlobalEncoding;   //this is a top-level Rda
+
+            Elements.Clear(); 
+            if (sourceRda.Elements == null || sourceRda.Elements.Count == 0)
+            {
+                _scalarValue = sourceRda.ScalarValue;
             }
             else
             {
-                Elements.Clear();
-                Elements.AddRange(rda.Elements);
+                foreach(var element in sourceRda.Elements)
+                {
+                    Elements.Add(new Rda(element) { Parent = this }); 
+                }
             }
 
             return this;
@@ -766,46 +918,42 @@ namespace Charian
             public const char DEFAULT_ESCAPE_CHAR = '\\';
 
             public const char DOUBLE_QUOTE = '"';
-            internal char[] Delimiters { get; private set; } = new char[] { }; 
+
+
+
+            internal char[] CustomParsingDelimiters { get; } = new char[0];
+
             internal char EscapeChar { get; private set; } = DEFAULT_ESCAPE_CHAR;
 
-            internal RdaEncoding(char[] customDelimiters, char escapeChar)  
+            internal RdaEncoding(char[] customDelimiters, char escapeChar)
             {
-                Delimiters = customDelimiters;
+                if(Array.IndexOf(customDelimiters, escapeChar) >= 0 || ContainsDuplicate(customDelimiters))
+                {
+                    throw new Exception("Duplicate found among the supplied delimiters and escape char.");
+                }
+
+                CustomParsingDelimiters = customDelimiters;
                 EscapeChar = escapeChar;
             }
 
-            //returns if extension successful
-            //Level > Global.RootParentDimensionLimit - 1
-            internal void TryExtendRequiredDelimiters(int newLevel)
+
+            bool ContainsDuplicate(char[] chars)
             {
-                if (newLevel <= Delimiters.Length) { return; }
-                else if (newLevel < DEFAULT_DELIMITER_CANDIDATES.Length)
+                HashSet<char> uniqueChars = new HashSet<char>();
+
+                foreach (char c in chars)
                 {
-                    char[] newLevelDelimiters = new char[newLevel];
-                    Array.Copy(Delimiters, 0, newLevelDelimiters, 0, Delimiters.Length);
-                    int existingRangeIndex = Delimiters.Length;
-                    foreach (char candidateDelimiterChar in DEFAULT_DELIMITER_CANDIDATES)
+                    if (!uniqueChars.Add(c))
                     {
-                        //make sure the candidate char isn't already in the delimiters range
-                        if (!RangeContains(newLevelDelimiters, 0, existingRangeIndex, candidateDelimiterChar))
-                        {
-                            newLevelDelimiters[existingRangeIndex++] = candidateDelimiterChar;
-                            if (existingRangeIndex == newLevelDelimiters.Length)
-                            {
-                                Delimiters = newLevelDelimiters; //copy the extended dimiters to 
-                                return;
-                            }
-                        }
+                        return true;
                     }
                 }
-
-                throw new Exception($"Maximun RDA dimension-limit ({newLevel}) reached, no child RDA can be accepted.");
+                return false;
             }
 
-            public RdaEncoding() { }
-
+            internal RdaEncoding() { }
         }
+
     }
 }
 

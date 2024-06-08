@@ -268,8 +268,8 @@ namespace UnitTests
             //test turple encoder chars
             var section = rda.GetRda(new int[] { 0 });
             Assert.AreEqual(@";,\;SEC1,SEC1c;SEC1b,SEC1d,,,SE\;|C1d4", section.ToString()); // NB '|' before 'C1d4' no longer require escaping
-            Assert.AreEqual(';', section.DelimitersInUse[0]);
-            Assert.AreEqual(',', section.DelimitersInUse[1]);
+            Assert.AreEqual(';', section.MinimumEncodingDelimiters[0]);
+            Assert.AreEqual(',', section.MinimumEncodingDelimiters[1]);
             Assert.AreEqual('\\', section.EscapeChar);
             //test default value
             Assert.AreEqual(string.Empty, rda.GetRda(new int[] { 0, 1, 3 }).ToString());
@@ -289,7 +289,7 @@ namespace UnitTests
             Rda rdaBase = Rda.Parse(@"|;,\|sec0|sec1|sec2");
             rdaBase.ToStringFormatted().Print("rda-before-assigned-new-child-rda");
             Rda rdaSec1new = Rda.Parse(@"&_;/&sec1-n0&sec1-n1 /||| ; X_ x&sec1-n2_A/;B");
-            rdaSec1new.ToStringFormatted().Print("inserted rda[1]");
+            rdaSec1new.ToStringFormatted().Print("rda[1] to be replaced by");
             rdaBase[1] = rdaSec1new;
             rdaBase.ToStringFormatted().Print("rda-after-assigned-new-child-rda");
             Assert.AreEqual("sec1-n0", rdaBase[1,0].ScalarValue);   //test the wrapper
@@ -299,9 +299,9 @@ namespace UnitTests
             Assert.AreEqual(" X", rdaBase[1,1,0,1].ToString());   //
 
             Rda rdaSec3new = Rda.Parse(@">;/>sec3>sec3-n1>a;b;c");
-            rdaSec3new.ToStringFormatted().Print("inserted rda[3]");
+            rdaSec3new.ToStringFormatted().Print("rda[3] to be inserted");
             rdaBase.AddRda(rdaSec3new);
-            rdaBase.ToStringFormatted().Print("rda-after-adding-new-child-rda");
+            rdaBase.ToStringFormatted().Print("rda-after-adding-new-child-rda at rda[3]");
             Assert.IsTrue(rdaSec3new.ContentEqual(rdaBase[3]));
         }
 
