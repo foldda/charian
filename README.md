@@ -29,7 +29,7 @@
 
 # Introduction
 
-Charian (pron. /ka-ri-en/) is an API for encoding structured data to a text string - a process also known as serialization. Charian serialization can be used for implementing -
+Foldda's Universal Data Serialization, aka. UDS or Charian (pron. /ka-ri-en/), is a generic and lightweight API for encoding arbitrarily structured data to a text string simply and uniformly. Charian can be used for implementing -
 
 - **Persistent data storage** - for storing arbitrarily structured data in files or databases as a string;
 - **Distributed computing** - for passing dynamic programming object or data structure in RPC calls as a "string parameter";
