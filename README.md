@@ -29,14 +29,14 @@
 
 # Introduction
 
-Foldda's Universal Data Serialization, aka. UDS or Charian (pron. /ka-ri-en/), is a generic and lightweight API for encoding arbitrarily structured data to a text string simply and uniformly. Charian can be used for implementing -
+Foldda Charian (pron. /ka-ri-en/) is a lightweight and universal data serialization API, for encoding arbitrarily structured data to a text string. Charian can be used for implementing -
 
 - **Persistent data storage** - for storing arbitrarily structured data in files or databases as a string;
 - **Distributed computing** - for passing dynamic programming object or data structure in RPC calls as a "string parameter";
 - **Data communication** - for sending complex structured data in a serialized form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-Inside Charian, it uses the new, schemaless RDA[^1] format in the encoding, meaning Charian serialization does not require pre-establishing a data model or schema. Compared to conventional approaches, Charian's schemaless, one-size-fits-all approach has many advantages such as being -
+Charian uses the new, schemaless RDA[^1] format in its encoding, meaning the data serialization does not require pre-establishing a data model or schema. Compared to conventional approaches, Charian's schemaless, one-size-fits-all approach has many advantages such as being -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format that uses multiple delimiters that can be dynamically defined and expanded. An RDA-encoded string provides an encoded storage space accessible as a multidimensional array.
 
@@ -47,7 +47,7 @@ Inside Charian, it uses the new, schemaless RDA[^1] format in the encoding, mean
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-Charian serialization allows flexible cross-program data exchange using only generic data exchange methods and protocols. This results in much simplified and more efficient data communication between collaborative programs than the traditional approach of building custom, data-model-dependent pipelines between these programs. Indeed, Charian opens the door towards [a vision of universal data exchange](#the-big-picture). 
+Charian serialization allows flexible cross-program data exchange via generic data exchange methods and protocols, meaning much simpler and more efficient data communication between collaborative programs than the traditional approach of building and maintaining ad-hoc, data-model-dependent pipelines. Indeed, Charian is a technology that opens the door for [*universal data exchange*](#the-big-picture). 
 
 In this repo, Charian API is implemented in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java). These implementations are clones of each other, meaning they share a near-identical programming design/structure/naming convention. Below we'll use the C# API as an example to explain Charian's concept and usage pattern. 
 
