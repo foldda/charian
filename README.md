@@ -36,7 +36,7 @@ Foldda Charian (pron. /ka-ri-en/) is a lightweight and universal data serializat
 - **Data communication** - for sending complex structured data in a serialized form over the network;
 - **ETL solutions** - for transferring and transforming data of various data models through simple programming.
 
-Charian uses the new, schemaless RDA[^1] format in its encoding, meaning the data serialization does not require pre-establishing a data model or schema. Compared to conventional approaches, Charian's schemaless, one-size-fits-all approach has many advantages such as being -
+Charian uses a schemaless format called "Recursive Delimited Array" or RDA[^1] in its data encoding, so it does not need to be configured or compiled to a specific data model and is one-size-fits-all. Charian's unique approach, compared to traditional schema-based serialization tools and systems, has many advantages such as being -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format that uses multiple delimiters that can be dynamically defined and expanded. An RDA-encoded string provides an encoded storage space accessible as a multidimensional array.
 
