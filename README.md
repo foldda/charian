@@ -108,12 +108,12 @@ In the deserializing process, a data-receiving program, upon having received the
 
 In the above process, the Rda class plays the important role of being a 'container box' for storing _arbitrary_ data items; because it can be turned into a string, it effectively serializes the data it contains.
 
-The IRda interface is a signature indicating an object implements serialization and deserialization (in "the Charian way"): in the **ToRda** method it would specify the data-packing logic that stores the class' properties and the state at designated places inside an Rda container, and in the **FromRda** method it'd specify the logic of unpacking a received Rda container and restoring the object's properties and state using the received data values.
+The IRda interface indicates an object implements Charian serialization and deserialization, and can participate in the above data transportation process: in the **ToRda** method it would specify the data-packing logic that stores the class' properties and the state at designated places inside an Rda container, and in the **FromRda** method it'd specify the logic of unpacking a received Rda container and restoring the object's properties and state using the received data values.
 
 The "how-to" examples in the next section demonstrate these concepts and operations.
 
 # Getting Started
-Using Charian is very simple because it has no third-party dependency so there is nothing to install or setup. You can simply include the Charian source files in your project and use Charian's class and interface alongside yours[^4]. Source-code level integration can simplify your build process and give transparency during debugging (if required).
+Using Charian is very simple because there is nothing to install or setup, and it has no third-party dependency. You can simply add the API's source files (Rda and IRda) from this repo and use them in your projects[^4]. Source-code level integration can simplify your build process and give transparency during debugging (if required).
 
 [^4]: Tip: you can use the test cases provided in this repo as examples of using Charian.
 
@@ -143,8 +143,8 @@ This example shows grouping a collection of discrete data items and saving them 
             Rda rda1 = new Rda();    //create a new Rda container object
 
             //data-packing involves item placement and type-conversion
-            rda1.SetValue(0, "A string");  //storing a string value at index = 0
-            rda1.SetValue(1, 2.5.ToString());  //storing a decimal value
+            rda1.SetValue(0, "A string");  //storing a string value at location index = 0
+            rda1.SetValue(1, 2.5.ToString());  //storing a decimal value at location index = 1
             rda1.SetValue(2, DateTime.Now.ToString());  //storing a date value
 
             string encodedRdaString = rda1.ToString();     //serialize the data container
@@ -225,7 +225,7 @@ This code example illustrates Charian object serialization by implementing the I
 **Takeaway**: The IRda interface's ToRda() method is the place for a sender packing its "essential" properties and state data during serialization, and the FromRda() method is the place for a receiver unpacking a container and restores the "essential" properties and state data that "deserialize" the object. In between, the container is converted to a string for easy transportation by a 'courier' process. Note conventional serialization systems would typically attempt to decompose and serialize everything of a targeted object, which incurs higher overheads and may not always be necessary.
 
 ## How-to: Serializing a complex object with nested classes
-Because you can store an Rda object inside another Rda object, it theoretically allows an arbitrarily complex object to be stored inside an Rda container, through recurrsive decomposition. The following example extends from the last example, and shows how a ComplexPerson object with two Address properties (which are also serializable) is packed into an Rda container.
+Because you can store an Rda object inside another Rda object, it theoretically allows an arbitrarily complex object to be stored inside an Rda container, through recursive decomposition. The following example extends from the last example, and shows how a ComplexPerson object with two (also serializable) Address properties is packed into an Rda container.
 ```csharp
     class Address : IRda
     {
@@ -274,7 +274,7 @@ Because you can store an Rda object inside another Rda object, it theoretically 
             //storing an extra "address" property, as a child-Rda, inside the person's Rda container
             personRda[(int)RDA_INDEX.RES_ADDRESS] = this.ResidentialAddress.ToRda();
 
-            //now person Rda is 2-dimensional
+            //now the person Rda is 2-dimensional
             //Console.Println(personRda[2][1].ScalarValue);   //prints ResidentialAddress.ZIP
 
             //.. here we store a further “postal address” Rda to the person Rda, and so on ...
@@ -334,7 +334,7 @@ The following code expands from the last example and illustrates certain techniq
                 //if the postal address is missing in the container, default to use the residential address
                 if(string.IsNullOrEmpty(rda[(int)RDA_INDEX.POST_ADDRESS]))
                 {
-                    this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
+                    this.PostalAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
                 }
                 else
                 {
