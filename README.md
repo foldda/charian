@@ -91,15 +91,15 @@ A class implements the IRda interface to mark itself "serializable", in the Char
 
 ## How does it work
 
-Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and then transport the boxes using a courier company. Once the boxes are delivered to the new place, you would unpack the boxes, reassemble the items, and replace them to their designated places.
+Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and then transport the boxes using a courier company. Once the boxes are delivered to the new place, you would unpack the boxes, reassemble the items, and re-place them to their designated places.
 
-Serializing data using Charian is similar to the moving house exercise, except we are packing and moving data rather than household items. In Charian serialization, a data-sending program would -
+Similar to moving house, serializing data using Charian involves (data) packing, transporting, and unpacking. In Charian serialization, a data-sending program would -
 
 1) create an Rda object and use it as a container,
 2) use the **Setter** methods to “pack” data items that require transfer into the container, and then
 3) use the **ToString** method to convert the container to an RDA string.
 
-Then, a data "courier" process takes over transporting the data container in the form of a string. Such a process can be saving the string to a file or a database table, or sending it to a network destination via a network protocol.
+Then, a data "courier" process takes over transporting the data container - a string. It can be saving the string to a file or a database table, or sending it to a network destination via a network protocol.
 
 In the deserializing process, a data-receiving program, upon having received the RDA string, would -
 
@@ -108,12 +108,13 @@ In the deserializing process, a data-receiving program, upon having received the
 
 In the above process, the Rda class plays the important role of being a 'container box' for packing and unpacking data items; because it can be turned into a string, it effectively serializes the data it contains.
 
-The IRda interface is a signature indicating an object implements serialization and deserialization (in "the Charian way"): in the **ToRda** method it would specify the data-packing logic that stores the class' properties and the state at designated places inside an Rda container, and in the **FromRda** method it'd specify the logic of unpacking a received Rda container and restoring the object's properties and state using the received data values.
+The IRda interface is a signature indicating an object implements Rda serialization and deserialization: the **ToRda** method where to specify the data-packing logic that stores the class' properties and state at designated places in an Rda container, and the **FromRda** method implements the logic of unpacking a received Rda container and restoring the object's properties and state.
 
 The "how-to" examples in the next section demonstrate these concepts and operations.
 
 # Getting Started
-Using Charian is very simple because it has no third-party dependency so there is nothing to set up. You can simply include the Charian source files in your project and use Charian's class and interface alongside yours[^4]. Source-code level integration can simplify your build process and give transparency during debugging (if required).
+
+Using Charian involves downloading the two source files from this repo and including them in your project[^4]. Charian has no third-party library dependency, so nothing else needs to be set up. Source-code level integration can simplify your build process and give transparency during debugging (if required).
 
 [^4]: Tip: you can use the test cases provided in this repo as examples of using Charian.
 
