@@ -93,7 +93,7 @@ A class implements the IRda interface to mark itself "serializable", in the Char
 
 Imagine you're moving house: you would first pack household items into boxes, disassemble them if required, and then transport the boxes using a courier company. Once the boxes are delivered to the new place, you would unpack the boxes, reassemble the items, and re-place them to their designated places.
 
-Similar to moving house, serializing data using Charian involves (data) packing, transporting, and unpacking. In Charian serialization, a data-sending program would -
+Similar to moving house, serializing data using Charian involves (data) packing, transporting, and unpacking. That is, a program sending a "whole" data object would -
 
 1) create an Rda object and use it as a container,
 2) use the **Setter** methods to “pack” data items that require transfer into the container, and then
@@ -101,16 +101,16 @@ Similar to moving house, serializing data using Charian involves (data) packing,
 
 Then, a data "courier" process takes over transporting the data container - a string. It can be saving the string to a file or a database table, or sending it to a network destination via a network protocol.
 
-In the deserializing process, a data-receiving program, upon having received the RDA string, would -
+On the other side, a data-receiving program would deserialize the RDA string and re-assemble the data object -
 
 1) use the **Parse** method to convert the string back to an Rda container, and
 2) use the **Getter** methods to "unpack" and consume the data items from the container.
 
-In the above process, the Rda class plays the important role of being a 'container box' for packing and unpacking data items; because it can be turned into a string, it effectively serializes the data it contains.
+In the above process, the Rda class plays the important role of being a 'container box' for packing and unpacking data items - it must be generic and flexible to accommodate data objects with arbitrary volume and complexity. Also, because an Rda container can be turned into a string, it effectively serializes the data it contains.
 
-The IRda interface is a signature indicating an object implements Rda serialization and deserialization: the **ToRda** method where to specify the data-packing logic that stores the class' properties and state at designated places in an Rda container, and the **FromRda** method implements the logic of unpacking a received Rda container and restoring the object's properties and state.
+The IRda interface helps a class to indicate it implements Rda serialization and deserialization: the **ToRda** method where to specify the data-packing logic that stores the class' properties and state at designated places in an Rda container, and the **FromRda** method implements the logic of unpacking a received Rda container and restoring the object's properties and state.
 
-The "how-to" examples in the next section demonstrate these concepts and operations.
+The "how-to" examples in the next section demonstrate the uses of these concepts and operations.
 
 # Getting Started
 
