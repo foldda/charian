@@ -25,7 +25,6 @@
     - [How-to: Exception handling](#how-to-exception-handling)
 3. [Other Applicable Uses](#other-applicable-uses)
 4. [License, Etc.](#license-etc)
-5. [The Big Picture](#the-big-picture)
 
 # Introduction
 
@@ -47,7 +46,7 @@ Charian uses a schemaless format called "Recursive Delimited Array" or RDA[^1] i
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
-Charian serialization allows flexible cross-program data exchange via generic data exchange methods and protocols, meaning much simpler and more efficient data communication between collaborative programs than the traditional approach of building and maintaining ad-hoc, data-model-dependent pipelines. Indeed, Charian is a technology that opens the door for [*universal data exchange*](#the-big-picture). 
+Charian serialization allows flexible cross-program data exchange via generic data exchange methods and protocols, meaning much simpler and more efficient data communication between collaborative programs than the traditional approach of building and maintaining ad-hoc, data-model-dependent pipelines. Indeed, Charian is a technology that opens the door for [*universal data exchange*](https://github.com/foldda/RDA/tree/main#the-problem-to-addres). 
 
 In this repo, Charian API is implemented in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java). These implementations are clones of each other, meaning they share a near-identical programming design/structure/naming convention. Below we'll use the C# API as an example to explain Charian's concept and usage pattern. 
 
@@ -381,77 +380,6 @@ For example, an RDA container packed by a Java program contains the properties o
 * [Project Wiki] (coming soon)
 
 * [FAQ] (coming soon)
-
-# The Big Picture
-
-Why do we need Charian and RDA while there are already many XML/JSON-based data serialization and transport solutions? 
-
-## The problem of schema-based data exchange
-
-Independent programs, such as a browser-hosted app and a Web server, or an IoT device and a control console, often need to communicate with each other to form a collaborative distributed solution. Exchanging data in such cases is normally complicated and requires extra effort because of the implied diversity and uncertainty - the programs can have a different business and data model, be written in different languages, executed in separate computer environments, and can be developed and maintained by different parties. The conventional approach for cross-program data exchange typically involves building a dedicated pipeline connecting the communicating parties and having an 'agreed' format (i.e. a schema) for the data exchange.
-
-<div align='center'>
-<img src='img/Pre-Charian-data-transport.png' width='550' align='center'>
-</div>
-
-Developing a dedicated connection for every application with a different data model is likely time-consuming and costly. The ongoing cost of managing data exchange over schema-based connections can also be significant because the connected programs become “tightly coupled” by these connections, if one of the programs has evolved and the data model needs to be changed, a developed solution often requires significant modification or using a dedicated middleware system to mediate the data model transformation.
-
-In an analogy, building ad-hoc schema-bound data exchange solutions is like sending parcels to people without using the Post Office, but doing everything yourself - meaning you’ll have to make ad-hoc transport and delivery arrangements on each occasion, limited by the resources you have.
-
-<div align='center'>
-<img src='img/Pre-Post-office-system.png' width='470' align='center'>
-</div>
-
-## The solution and the challenge - Universal Data Exchange
-
-As we know, using the Post Office is convenient and cost-effective for posting goods of different shapes and sizes, because the standard parcel processing can meet the client's wide range of requirements, and the shared logistics and freight system helps cut down the cost.
-
-<div align='center'>
-<img src='img/Post-office-system.png' width='550' align='center'>
-</div>
-
-Universal Data Exchange, or UDX, is an envisioned data exchange service that provides the benefits of being convenient and cost-effective using the same “post-office-like” approach - that is, by creating and sharing a common, generic data collection and delivery service to all programs that require exchanging data, rather than building ad-hoc dedicated data-exchange solutions.
-
-<div align='center'>
-<img src='img/Charian-data-transport.png' width='550'>
-</div>
-
-As mentioned, the Post Office's parcel-processing service must cater to the different parcel-posting requirements of all its clients, and this is achieved by using standardized packaging. Packing loose items in boxes simplifies parcel handling and allows modularized, more effective transportation by general courier companies. Similarly, a key in UDX's design is to use a generic data container for packaging (and regulating) various data items (e.g. properties of a data object), so irregular data can be handled uniformly using general data transport protocols and methods.
-
-Messaging is most suitable for implementing the UDX container. Because string is a supported data type by most computer systems and programming languages, so encoding, decoding, and transporting data in a “string container” can be naturally carried out using generic tools and protocols. In other words, an UDX data container, as a text message, can be saved to a file system or a database, or be transferred via common network protocols, such as HTTP/RPC, TCP/IP, and FTP. 
-
-Thus the challenge to implementing UDX is to have a text encoding format that supports encoding any data into a string. Unfortunately, popular data formats, such as XML, JSON, and CSV, are not suitable for encoding the UDX container. That’s because each data instance in one of these formats assumes a certain data model (by structure and type), meaning a container encoded in these formats won't be the “generic and universal” that we want for accommodating _any data_. So our quest for a suitable encoding has led to the development of RDA - a new schemaless data format.
-
-## The invention - RDA encoding
-
-RDA stands for "Recursive Delimited Array". It is a delimited encoding format similar to CSV where encoded data elements are separated by delimiter chars except, among other things, RDA allows dynamically defining multiple delimiters for encoding more complex, multidimensional data[^4].
-
-[^4]: According to the RDA encoding rule, the header section starts from the first letter of the string and finishes at the first repeat of the string's starting letter which is called the ‘end-of-section’ marker. Any char can be used as a delimiter or the escape char, the only requirement is they must be different to each other in an RDA string header. By placing the encoding chars in the header at the front of an RDA string allows a parser to be automatically configured when it starts parsing the string. 
-
-Here is an example of an RDA format string containing a 2D (3x3) data table, using two delimiter chars for separating the data elements -
-
-```
-|,\|A,B,C|a,b,c|1,2,3
-```
-The beginning of an RDA string is a substring section known as the "header" which contains the definition of the RDA string’s encoding chars including one or many delimiter chars (“delimiters”) and one escape char. In this example, the header is the substring "|,\\|", and the delimiters are the first two chars '|' and ','. The third char ‘\\’ is the ‘escape’ char, and the last char ‘|’ is the ‘end-of-section’ marker which marks the end of the header section. 
-
-Following the header, the remaining RDA string is the 'payload' section that contains the encoded data. The RDA payload section provides a 'virtual' storage space of a multi-dimensional array where stored data elements are delimited using the delimiters defined in the header, and each data element is accessible via an index address comprised of an array of 0-based integers. In the above example, the top dimension of the array is ored delimited by delimiter '|' and the second dimension is delimited by delimiter ',', and the data element stored in this 2D array at the indexed location [0,1] is the string value "B".
-
-**Compared to XML and JSON**
-
-> The space from XML/JSON is like a wallet, where places are specifically defined for holding cards, notes, and coins; the space from RDA is like an enormous shelf, where you can place anything anywhere in the unlimited space provided.
-
-RDA is specifically designed to avoid targeting a certain data model and having to define and maintain a schema. Such design is reflected by the structure of RDA's encoded storage space, the way of addressing a location in the space, and the supported data types[^5].  
-
-[^5]: First, RDA has multi-dimensional array storage space that is dynamically expandable, that is, the size of each dimension and the number of dimensions can be increased or decreased as required, like an elastic bag. This is in contrast to the ‘fixed’ hierarchical space provided by schema-based encodings, like XML or JSON, which is restricted by a predefined data mode, like a rigid, fixed-shaped box. Second, RDA uses integer-based indexes for addressing the storage locations in its multi-dimensional array storage space, which means, and combination of non-negative integers is a valid address referring to a valid storage location in the space. This is in contrast to XML and JSON, the address for accessing a storage location is a ‘path’ that has to be ‘validated’ against a pre-defined schema. Third, RDA assumes all data (of any type) can be 'expressed as a string' and a value stored at a location (referred to as “a data's value expression”) can only be a string; whilst XML and JSON attempt to define and include every possible data types and a data values stored at a location must conform with what has been defined in the schema.
-
-Inheritively from RDA's schemaless design, the encoding is simpler, more space-efficient, and configuration-free compared to XML and JSON. But perhaps the most interesting and unique property of RDA is the **recursiveness** of the storage space: the multi-dimensional array structure is homogenous, and there can be only one 'unified' data type, so a sub-dimension in the space is itself a multi-dimensional space that has the same structure as its containing (parent dimension) space, and can be used in the same way. The recursiveness of the multi-dimensional space allows an arbitrarily complex data structure to be (recursively) decomposed into sub-components and stored in the dimensions and their sub-dimensions from the provided space.
-
-## The product - Charian
-
-The **Rda class** and the **IRda interface** from Charian API are designed to make object serialization practical, simple, and intuitive. For object serialization, a client only needs to do "data packing and unpacking" using a provided generic container object, without having to establish and maintain a rigid data model or schema for each and every special cases.
-
-But indeed, Charian is not just another data encoder or object serializer, but an **enabling technology of a new way of data communication**. By making cross-program data exchange simpler and more flexible, Charian allows for building a "post-office-like" data exchange eco-system through which more programs and devices can connect and work collaboratively like never before. 
 
 <!--- MARKDOWN LINKS & IMAGES
 [# Template from](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
