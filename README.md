@@ -23,7 +23,7 @@
     - [How-to: Serializing a simple composite data object](#how-to-serializing-a-simple-composite-data-object)
     - [How-to: Serializing a complex object with nested classes](#how-to-serializing-a-complex-object-with-nested-classes)
     - [How-to: Exception handling](#how-to-exception-handling)
-3. [Other Applicable Uses](#other-applicable-uses)
+3. [Use Cases](#use-cases)
 4. [License, Etc.](#license-etc)
 
 # Introduction
@@ -359,7 +359,7 @@ The following code expands from the last example and illustrates certain techniq
 
 **Takeaway**: You can implement flexible and sophisticated error handling when "unpacking" the data container.
 
-# Other Applicable Uses
+# Use Cases
 
 **Maintain compatibility** As illustrated in the above examples, the ComplexPerson object extends the Person object while remaining backward compatible. This means if you have a connected network where some programs work with the Person object, and some other programs have evolved and become using the ComplexPerson object, these programs will remain compatible in communicating with each other in the network.
 
