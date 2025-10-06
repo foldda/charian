@@ -35,7 +35,7 @@ namespace Charian
          */
 
         //ScalarValue and Children are the base of an RDA's internal data structure.
-        //"scalar" content is used when RDA's Dimension = 0, it's the unescaped 'original' value that is independent to the encoding chars.
+        //"scalar" content is used when RDA's Dimension = 0, it's the unescaped 'original' dateTimeValue that is independent to the encoding chars.
         private string _scalarValue = null;
         //Children are for storing the "composite" content, when RDA's Dimension > 0, where each child is a sub-RDA
         public List<Rda> Elements { get; } = new List<Rda>();
@@ -103,18 +103,23 @@ namespace Charian
             else
             {
                 string payload = rdaString.Substring(encoding.CustomParsingDelimiters.Length + 2);
-                rda.ParsePayload(payload, DetermineParsingFormatVersion(payload) == FORMATTING_VERSION.V2);
+                rda.ParsePayload(payload, DetermineParsingFormatVersion(payload) == FORMATTING_VERSION.LOCAL);
             }
 
             return rda;
+        }
+
+        public IRda FromString(string s)
+        {
+            return Parse(s);
         }
 
         /**
          * Derived properties from the "storage fields" and the encoding field
          */
 
-        public string PayLoad => GetPayload(EncodingDelimiters, FORMATTING_VERSION.V1);
-        public string PayLoadV2 => GetPayload(EncodingDelimiters, FORMATTING_VERSION.V2);
+        public string PayLoad => GetPayload(EncodingDelimiters, FORMATTING_VERSION.STANDARD);
+        public string LocalPayLoad => GetPayload(EncodingDelimiters, FORMATTING_VERSION.LOCAL);
 
         //determines the number of delimiters required for encoding this RDA, 
         private int MinDelimiterDimension
@@ -174,13 +179,13 @@ namespace Charian
          * API Properties and Methods - when using RDA as a storage container
          */
 
-        //the client's 'string value' stored in this RDA. 
+        //the client's 'string dateTimeValue' stored in this RDA. 
         public string ScalarValue 
         { 
-            //For Dimension-0 (leaf) RDA, it's the stored scalar-value, for composite RDA (dimension > 0), it's the left-most child's scalar-value
+            //For Dimension-0 (leaf) RDA, it's the stored scalar-dateTimeValue, for composite RDA (dimension > 0), it's the left-most child's scalar-dateTimeValue
             get => Elements.Count > 0 ? Elements[0].ScalarValue : _scalarValue ?? string.Empty;
 
-            //sets the scalar-value, and clears children (making this RDA as Dimension-0)
+            //sets the scalar-dateTimeValue, and clears children (making this RDA as Dimension-0)
             set
             {
                 Elements.Clear();
@@ -189,17 +194,17 @@ namespace Charian
         }
 
         //this rda's "string expression", i.e. a properly encoded RDA string with the header and the payload sections
-        //NB, for Dimension-0 RDA, it outputs the stored scalar value (i.e. the header-section is an empty string for Dimension-0 RDA)
+        //NB, for Dimension-0 RDA, it outputs the stored scalar dateTimeValue (i.e. the header-section is an empty string for Dimension-0 RDA)
         public override string ToString()
         {
             return MinimumEncodingDelimiters.Length == 0 ? ScalarValue : $"{new string(MinimumEncodingDelimiters)}{EscapeChar}{MinimumEncodingDelimiters[0]}{PayLoad}";
         }
 
-        //this rda's 'string expression', with version-2 formatting applied.
-        //version-2 formatting uses redundant formatting chars such as white-space, line-breaks, and double-quotes in the payload's encoding
-        public string ToStringFormatted()
+        //prints this rda's 'string expression', with version-2 formatting applied.
+        //version-2 formatting uses reserved formatting chars such as white-space, line-breaks, and double-quotes in the payload's encoding
+        public string Print()
         {
-            return Dimension == 0 ? ScalarValue : $"{new string(MinimumEncodingDelimiters)}{EscapeChar}{MinimumEncodingDelimiters[0]}{LINE_BREAK} {PayLoadV2}";
+            return Dimension == 0 ? ScalarValue : $"{new string(MinimumEncodingDelimiters)}{EscapeChar}{MinimumEncodingDelimiters[0]}{LINE_BREAK} {LocalPayLoad}";
         }
 
 
@@ -230,7 +235,7 @@ namespace Charian
             
             if(Dimension == 0)
             {
-                //push this RDA's scalar-value to become the left-most child's value
+                //push this RDA's scalar-dateTimeValue to become the left-most child's dateTimeValue
                 var child = MakeChild(this);
                 child.ScalarValue = _scalarValue;
                 Elements.Add(child); ;
@@ -239,7 +244,7 @@ namespace Charian
             EnsureArrayLength(index);   //creates dummies if required
 
             //the indexed child can be safely retrived
-            return Elements[index];     //NB, if this element is-dummy, the supposed value would be NULL if IRda.FromRda() is called.
+            return Elements[index];     //NB, if this element is-dummy, the supposed dateTimeValue would be NULL if IRda.FromRda() is called.
         }
 
         //set a child RDA at the index'd location, extend the max index if required 
@@ -279,7 +284,7 @@ namespace Charian
         }
 
         /// <summary>
-        /// Sets the scalar value to the child rda addressed by the multi-dimension index array
+        /// Sets the scalar dateTimeValue to the child rda addressed by the multi-dimension index array
         /// </summary>
         /// <param name="addressIndexArray"></param>
         /// <param name="newScalarValue"></param>
@@ -393,7 +398,7 @@ namespace Charian
 
         public int Length => Elements.Count;
 
-        //decode the delimited values in payload and apply unescaping to restore the 'original' value
+        //decode the delimited values in payload and apply unescaping to restore the 'original' dateTimeValue
         //and store these unescaped values to the scalar_value variable of an rda
         private void ParsePayload(string payloadString, bool v2Formatted)
         {
@@ -415,8 +420,8 @@ namespace Charian
             }
             else
             {
-                //apply maximun unescape to "string-value" before it's stored
-                //this will be reversed (escaped) when the value is used for assembling a payload section.
+                //apply maximun unescape to "string-dateTimeValue" before it's stored
+                //this will be reversed (escaped) when the dateTimeValue is used for assembling a payload section.
                 _scalarValue = UnEscape(payloadString, GlobalEncoding.CustomParsingDelimiters, EscapeChar, v2Formatted);
             }
         }
@@ -448,7 +453,7 @@ namespace Charian
                 }
 
                 //reduce this Rda's dimension if there is only one child, and its dimension is 0,
-                //... by bringing the child's scalar value up, and deletes all children
+                //... by bringing the child's scalar dateTimeValue up, and deletes all children
                 //note if Elements[0] is dummy, this will also become a dummy
                 if (Elements[0].Dimension == 0)
                 {
@@ -457,6 +462,8 @@ namespace Charian
                 }
             }
         }
+
+        public static Rda NULL = new Rda();
 
         //test if an Rda object contains no data.
         public static bool IsNullOrEmpty(Rda rda)
@@ -479,13 +486,13 @@ namespace Charian
             }
             else
             {
-                return string.IsNullOrEmpty(rda.ScalarValue);
+                return string.IsNullOrEmpty(rda.PayLoad.Trim());
             }
         }
 
         //since in an encoded RDA string an empty slot is representing logical NULL (scalar or composite) payload, there is a limitation that an empty (zero-length)
-        //string cannot be encoded as a scalar value, as a work-around convention, a one-char (non-printable) string is used to "represent" an empty-string value.
-        //this convention is not inforced, as the communicating parties can choose their own convention for work-arounds that allows passing empty-string value
+        //string cannot be encoded as a scalar dateTimeValue, as a work-around convention, a one-char (non-printable) string is used to "represent" an empty-string dateTimeValue.
+        //this convention is not inforced, as the communicating parties can choose their own convention for work-arounds that allows passing empty-string dateTimeValue
         //(eg using quoted strings "")
 
         public readonly static string EMPTY_SCALAR_VALUE = new string(new char[] { (char)0 });
@@ -498,7 +505,7 @@ namespace Charian
 
         protected static string RetrieveScalarString(string sOutput)
         {
-            if (sOutput == null) { throw new Exception("Invalid property scalar value (stored as NULL), NULL value should be stored as string.Empty."); }
+            if (sOutput == null) { throw new Exception("Invalid property scalar dateTimeValue (stored as NULL), NULL dateTimeValue should be stored as string.Empty."); }
             else if (EMPTY_SCALAR_VALUE.Equals(sOutput)) { return string.Empty; /* translate logical-empty to physical-empty */}
             else if (sOutput.Length == 0) { return null; /* translate logical-null to physical-null */}
             else { return sOutput; }
@@ -518,13 +525,13 @@ namespace Charian
         public Rda this[int i, int j, int k, int l, int m] => this.GetRda(new int[] { i, j, k, l, m });
         public Rda this[int i, int j, int k, int l, int m, int n] => this.GetRda(new int[] { i, j, k, l, m, n });
 
-        public enum FORMATTING_VERSION : int { V1 = 1, V2 = 2};     /* V0 = 0, not defined */
+        public enum FORMATTING_VERSION : int { STANDARD = 1, LOCAL = 2};     /* V0 = 0, not defined */
 
         /* below are helper properties and methods */
 
         /// <summary>
         /// RDA is v2-formatted if the first line only contains the header section and trailing white-spaces.
-        /// In v2-formatted RDA, leading/trailing spaces and line-breakes are for formatting and are not considered as part of the element's string value.
+        /// In v2-formatted RDA, leading/trailing spaces and line-breakes are for formatting and are not considered as part of the element's string dateTimeValue.
         /// </summary>
         private static FORMATTING_VERSION DetermineParsingFormatVersion(string payloadString)
         {
@@ -535,15 +542,15 @@ namespace Charian
                 char currChar = valueCharArray[i];
                 if (!char.IsWhiteSpace(currChar)) /* any non-white-spcae before EOL indicating it is not v2 formatted */
                 {
-                    return FORMATTING_VERSION.V1;
+                    return FORMATTING_VERSION.STANDARD;
                 }
                 else if (currChar == '\n') /* this EOL indicating previous chars are all white-spaces, so it is v2 formatted */
                 {
-                    return FORMATTING_VERSION.V2;
+                    return FORMATTING_VERSION.LOCAL;
                 }            
             }
 
-            return FORMATTING_VERSION.V1;   //valueCharArray are all white-space chars
+            return FORMATTING_VERSION.STANDARD;   //valueCharArray are all white-space chars
         }
 
         /// <summary>
@@ -619,7 +626,7 @@ namespace Charian
             }
             
             //for v2-formatted RDA, remove the starting/ending double-quote-char (maximun one only) if it presents
-            //double-quote-char is used (in v2-formatted RDA) for enclosing leading and trailing spaces in string value 
+            //double-quote-char is used (in v2-formatted RDA) for enclosing leading and trailing spaces in string dateTimeValue 
             char[] valueChars;
             if (v2Formatted)
             {
@@ -663,7 +670,7 @@ namespace Charian
             }
             unescaped.Append(valueChars[valueChars.Length - 1]);
 
-            return unescaped.ToString();   //un-escaped section value
+            return unescaped.ToString();   //un-escaped section dateTimeValue
         }
 
         const string LINE_BREAK = "\r\n";
@@ -682,12 +689,12 @@ namespace Charian
         //NB, payload string contains escaping to the stored scalar values
         private string GetPayload(char[] delimiterChars, FORMATTING_VERSION formattingVersion )
         {
-            bool applyFormatting = (formattingVersion == FORMATTING_VERSION.V2);
+            bool applyFormatting = (formattingVersion == FORMATTING_VERSION.LOCAL);
             StringBuilder result = new StringBuilder();
 
             if (LastNonDummyIndex < 0)
             {
-                //apply escaping to the unescaped value (the stored "real/original" value) when it becomes part of a payload
+                //apply escaping to the unescaped dateTimeValue (the stored "real/original" dateTimeValue) when it becomes part of a payload
                 result.Append(Escape(_scalarValue, delimiterChars, EscapeChar, applyFormatting) ?? string.Empty).ToString();
             }
             else
@@ -723,7 +730,7 @@ namespace Charian
             }
         }
 
-        //dummy child (holds a NULL Rda value here?) - is 'place-holder' that is created when accessor 'over-indexed' the RDA existing values
+        //dummy child (holds a NULL Rda dateTimeValue here?) - is 'place-holder' that is created when accessor 'over-indexed' the RDA existing values
         public bool IsDummy
         {
             get
@@ -825,8 +832,8 @@ namespace Charian
 
         /* "Escaping" Definition: to remove any "special meaning" of the next following char, ie. keeps its original meaning. */
 
-        //helper: used for parsing a section-value, that may conatins delimiters chars and/or escape char, from an encoded RDA string
-        //returns the actual value that needs to be stored 
+        //helper: used for parsing a section-dateTimeValue, that may conatins delimiters chars and/or escape char, from an encoded RDA string
+        //returns the actual dateTimeValue that needs to be stored 
         private static string Escape(string elementValue, char[] delimitersInUse, char escapeChar, bool applyFormatting)
         {
             if (elementValue== null) { return elementValue; }
@@ -900,6 +907,51 @@ namespace Charian
             }
 
             return this;
+        }
+
+        enum TIME_TOKEN : int { YEAR = 0, MONTH = 1, DAY = 2, HOUR = 3, MINUTE = 4, SECOND = 5 }
+        public static DateTime MakeDateTime(string[] dateTimeTokens)
+        {
+            if (dateTimeTokens.Length < 3)
+            {
+                throw new Exception($"Date-time string '{dateTimeTokens}' expecting minumum 3 (year, month, and day) tokens, plus optionally the hour, minute, and second tokens.");
+            }
+
+            int[] dateTimeTokenIntegers = new int[Enum.GetValues(typeof(TIME_TOKEN)).Length];
+            for (int i = 0; i < dateTimeTokenIntegers.Length; i++)
+            {
+                if (i < dateTimeTokens.Length)
+                {
+                    if (int.TryParse(dateTimeTokens[i], out int result))
+                    {
+                        dateTimeTokenIntegers[i] = result;
+                    }
+                    else
+                    {
+                        throw new Exception($"Date-time token {i} '{dateTimeTokens[i]}' is not an integer.");
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return new DateTime(dateTimeTokenIntegers[(int)TIME_TOKEN.YEAR], dateTimeTokenIntegers[(int)TIME_TOKEN.MONTH], dateTimeTokenIntegers[(int)TIME_TOKEN.DAY],
+                                dateTimeTokenIntegers[(int)TIME_TOKEN.HOUR], dateTimeTokenIntegers[(int)TIME_TOKEN.MINUTE], dateTimeTokenIntegers[(int)TIME_TOKEN.SECOND]);
+        }
+
+        public static string[] MakeDateTimeTokens(DateTime dateTimeValue)
+        {
+            string[] tokens = new string[Enum.GetValues(typeof(TIME_TOKEN)).Length];
+            //stores the integer values (of datetime tokens) as strings
+            tokens[(int)TIME_TOKEN.YEAR] = dateTimeValue.Year.ToString();
+            tokens[(int)TIME_TOKEN.MONTH] = dateTimeValue.Month.ToString();
+            tokens[(int)TIME_TOKEN.DAY] = dateTimeValue.Day.ToString();
+            tokens[(int)TIME_TOKEN.HOUR] = dateTimeValue.Hour.ToString();
+            tokens[(int)TIME_TOKEN.MINUTE] = dateTimeValue.Minute.ToString();
+            tokens[(int)TIME_TOKEN.SECOND] = dateTimeValue.Second.ToString();
+            return tokens;
         }
 
         public class RdaEncoding
