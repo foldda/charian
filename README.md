@@ -10,7 +10,7 @@
 <div align="center">
 <img src="img/Charian-logo-orange-text.png" width="250" align="center">
 
-**_"Universal data exchange made easy."_**
+**_"Cross-program data exchange made easy."_**
 </div>
 
 <!--- TABLE OF CONTENTS --->
@@ -31,7 +31,7 @@
 Foldda Charian (pron. /ka-ri-en/) is a lightweight and universal data serialization API, for encoding arbitrarily structured data to a text string. Charian can be used for implementing -
 
 - **Persistent data storage** - for storing arbitrarily structured data in files or databases as a string;
-- **Distributed computing** - for passing dynamic programming object or data structure in RPC calls as a "string parameter";
+- **Distributed computing** - for passing dynamic objects or data structures in RPC calls as a "string parameter";
 - **Data communication** - for sending complex structured data in a serialized form over the network;
 - **Integration and ETL solutions** - for transferring data of changing data models across applications via simple, static pipelines.
 
@@ -41,14 +41,14 @@ Charian uses a schemaless format called "Recursive Delimited Array" or RDA[^1] i
 
 - **Simple and universal**: It is ideal for data exchange between programs with evolving and dynamic data models;
 - **Minimalism and lightweight**: The API is implemented with a minimal code base (of ~800 lines), with no 3rd-party dependency;
-- **Easy to use**: Charian is "one size fits all" - it has no settings or configuration to set;
+- **Easy to use**: Charian is "one size fits all" - it has no settings or configuration;
 - **Language and system independent**: Charian-serialized objects can be exchanged cross-language and cross-platform[^2].
 
 [^2]: Subject to RDA encoder and parser availability for the language and the platform.
 
 Charian serialization allows flexible cross-program data exchange via generic data exchange methods and protocols, meaning much simpler and more efficient data communication between collaborative programs than the traditional approach of building and maintaining ad-hoc, data-model-dependent pipelines. Indeed, Charian is a technology that opens the door for [*universal data exchange*](https://github.com/foldda/RDA/tree/main#the-problem-to-addres). 
 
-In this repo, Charian API is implemented in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java). These implementations are clones of each other, meaning they share a near-identical programming design/structure/naming convention. Below we'll use the C# API as an example to explain Charian's concept and usage pattern. 
+In this repo, Charian API is implemented in [C#](src/CSharp), [Python](src/Python), and [Java](src/Java). These implementations are clones of each other, meaning they share a near-identical programming design/structure/naming convention. Below, we'll use the C# API as an example to explain Charian's concept and usage pattern. 
 
 ## Inside the API
 
@@ -66,7 +66,7 @@ public void SetRda(Rda rda, int[] address)      /* save an Rda object at the add
 public Rda GetRda(int[] address)      /* retrieve an Rda object from the addressed location */
 ```
 
-Note only two "data types" can be stored in the Rda container - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string and all composite data, like a class or an array, can be stored as an Rda object (by recursively decomposing the data object to less complex structures or primitive data items, as in [this example below](#how-to-serializing-a-complex-object-with-nested-classes)).
+An Rda container supports storing only two "data types" - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string and all composite data, like a class or an array, can be stored as an Rda object (by recursively decomposing the data object to less complex structures or primitive data items, as in [this example below](#how-to-serializing-a-complex-object-with-nested-classes)).
 
 In addition, the Rda class implements the following methods that allow itself to be converted to and from a text string that is encoded in [the RDA format](#the-invention---rda-encoding):
 
