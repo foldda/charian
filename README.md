@@ -28,14 +28,14 @@
 
 # Introduction
 
-Foldda Charian (pron. /ka-ri-en/) is a lightweight and universal data serialization API that can convert structured data objects to and from encoded text strings. Charian can be used for implementing -
+Foldda Charian (pron. /ka-ri-en/) is a lightweight and universal data serialization API for converting structured data objects to and from encoded text strings. It can be used for implementing -
 
 - **Persistent data storage** - for storing arbitrarily structured data in files or databases as a string;
 - **Distributed computing** - for passing dynamic objects or data structures in RPC calls as a "string parameter";
 - **Data communication** - for sending complex structured data in a serialized form over the network;
 - **Integration and ETL solutions** - for transferring data of changing data models across applications via simple, static pipelines.
 
-Charian serialization uses a schemaless text-encoding format called "Recursive Delimited Array" ( RDA)[^1] that does not require any configuration or compilation to a specific data model. Charian's unique, one-size-fits-all approach, compared to traditional schema-based serialization tools and systems, has many advantages -
+Charian serialization uses a schemaless text-encoding format called "Recursive Delimited Array" ( RDA)[^1] that does not require any configuration or compilation to a specific data model. Such a unique, one-size-fits-all approach, compared to traditional schema-based serialization tools and systems, has many advantages -
 
 [^1]: RDA (Recursive Delimited Array) is a delimited text data encoding format that uses multiple delimiters that can be dynamically defined and expanded. An RDA-encoded string provides an encoded storage space accessible as a multidimensional array.
 
