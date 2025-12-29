@@ -169,7 +169,8 @@ This example shows grouping a collection of discrete data items and saving them 
 **Takeaway**: Primitive type data are stored as strings. The sender and the receiver are expected to know where (placement) and what (types) the data items are in a container. Rda container has no schema and does not enforce data validation. The clients are responsible for type conversion and data validation, and [handle exceptions if any unexpected data is encountered](#how-to-exception-handling).
 
 ## How-to: Serializing a simple composite data object
-This code example illustrates Charian object serialization by implementing the IRda interface. It includes implementing the logic of "packing" properties in the ToRda() method for serialization, and the logic of "unpacking" data in the FromRda() method for de-serialization.
+This code example illustrates a Person class that, by implementing the IRda interface, can be conveniently saved to and retrieved from a file by a client. In the example, the Person class implements the logic of "packing" properties in the ToRda() method for serialization, and the logic of "unpacking" data in the FromRda() method for de-serialization, and a client can call the SaveToFile() and ReadFromFile() methods even when the Person's internal properties change.
+
 ```csharp
     public class Person : IRda
     {
