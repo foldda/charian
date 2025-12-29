@@ -169,7 +169,7 @@ This example shows grouping a collection of discrete data items and saving them 
 **Takeaway**: Primitive type data are stored as strings. The sender and the receiver are expected to know where (placement) and what (types) the data items are in a container. Rda container has no schema and does not enforce data validation. The clients are responsible for type conversion and data validation, and [handle exceptions if any unexpected data is encountered](#how-to-exception-handling).
 
 ## How-to: Serializing a simple composite data object
-This code example illustrates a Person class that, by implementing the IRda interface, can be conveniently saved to and retrieved from a file by a client. In the example, the Person class implements the logic of "packing" properties in the ToRda() method for serialization, and the logic of "unpacking" data in the FromRda() method for de-serialization, and a client can call the SaveToFile() and ReadFromFile() methods even when the Person's internal properties change.
+This code example illustrates how to serialize a Person class that implements the IRda interface. In the example, the Person class implements the logic of "packing" properties in the ToRda() method, and the logic of "unpacking" data in the FromRda() method. These methods conceal the Person class's internal data model, allowing a client to conveniently utilize serialization and deserialization using simple code, similar to the SaveToFile() and ReadFromFile() methods.
 
 ```csharp
     public class Person : IRda
@@ -203,14 +203,14 @@ This code example illustrates a Person class that, by implementing the IRda inte
             return this;
         }
 
-        //serialize and save this Person object to a file
+        //[client code] serialize and save this Person object to a file
         public void SaveToFile(string filePath)
         {
             string encodedRdaString = this.ToRda().ToString(); //serialize
             File.WriteAllText(filePath, encodedRdaString);
         }
 
-        //restoring a Person object from an RDA string that is stored in a file
+        //[client code] restoring a Person object from an RDA string that is stored in a file
         public static Person ReadFromFile(string filePath)
         {
             string encodedRdaString = File.ReadAllText(filePath);
@@ -226,7 +226,7 @@ This code example illustrates a Person class that, by implementing the IRda inte
 **Takeaway**: The IRda interface's ToRda() method is the place for a sender packing its "essential" properties and state data during serialization, and the FromRda() method is the place for a receiver unpacking a container and restoring the "essential" properties and state data that "deserialize" the object. In between, the container is converted to a string for easy transportation by a 'courier' process. Note that conventional serialization systems would typically attempt to decompose and serialize everything of a targeted object, which incurs higher overheads and may not always be necessary.
 
 ## How-to: Serializing a complex object with nested classes
-Because you can store an Rda object inside another Rda object, it theoretically allows an arbitrarily complex object to be stored inside an Rda container, through recurrsive decomposition. The following example extends from the last example, and shows how a ComplexPerson object with two Address properties (which are also serializable) is packed into an Rda container.
+Because you can store an Rda object inside another Rda object, it theoretically allows any arbitrarily complex object to be stored inside an Rda container, through recursive decomposition. The following example extends from the last example and shows how a ComplexPerson object with two Address properties (which are also serializable) is packed into an Rda container.
 ```csharp
     class Address : IRda
     {
@@ -366,7 +366,7 @@ The following code expands from the last example and illustrates certain techniq
 
 **Cross-language data exchange** Because the schemaless RDA string is language and system-neutral, it can be used as a data container for flexibly transferring data cross-language and cross-platform. The connected programs can flexibly deposit and consume data items stored in an RDA container without being constrained by a fixed data model, and be able to flexibly handle the data conversions and any associated exceptions, in the designated data-packing and unpacking operations.
 
-For example, an RDA container packed by a Java program contains the properties of a Java 'Person', and these properties can be unpacked in a Python program and be used for constructing say a Python 'User' object, which may or may not have exactly the same properties as the Java Person object. If anything unexpected happens, such as an item is missing, or a data conversion has failed, the Python program can put exception handling in its 'unpacking' process e.g. sending out an alert or substituting the missing item with a default value.
+For example, an RDA container packed by a Java program contains the properties of a Java 'Person', and these properties can be unpacked in a Python program and be used for constructing, say a Python 'User' object, which may or may not have exactly the same properties as the Java Person object. If anything unexpected happens, such as an item is missing, or a data conversion has failed, the Python program can put exception handling in its 'unpacking' process e.g. sending out an alert or substituting the missing item with a default value.
 
 **Maintaining rich and diverse data sets in parallel** Take advantage of RDA's unrestricted and recursive feature. Each Rda data item stored in a Rda container is itself an isolated container. So multiple datasets or different versions of the same dataset can be stored or sent in one container "side-by-side", and a receiver can intelligently test and pick the correct version to use.
 
