@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Single target for broad compatibility -->
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <!-- NuGet identity -->
+    <PackageId>Foldda.Charian</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Foldda Pty Ltd</Authors>
+    <Company>Foldda Pty Ltd</Company>
+    <Product>Charian</Product>
+    <AssemblyName>Charian</AssemblyName>
+    <RootNamespace>Charian</RootNamespace>
+
+    <!-- Marketplace metadata -->
+    <Description>A tiny, dependency‑free serializer that packs object graphs into a plain text string (RDA) for cross‑language exchange.</Description>
+    <PackageTags>serialization;schema-less;data-exchange;rda;cross-language</PackageTags>
+    <RepositoryUrl>https://github.com/foldda/charian</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://foldda.com/charian</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.NuGet.md</PackageReadmeFile>
+
+    <!-- License (dual-licensing handled via docs/site) -->
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+
+    <!-- Build/pack -->
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- DevX niceties -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>  <!-- suppress missing XML docs warnings -->
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <!-- Package assets (render on nuget.org if present) -->
+  <ItemGroup>
+    <None Include="README.NuGet.md" Pack="true" PackagePath="\" Condition="Exists('README.NuGet.md')" />
+    <None Include="icon.png" Pack="true" PackagePath="\" Condition="Exists('icon.png')" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" Condition="Exists('..\..\LICENSE')" />
+  </ItemGroup>
+
+  <!-- Optional: SourceLink for debugging into source -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
