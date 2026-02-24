@@ -24,7 +24,8 @@
     - [How-to: Serializing a complex object with nested classes](#how-to-serializing-a-complex-object-with-nested-classes)
     - [How-to: Exception handling](#how-to-exception-handling)
 3. [Use Cases](#use-cases)
-4. [License, Etc.](#license-etc)
+4. [License & Commercial Use](#license--commercial-use)
+5. [Others](#others)
 
 # Introduction
 
@@ -370,13 +371,33 @@ For example, an RDA container packed by a Java program contains the properties o
 
 **Maintaining rich and diverse data sets in parallel** Take advantage of RDA's unrestricted and recursive feature. Each Rda data item stored in a Rda container is itself an isolated container. So multiple datasets or different versions of the same dataset can be stored or sent in one container "side-by-side", and a receiver can intelligently test and pick the correct version to use.
 
-# License, Etc.
+# License & Commercial Use
+
+Charian is open‑source software released under the
+**GNU General Public License v3.0 (GPL‑3.0)**.
+
+This means you are free to use, modify, and redistribute Charian
+under the terms of the GPL.
+
+## Commercial licensing
+
+If you want to use Charian in a **proprietary or closed‑source product**,
+or distribute it without the requirements of the GPL, a **commercial license** is available.
+
+Commercial licensing offers:
+- Permission for closed‑source usage
+- Legal clarity for enterprise environments
+- Optional support and long‑term maintenance agreements
+
+For commercial licensing inquiries, please contact: **contact@foldda.com**
+
+Open‑source users are welcome and encouraged to use Charian under GPL‑3.0.
 
 * Charian is licensed under GPL -v3
 
 * You may contact Charian's developer by email - contact@foldda.com
 
-**Links**
+# Others
 
 * [Project Wiki] (coming soon)
 
