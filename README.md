@@ -204,14 +204,14 @@ This code example illustrates how to serialize a Person class that implements th
             return this;
         }
 
-        //[client code] serialize and save this Person object to a file
+        //client calls this method to serialize and save this Person object to a file
         public void SaveToFile(string filePath)
         {
             string encodedRdaString = this.ToRda().ToString(); //serialize
             File.WriteAllText(filePath, encodedRdaString);
         }
 
-        //[client code] restoring a Person object from an RDA string that is stored in a file
+        //client calls this method to restore a Person object from an RDA string read from a file
         public static Person ReadFromFile(string filePath)
         {
             string encodedRdaString = File.ReadAllText(filePath);
