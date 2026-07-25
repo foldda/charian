@@ -17,13 +17,17 @@
 # Table of Contents
 1. [Introduction](#introduction)
     - [A simple example](#a-simple-example)
-    - [Compared To Protobuf / Avro / JSON Schema](#compared-to-protobuf-avro-json-schema)
+    - [Compared to Protobuf / Avro / JSON Schema](#compared-to-protobuf-/-avro-/-json-schema)
 2. [Getting Started](#getting-started)
     - [How-to: Transporting primitive data items in an RDA string](#how-to-transporting-primitive-data-items-in-an-rda-string)
     - [How-to: Serializing a simple composite data object](#how-to-serializing-a-simple-composite-data-object)
     - [How-to: Serializing a complex object with nested classes](#how-to-serializing-a-complex-object-with-nested-classes)
     - [How-to: Exception handling](#how-to-exception-handling)
-3. [Use Cases](#use-cases)
+3. [API Internals]()
+    - [Data Exchange Late-binding](#late-binding)
+    - [Rda Class]
+    - [IRda Interface]
+    - [Use Cases](#use-cases)
 4. [License & Commercial Use](#license--commercial-use)
 5. [Others](#others)
 
@@ -83,7 +87,7 @@ The core difference is **tight coupling vs. loose coupling**. Protobuf and Avro 
 
 Charian is aimed at the specific pain point of **integration between systems you don't fully control** — connecting a legacy system to a modern one, exchanging data with a third-party vendor, or maintaining a pipeline where the data model on either end changes independently and without warning. In these situations, a shared schema becomes a liability: every change on one side risks a synchronized (and often coordinated, multi-team) update on the other, or the pipeline breaks.
 
-Because of late-binding, Charian allows flexible handling of data's schema changes, even allows processing data of multiple schema versions conncurrently and dynamically. This trades the schema's built-in validation for structural independence — a fair trade when the alternative is fragile, tightly-coupled pipelines between systems that were never designed to evolve together.
+Because of late-binding, Charian allows flexible handling of data's schema changes, even processing data of multiple schema versions conncurrently and dynamically. This trades the schema's built-in validation for structural independence — a fair trade when the alternative is fragile, tightly-coupled pipelines between systems that were never designed to evolve together.
 
 In summary, choose **Charian** when:
 
