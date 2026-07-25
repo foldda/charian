@@ -70,7 +70,7 @@ public Rda GetRda(int[] address)      /* retrieve an Rda object from the address
 
 An Rda container supports storing only two "data types" - a data item can be either a string or an Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string and all composite data, like a class or an array, can be stored as an Rda object (by recursively decomposing the data object to less complex structures or primitive data items, as in [this example below](#how-to-serializing-a-complex-object-with-nested-classes)).
 
-In addition, the Rda class implements the following methods that allow itself to be converted to and from a text string that is encoded in [the RDA format](#the-invention---rda-encoding):
+In addition, the Rda class implements the following methods that converts itself to and from an [RDA string](https://github.com/foldda/rda), so it can be used as a generic RDA parser/encoder:
 
 ```csharp
 public string ToString()      /* convert this Rda container object to an RDA string */
