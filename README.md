@@ -114,252 +114,292 @@ The "how-to" examples in the next section demonstrate the uses of these concepts
 
 # Getting Started
 
-Using Charian involves downloading the two source files from this repo and including them in your project[^4]. Charian has no third-party library dependency, so nothing else is required. Source-code level integration can simplify your build process and give transparency during debugging (if required).
+You can start using Charian in your project in one of two ways: **install it as a package** (recommended for most users), or **include the source files directly** (useful if you want source-level transparency, need to target a framework not covered by the package, or prefer to avoid an external dependency).
 
-[^4]: Tip: you can use the test cases provided in this repo as examples of using Charian.
+### Option 1: Install via package manager
+
+**C# (NuGet)**
+
+```
+dotnet add package Foldda.Charian
+```
+
+Or via the Package Manager Console:
+
+```
+Install-Package Foldda.Charian
+```
+
+Or add it directly to your `.csproj`:
+
+```xml
+<PackageReference Include="Foldda.Charian" Version="1.0.1" />
+```
+
+The package targets .NET 5.0, .NET Core 2.0, .NET Standard 2.0, and .NET Framework 4.6.1, so it should be compatible with most existing C# projects. View the package on [NuGet.org](https://www.nuget.org/packages/Foldda.Charian).
+
+**Python / Java**
+
+Python and Java packages are not yet published to PyPI or Maven Central. For now, use the source-inclusion method below for these languages.
+
+### Option 2: Include the source files directly
+
+Charian has no third-party dependencies, so integrating it is as simple as downloading two source files from this repo and adding them to your project. This approach simplifies your build process and gives you full transparency during debugging, when needed.
+
+1. Download the source files for your language from this repo:
+   - [C#](https://github.com/foldda/charian/blob/main/src/CSharp)
+   - [Java](https://github.com/foldda/charian/blob/main/src/Java)
+   - [Python](https://github.com/foldda/charian/blob/main/src/Python)
+2. Add the files to your project.
+3. Reference them as you would any other local source file — no additional configuration is required.
+
+> **Tip:** You can use the test cases in this repo as examples of how to use Charian.
 
 ## How-to: Transporting primitive data items in an RDA string
-This example shows grouping a collection of discrete data items and saving them to a file as an RDA-encoded string. The program utilizes the provided "unrestricted" storage to store arbitrarily structured data (in this case, the structure is sequential), without having to pre-define a schema. Note that through the API, the underlying RDA-encoding is transparent to the client.
+
+This example groups a collection of discrete data items and saves them to a file as an RDA-encoded string. The program uses the provided "unrestricted" storage to hold arbitrarily structured data (here, the structure is sequential) without needing to predefine a schema. Note that the underlying RDA encoding is transparent to the client throughout.
 
 ```csharp
-    using Charian;
+using Charian;
 
-    class RdaDemo1
+class RdaDemo1
+{
+    public void Main(string[] args)
     {
-        public void Main(string[] args)
-        {
-            //a file is used as the physical media/channel for the data transport
-            string PATH = "C:\\Temp\\file1.txt";
+        //a file is used as the physical media/channel for the data transport
+        string PATH = "C:\\Temp\\file1.txt";
 
-            //as sender ...
-            SendSomeData(PATH);
+        //as sender ...
+        SendSomeData(PATH);
 
-            //as receiver ...
-            ReceiveSomeData(PATH);
-        }
-
-        void SendSomeData(string filePath)
-        {
-
-            Rda rda1 = new Rda();    //create a new Rda container object
-
-            //data-packing involves item placement and type-conversion
-            rda1.SetValue(0, "A string");  //storing a string value at index = 0
-            rda1.SetValue(1, 2.5.ToString());  //storing a decimal value
-            rda1.SetValue(2, DateTime.Now.ToString());  //storing a date value
-
-            string encodedRdaString = rda1.ToString();     //serialize the data container
-
-            File.WriteAllText(filePath, encodedRdaString);  //output to a physical media
-        }
-
-        void ReceiveSomeData(string filePath)
-        {
-            string encodedRdaString = File.ReadAllText(filePath);  //input from a physical media
-
-            Rda rda1 = Rda.Parse(encodedRdaString);    //restore the container object from the RDA string
-
-            //"unpacking" the data items from the container
-            string a = rda1.GetValue(0);  //retrieve the stored value ("A string") from location index = 0
-            double b = double.Parse(rda1.GetValue(1));
-            DateTime c = DateTime.Parse(rda1.GetValue(2));
-        }
+        //as receiver ...
+        ReceiveSomeData(PATH);
     }
+
+    void SendSomeData(string filePath)
+    {
+
+        Rda rda1 = new Rda();    //create a new Rda container object
+
+        //data-packing involves item placement and type-conversion
+        rda1.SetValue(0, "A string");  //storing a string value at index = 0
+        rda1.SetValue(1, 2.5.ToString());  //storing a decimal value
+        rda1.SetValue(2, DateTime.Now.ToString());  //storing a date value
+
+        string encodedRdaString = rda1.ToString();     //serialize the data container
+
+        File.WriteAllText(filePath, encodedRdaString);  //output to a physical media
+    }
+
+    void ReceiveSomeData(string filePath)
+    {
+        string encodedRdaString = File.ReadAllText(filePath);  //input from a physical media
+
+        Rda rda1 = Rda.Parse(encodedRdaString);    //restore the container object from the RDA string
+
+        //"unpacking" the data items from the container
+        string a = rda1.GetValue(0);  //retrieve the stored value ("A string") from location index = 0
+        double b = double.Parse(rda1.GetValue(1));
+        DateTime c = DateTime.Parse(rda1.GetValue(2));
+    }
+}
 ```
 
-**Takeaway**: Primitive type data are stored as strings. The sender and the receiver are expected to know where (placement) and what (types) the data items are in a container. Rda container has no schema and does not enforce data validation. The clients are responsible for type conversion and data validation, and [handle exceptions if any unexpected data is encountered](#how-to-exception-handling).
+**Takeaway**: Primitive data is stored as strings. The sender and receiver are each expected to know where (placement) and what (type) the data items are within a container. The Rda container has no schema and performs no data validation — clients are responsible for type conversion and validation, and for [handling exceptions if unexpected data is encountered](#how-to-exception-handling).
 
 ## How-to: Serializing a simple composite data object
-This code example illustrates how to serialize a Person class that implements the IRda interface. In the example, the Person class implements the logic of "packing" properties in the ToRda() method, and the logic of "unpacking" data in the FromRda() method. These methods conceal the Person class's internal data model, allowing a client to conveniently utilize serialization and deserialization using simple code, similar to the SaveToFile() and ReadFromFile() methods.
+
+This example shows how to serialize a `Person` class that implements the `IRda` interface. The `Person` class implements the "packing" logic in `ToRda()` and the "unpacking" logic in `FromRda()`. These methods hide the class's internal data model, letting a client serialize and deserialize with simple calls, similar to the `SaveToFile()` and `ReadFromFile()` methods shown below.
 
 ```csharp
-    public class Person : IRda
+public class Person : IRda
+{
+    public string FirstName = "John";
+    public string LastName = "Smith";
+
+    //specify an allocated position in the RDA for storing each of the object's properties
+    public enum RDA_INDEX : int
     {
-        public string FirstName = "John";
-        public string LastName = "Smith";
-
-        //specify an allocated position in the RDA for storing each of the object's properties
-        public enum RDA_INDEX : int
-        {
-            FIRST_NAME = 0,
-            LAST_NAME = 1
-        }
-
-        //store the class's properties into an Rda object
-        public virtual Rda ToRda()
-        {
-            var rda = new Rda();  //create an RDA container
-
-            //stores each of the properties' value
-            rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue = this.FirstName;
-            rda[(int)RDA_INDEX.LAST_NAME].ScalarValue = this.LastName;
-            return rda;
-        }
-
-        //restore the class's properties from an RDA
-        public virtual IRda FromRda(Rda rda)
-        {
-            this.FirstName = rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue;
-            this.LastName = rda[(int)RDA_INDEX.LAST_NAME].ScalarValue;
-            return this;
-        }
-
-        //client calls this method to serialize and save this Person object to a file
-        public void SaveToFile(string filePath)
-        {
-            string encodedRdaString = this.ToRda().ToString(); //serialize
-            File.WriteAllText(filePath, encodedRdaString);
-        }
-
-        //client calls this method to restore a Person object from an RDA string read from a file
-        public static Person ReadFromFile(string filePath)
-        {
-            string encodedRdaString = File.ReadAllText(filePath);
-            Rda rda = Rda.Parse(encodedRdaString);
-            Person person = new Person();  //an initial "empty" person object
-            person.FromRda(rda);  //restores the Person's properties here.
-            return person;
-        }
+        FIRST_NAME = 0,
+        LAST_NAME = 1
     }
 
+    //store the class's properties into an Rda object
+    public virtual Rda ToRda()
+    {
+        var rda = new Rda();  //create an RDA container
+
+        //stores each of the properties' value
+        rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue = this.FirstName;
+        rda[(int)RDA_INDEX.LAST_NAME].ScalarValue = this.LastName;
+        return rda;
+    }
+
+    //restore the class's properties from an RDA
+    public virtual IRda FromRda(Rda rda)
+    {
+        this.FirstName = rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue;
+        this.LastName = rda[(int)RDA_INDEX.LAST_NAME].ScalarValue;
+        return this;
+    }
+
+    //client calls this method to serialize and save this Person object to a file
+    public void SaveToFile(string filePath)
+    {
+        string encodedRdaString = this.ToRda().ToString(); //serialize
+        File.WriteAllText(filePath, encodedRdaString);
+    }
+
+    //client calls this method to restore a Person object from an RDA string read from a file
+    public static Person ReadFromFile(string filePath)
+    {
+        string encodedRdaString = File.ReadAllText(filePath);
+        Rda rda = Rda.Parse(encodedRdaString);
+        Person person = new Person();  //an initial "empty" person object
+        person.FromRda(rda);  //restores the Person's properties here.
+        return person;
+    }
+}
 ```
 
-**Takeaway**: The IRda interface's ToRda() method is the place for a sender packing its "essential" properties and state data during serialization, and the FromRda() method is the place for a receiver unpacking a container and restoring the "essential" properties and state data that "deserialize" the object. In between, the container is converted to a string for easy transportation by a 'courier' process. Note that conventional serialization systems would typically attempt to decompose and serialize everything of a targeted object, which incurs higher overheads and may not always be necessary.
+**Takeaway**: `ToRda()` is where a sender packs its essential properties and state during serialization, and `FromRda()` is where a receiver unpacks a container and restores that essential state during deserialization. In between, the container is converted to a string for easy transport by a "courier" process. Conventional serialization systems typically decompose and serialize an object in its entirety, which adds overhead that isn't always necessary.
 
 ## How-to: Serializing a complex object with nested classes
-Because you can store an Rda object inside another Rda object, it theoretically allows any arbitrarily complex object to be stored inside an Rda container, through recursive decomposition. The following example extends from the last example and shows how a ComplexPerson object with two Address properties (which are also serializable) is packed into an Rda container.
+
+Because an Rda object can store another Rda object, any arbitrarily complex object can, in principle, be stored inside a single Rda container through recursive decomposition. The following example builds on the last one, showing how a `ComplexPerson` object with two `Address` properties (themselves serializable) is packed into an Rda container.
+
 ```csharp
-    class Address : IRda
+class Address : IRda
+{
+    public enum RDA_INDEX : int { LINES = 0, ZIP = 1 }
+
+    public string AddressLines = "Line 1\nLine 2\nLine 3";
+    public string ZIP = "NY 21540";
+
+    //"packing" properties into an Rda container
+    public Rda ToRda()
     {
-        public enum RDA_INDEX : int { LINES = 0, ZIP = 1 }
-
-        public string AddressLines = "Line 1\nLine 2\nLine 3";
-        public string ZIP = "NY 21540";
-
-        //"packing" properties into an Rda container
-        public Rda ToRda()
-        {
-            var rda = new Rda();  //create an RDA container
-            // properties
-            rda[(int)RDA_INDEX.LINES].ScalarValue = this.AddressLines;
-            rda[(int)RDA_INDEX.ZIP].ScalarValue = this.ZIP;
-            return rda;
-        }
-
-        //"unpacking" and restoring properties from an Rda container
-        public IRda FromRda(Rda rda)
-        {
-            this.AddressLines = rda[(int)RDA_INDEX.LINES].ScalarValue;
-            this.ZIP = rda[(int)RDA_INDEX.ZIP].ScalarValue;
-            return this;
-        }
+        var rda = new Rda();  //create an RDA container
+        // properties
+        rda[(int)RDA_INDEX.LINES].ScalarValue = this.AddressLines;
+        rda[(int)RDA_INDEX.ZIP].ScalarValue = this.ZIP;
+        return rda;
     }
 
-    class ComplexPerson : Person
+    //"unpacking" and restoring properties from an Rda container
+    public IRda FromRda(Rda rda)
     {
-        public new enum RDA_INDEX : int
-        {
-            FIRST_NAME = 0,
-            LAST_NAME = 1,
-            RES_ADDRESS = 2,   //location of the "residential address" stored in the container
-            POST_ADDRESS = 3
-        }
+        this.AddressLines = rda[(int)RDA_INDEX.LINES].ScalarValue;
+        this.ZIP = rda[(int)RDA_INDEX.ZIP].ScalarValue;
+        return this;
+    }
+}
 
-        //extended properties of ComplexPerson
-        public Address ResidentialAddress = new Address() { AddressLines = "1, 2, 3", ZIP = "12345" };
-        public Address PostalAddress = new Address() { AddressLines = "a, b, c", ZIP = "23456" };
-
-        public override Rda ToRda()
-        {
-            Rda personRda = base.ToRda();
-
-            //storing an extra "address" property, as a child-Rda, inside the person's Rda container
-            personRda[(int)RDA_INDEX.RES_ADDRESS] = this.ResidentialAddress.ToRda();
-
-            //now person Rda is 2-dimensional
-            //Console.Println(personRda[2][1].ScalarValue);   //prints ResidentialAddress.ZIP
-
-            //.. here we store a further “postal address” Rda to the person Rda, and so on ...
-            personRda[(int)RDA_INDEX.POST_ADDRESS] = this.PostalAddress.ToRda();
-
-            return personRda;
-        }
-
-        public override IRda FromRda(Rda rda)
-        {
-            //restore the base 'Person' object
-            base.FromRda(rda);  //restores the FirstName and LastName properties
-
-            //de-serialize and restore the address properties by invoking Address.FromRda()
-            this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
-            this.PostalAddress.FromRda(rda[(int)RDA_INDEX.POST_ADDRESS]);
-            return this;
-        }
-
-        //retrieve a stored ComplexPerson object from a file
-        public new static ComplexPerson ReadFromFile(string filePath)
-        {
-            string encodedRdaString = File.ReadAllText(filePath);
-            Rda rda = Rda.Parse(encodedRdaString);
-            ComplexPerson person = new ComplexPerson();
-            person.FromRda(rda);
-            return person;
-        }
+class ComplexPerson : Person
+{
+    public new enum RDA_INDEX : int
+    {
+        FIRST_NAME = 0,
+        LAST_NAME = 1,
+        RES_ADDRESS = 2,   //location of the "residential address" stored in the container
+        POST_ADDRESS = 3
     }
 
+    //extended properties of ComplexPerson
+    public Address ResidentialAddress = new Address() { AddressLines = "1, 2, 3", ZIP = "12345" };
+    public Address PostalAddress = new Address() { AddressLines = "a, b, c", ZIP = "23456" };
+
+    public override Rda ToRda()
+    {
+        Rda personRda = base.ToRda();
+
+        //storing an extra "address" property, as a child-Rda, inside the person's Rda container
+        personRda[(int)RDA_INDEX.RES_ADDRESS] = this.ResidentialAddress.ToRda();
+
+        //now person Rda is 2-dimensional
+        //Console.Println(personRda[2][1].ScalarValue);   //prints ResidentialAddress.ZIP
+
+        //.. here we store a further “postal address” Rda to the person Rda, and so on ...
+        personRda[(int)RDA_INDEX.POST_ADDRESS] = this.PostalAddress.ToRda();
+
+        return personRda;
+    }
+
+    public override IRda FromRda(Rda rda)
+    {
+        //restore the base 'Person' object
+        base.FromRda(rda);  //restores the FirstName and LastName properties
+
+        //de-serialize and restore the address properties by invoking Address.FromRda()
+        this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
+        this.PostalAddress.FromRda(rda[(int)RDA_INDEX.POST_ADDRESS]);
+        return this;
+    }
+
+    //retrieve a stored ComplexPerson object from a file
+    public new static ComplexPerson ReadFromFile(string filePath)
+    {
+        string encodedRdaString = File.ReadAllText(filePath);
+        Rda rda = Rda.Parse(encodedRdaString);
+        ComplexPerson person = new ComplexPerson();
+        person.FromRda(rda);
+        return person;
+    }
+}
 ```
 
 ## How-to: Exception handling
-The following code expands from the last example and illustrates certain techniques that can be applied during "unpacking" and if the received data is unexpected.
+
+The following example builds on the last one and shows techniques you can apply during "unpacking" when the received data is unexpected.
+
 ```csharp
+class ComplexPerson : Person
+{
+    //.....
 
-    class ComplexPerson : Person
+    public override IRda FromRda(Rda rda)
     {
-        //.....
-
-        public override IRda FromRda(Rda rda)
+        try
         {
-            try
+            //...
+  
+            //enforce mandatory residential address
+            if(string.IsNullOrEmpty(rda[(int)RDA_INDEX.RES_ADDRESS]))
             {
-                //...
-   
-                //enforce mandatory residential address
-                if(string.IsNullOrEmpty(rda[(int)RDA_INDEX.RES_ADDRESS]))
-                {
-                    throw new Exception("Missing mandatory residential address.");
-                }
-                else
-                {
-                    this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
-                }
+                throw new Exception("Missing mandatory residential address.");
+            }
+            else
+            {
+                this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
+            }
 
-                //if the postal address is missing in the container, default to use the residential address
-                if(string.IsNullOrEmpty(rda[(int)RDA_INDEX.POST_ADDRESS]))
-                {
-                    this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
-                }
-                else
-                {
-                    this.PostalAddress.FromRda(rda[(int)RDA_INDEX.POST_ADDRESS]);
-                }
-   
-                //...
-            }
-            catch
+            //if the postal address is missing in the container, default to use the residential address
+            if(string.IsNullOrEmpty(rda[(int)RDA_INDEX.POST_ADDRESS]))
             {
-                /*
-                    Anything that handles the error situation, eg -
-                    1) setting a default value
-                    2) escalating the error (i.e., re-throw)
-                    3) returning the data back to the sender, and/or requesting re-send
-                */
+                this.ResidentialAddress.FromRda(rda[(int)RDA_INDEX.RES_ADDRESS]);
             }
+            else
+            {
+                this.PostalAddress.FromRda(rda[(int)RDA_INDEX.POST_ADDRESS]);
+            }
+  
+            //...
+        }
+        catch
+        {
+            /*
+                Anything that handles the error situation, eg -
+                1) setting a default value
+                2) escalating the error (i.e., re-throw)
+                3) returning the data back to the sender, and/or requesting re-send
+            */
         }
     }
-
+}
 ```
 
-**Takeaway**: You can implement flexible and sophisticated error handling when "unpacking" the data container.
+**Takeaway**: You can implement flexible, sophisticated error handling when unpacking a data container.
+
 
 # Use Cases
 
