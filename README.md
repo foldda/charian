@@ -17,9 +17,7 @@
 # Table of Contents
 1. [Introduction](#introduction)
     - [A simple example](#a-simple-example)
-    - [When should you use Charian](#when-should-you-use-charian)
-    - 
-    - [Why Charian?](#why-charian)
+    - [Compared To Protobuf / Avro / JSON Schema](#compared-to-protobuf-avro-json-schema)
 2. [Getting Started](#getting-started)
     - [How-to: Transporting primitive data items in an RDA string](#how-to-transporting-primitive-data-items-in-an-rda-string)
     - [How-to: Serializing a simple composite data object](#how-to-serializing-a-simple-composite-data-object)
@@ -67,9 +65,27 @@ No serialization attributes.
 
 Just explicit, application-controlled serialization that remains robust as your software evolves.
 
-### When should you use Charian?
+### Compared To Protobuf / Avro / JSON Schema
 
-Choose **Charian** when:
+Protobuf, Avro, and JSON Schema all solve data exchange by fixing a schema up front and generating code from it. That works well when both sides of a connection are owned by the same team and evolve together. Charian takes a different approach: it skips the schema entirely, so there's nothing to keep in sync in the first place.
+
+The core difference is **tight coupling vs. loose coupling**. Protobuf and Avro require both sides of a connection to share a schema — that shared contract is what enables their compactness and compile-time validation, but it also means both sides must stay synchronized as the data model changes. Charian removes the shared schema entirely, trading those benefits for structural independence between systems that don't evolve together.
+
+| | Protobuf / Avro / JSON Schema | Charian |
+|---|---|---|
+| **Contract** | Schema defined up front; both sides must agree on it | No schema; each side reads/writes by position, independently |
+| **Schema drift** | A field added, removed, or retyped on one side can break the other unless versioning rules are followed carefully | Structure changes on one side don't break the other — the receiver only reads what it expects and handles the rest itself |
+| **Setup** | Requires a schema file (`.proto`, `.avsc`, etc.) and a code-generation step | No schema file, no codegen — just two source files added to your project |
+| **Tooling footprint** | Compiler/codegen toolchain, schema registry (for Avro), versioning discipline | None — ~800 lines, no 3rd-party dependency |
+| **Validation** | Strong compile-time type safety and schema enforcement, made possible by the shared contract | None — validation and error handling are the client's responsibility |
+| **Payload size** | Compact binary for Protobuf/Avro; the shared schema lets field names and type tags be stripped from the wire | Delimited text string, larger than Protobuf/Avro's binary but more compact than JSON |
+| **Best fit** | Stable, high-throughput systems within a single team's control (internal microservices, high-volume event streams) | Systems integration across teams, vendors, or legacy platforms where data models are inconsistent, evolving, or outside your control |
+
+Charian is aimed at the specific pain point of **integration between systems you don't fully control** — connecting a legacy system to a modern one, exchanging data with a third-party vendor, or maintaining a pipeline where the data model on either end changes independently and without warning. In these situations, a shared schema becomes a liability: every change on one side risks a synchronized (and often coordinated, multi-team) update on the other, or the pipeline breaks.
+
+Because of late-binding, Charian allows flexible handling of data's schema changes, even allows processing data of multiple schema versions conncurrently and dynamically. This trades the schema's built-in validation for structural independence — a fair trade when the alternative is fragile, tightly-coupled pipelines between systems that were never designed to evolve together.
+
+In summary, choose **Charian** when:
 
 * Your applications evolve independently.
 * You integrate with third-party or legacy systems.
@@ -171,24 +187,6 @@ The "how-to" examples in the next section demonstrate the uses of these concepts
 
 ## Why Charian?
 
-Protobuf, Avro, and JSON Schema all solve data exchange by fixing a schema up front and generating code from it. That works well when both sides of a connection are owned by the same team and evolve together. Charian takes a different approach: it skips the schema entirely, so there's nothing to keep in sync in the first place.
-
-The core difference is **tight coupling vs. loose coupling**. Protobuf and Avro require both sides of a connection to share a schema — that shared contract is what enables their compactness and compile-time validation, but it also means both sides must stay synchronized as the data model changes. Charian removes the shared schema entirely, trading those benefits for structural independence between systems that don't evolve together.
-
-| | Protobuf / Avro / JSON Schema | Charian |
-|---|---|---|
-| **Contract** | Schema defined up front; both sides must agree on it | No schema; each side reads/writes by position, independently |
-| **Schema drift** | A field added, removed, or retyped on one side can break the other unless versioning rules are followed carefully | Structure changes on one side don't break the other — the receiver only reads what it expects and handles the rest itself |
-| **Setup** | Requires a schema file (`.proto`, `.avsc`, etc.) and a code-generation step | No schema file, no codegen — just two source files added to your project |
-| **Tooling footprint** | Compiler/codegen toolchain, schema registry (for Avro), versioning discipline | None — ~800 lines, no 3rd-party dependency |
-| **Validation** | Strong compile-time type safety and schema enforcement, made possible by the shared contract | None — validation and error handling are the client's responsibility |
-| **Payload size** | Compact binary; the shared schema lets field names and type tags be stripped from the wire | Delimited text string; larger uncompressed, though gzip/deflate narrows the gap for structurally repetitive payloads (less so for high-entropy numeric data) |
-| **Best fit** | Stable, high-throughput systems within a single team's control (internal microservices, high-volume event streams) | Systems integration across teams, vendors, or legacy platforms where data models are inconsistent, evolving, or outside your control |
-
-
-Charian is aimed at the specific pain point of **integration between systems you don't fully control** — connecting a legacy system to a modern one, exchanging data with a third-party vendor, or maintaining a pipeline where the data model on either end changes independently and without warning. In these situations, a shared schema becomes a liability: every change on one side risks a synchronized (and often coordinated, multi-team) update on the other, or the pipeline breaks.
-
-Because Charian has no schema to enforce, adding or removing a field on one side simply has no effect on the other side's ability to read what it needs. This trades the schema's built-in validation for structural independence — a fair trade when the alternative is fragile, tightly-coupled pipelines between systems that were never designed to evolve together.
 
 
 
