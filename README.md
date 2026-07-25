@@ -10,14 +10,15 @@
 <div align="center">
 <img src="img/Charian-logo-orange-text.png" width="250" align="center">
 
-**_"Cross-program data exchange made easy."_**
+**_"Cross-program data exchange without schema management."_**
 </div>
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
 1. [Introduction](#introduction)
-    - [Inside the API](#inside-the-api)
-    - [How does it work](#how-does-it-work)
+    - [A simple example](#a-simple-example)
+    - [When should you use Charian](#when-should-you-use-charian)
+    - 
     - [Why Charian?](#why-charian)
 2. [Getting Started](#getting-started)
     - [How-to: Transporting primitive data items in an RDA string](#how-to-transporting-primitive-data-items-in-an-rda-string)
@@ -29,6 +30,61 @@
 5. [Others](#others)
 
 # Introduction
+
+**Charian** (pron. /ka-ri-en/) is a lightweight, dependency-free serialization library for applications whose data models evolve independently.
+
+Unlike Protocol Buffers, Avro, or JSON Schema, Charian requires **no schema definitions**, **no code generation**, and **no schema version management**. Instead, applications explicitly control how they pack and unpack data, making long-lived integrations more resilient to change.
+
+Charian is particularly suited to:
+
+* Evolving Enterprise integration and interfaces
+* Cross-language, cross-platform communication
+* Lightweight RPC for distributed applications
+* Systems where data models evolve independently or are outside your control
+
+Built on the [**Recursive Delimited Array (RDA)**](https://github.com/foldda/rda) format, Charian serializes arbitrary object structures into a portable, language-independent text representation while remaining small enough to understand completely—its core implementation is approximately 800 lines of code with zero third-party dependencies.
+
+### A simple example
+
+```csharp
+Person person = new Person("John", "Smith");
+
+// [Sender] Serialize ...
+string text = person.ToRda().ToString();
+
+// [Receiver] Deserialize ...
+Person restored = new Person();
+restored.FromRda(Rda.Parse(text));
+```
+
+That's all it takes.
+
+No schema files.
+
+No code generation.
+
+No serialization attributes.
+
+Just explicit, application-controlled serialization that remains robust as your software evolves.
+
+### When should you use Charian?
+
+Choose **Charian** when:
+
+* Your applications evolve independently.
+* You integrate with third-party or legacy systems.
+* Maintaining shared, or multiple versions of, schemas has become difficult.
+* Cross-language compatibility matters.
+* You prefer explicit serialization logic over generated code.
+
+Choose **Protocol Buffers**, **Avro**, or similar technologies when:
+
+* You own both ends of the communication.
+* Maximum throughput is more important than flexibility.
+* Compile-time schema validation is desirable.
+
+
+## Under construction ...
 
 Foldda Charian (pron. /ka-ri-en/) is a lightweight and universal data serialization API for converting structured data objects to and from encoded text strings. It can be used for implementing -
 
