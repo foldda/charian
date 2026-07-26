@@ -17,19 +17,19 @@
 # Table of Contents
 1. [Introduction](#introduction)
     - [A simple example](#a-simple-example)
-    - [Compared to Protobuf / Avro / JSON Schema](#compared-to-protobuf-/-avro-/-json-schema)
+    - [Compared to Protobuf / Avro / JSON Schema](#compared-to-protobuf--avro--json-schema)
 2. [Getting Started](#getting-started)
-    - [How-to: Transporting primitive data items in an RDA string](#how-to-transporting-primitive-data-items-in-an-rda-string)
-    - [How-to: Serializing a simple composite data object](#how-to-serializing-a-simple-composite-data-object)
+    - [Installation]
+    - [Example: exchanging a simple data object](#how-to-serializing-a-simple-composite-data-object)
+3. [Inside The API]()
+    - [Concept: serialization by late-binding](#late-binding)
+    - [Rda & IRda]
+    - [Example: encoding primitive data items into an RDA string](#how-to-transporting-primitive-data-items-in-an-rda-string)
+4. [More Code Examples]
     - [How-to: Serializing a complex object with nested classes](#how-to-serializing-a-complex-object-with-nested-classes)
     - [How-to: Exception handling](#how-to-exception-handling)
-3. [API Internals]()
-    - [Data Exchange Late-binding](#late-binding)
-    - [Rda Class]
-    - [IRda Interface]
-    - [Use Cases](#use-cases)
-4. [License & Commercial Use](#license--commercial-use)
-5. [Others](#others)
+5. [Advantegous Use Cases](#use-cases, vision of UDX)
+6. [License](#license--commercial-use)
 
 # Introduction
 
