@@ -20,15 +20,16 @@
     - [Compared to Protobuf / Avro / JSON Schema](#compared-to-protobuf--avro--json-schema)
 2. [Getting Started](#getting-started)
     - [Installation]
-    - [Example: exchanging a simple data object](#how-to-serializing-a-simple-composite-data-object)
-3. [Inside The API]()
-    - [Concept: serialization by late-binding](#late-binding)
-    - [Rda & IRda]
+    - [Example: serializing a data object](#how-to-serializing-a-simple-composite-data-object)
+3. [Inside Charian]()
+    - [Concept: late-binding serialization](#late-binding)
+    - [Rda - a universal data container]
+    - IRda - application-level schema resolution
     - [Example: encoding primitive data items into an RDA string](#how-to-transporting-primitive-data-items-in-an-rda-string)
-4. [More Code Examples]
+4. [More Examples]
     - [How-to: Serializing a complex object with nested classes](#how-to-serializing-a-complex-object-with-nested-classes)
     - [How-to: Exception handling](#how-to-exception-handling)
-5. [Advantegous Use Cases](#use-cases, vision of UDX)
+5. [Use Cases](#use-cases, vision of UDX)
 6. [License](#license--commercial-use)
 
 # Introduction
@@ -102,6 +103,108 @@ Choose **Protocol Buffers**, **Avro**, or similar technologies when:
 * You own both ends of the communication.
 * Maximum throughput is more important than flexibility.
 * Compile-time schema validation is desirable.
+
+# Getting Started
+
+You can start using Charian in your project in one of two ways: **install it as a package** (recommended for most users), or **include the source files directly** (useful if you want source-level transparency, need to target a framework not covered by the package, or prefer to avoid an external dependency).
+
+## Installation
+
+### Option 1: Install via package manager
+
+**C# (NuGet)**
+
+```
+dotnet add package Foldda.Charian
+```
+
+Or via the Package Manager Console:
+
+```
+Install-Package Foldda.Charian
+```
+
+Or add it directly to your `.csproj`:
+
+```xml
+<PackageReference Include="Foldda.Charian" Version="1.0.1" />
+```
+
+The package targets .NET 5.0, .NET Core 2.0, .NET Standard 2.0, and .NET Framework 4.6.1, so it should be compatible with most existing C# projects. View the package on [NuGet.org](https://www.nuget.org/packages/Foldda.Charian).
+
+**Python / Java**
+
+Python and Java packages are not yet published to PyPI or Maven Central. For now, use the source-inclusion method below for these languages.
+
+### Option 2: Include the source files directly
+
+Charian has no third-party dependencies, so integrating it is as simple as downloading two source files from this repo and adding them to your project. This approach simplifies your build process and gives you full transparency during debugging, when needed.
+
+1. Download the source files for your language from this repo:
+   - [C#](https://github.com/foldda/charian/blob/main/src/CSharp)
+   - [Java](https://github.com/foldda/charian/blob/main/src/Java)
+   - [Python](https://github.com/foldda/charian/blob/main/src/Python)
+2. Add the files to your project.
+3. Reference them as you would any other local source file — no additional configuration is required.
+
+> **Tip:** You can use the test cases in this repo as examples of how to use Charian.
+
+## Example: serializing a data object
+
+This example shows how to serialize a `Person` class that implements the `IRda` interface. The `Person` class implements the "packing" logic in `ToRda()` and the "unpacking" logic in `FromRda()`. These methods hide the class's internal data model, letting a client serialize and deserialize with simple calls, similar to the `SaveToFile()` and `ReadFromFile()` methods shown below.
+
+```csharp
+public class Person : IRda
+{
+    public string FirstName = "John";
+    public string LastName = "Smith";
+
+    //specify an allocated position in the RDA for storing each of the object's properties
+    public enum RDA_INDEX : int
+    {
+        FIRST_NAME = 0,
+        LAST_NAME = 1
+    }
+
+    //store the class's properties into an Rda object
+    public virtual Rda ToRda()
+    {
+        var rda = new Rda();  //create an RDA container
+
+        //stores each of the properties' value
+        rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue = this.FirstName;
+        rda[(int)RDA_INDEX.LAST_NAME].ScalarValue = this.LastName;
+        return rda;
+    }
+
+    //restore the class's properties from an RDA
+    public virtual IRda FromRda(Rda rda)
+    {
+        this.FirstName = rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue;
+        this.LastName = rda[(int)RDA_INDEX.LAST_NAME].ScalarValue;
+        return this;
+    }
+
+    //client calls this method to serialize and save this Person object to a file
+    public void SaveToFile(string filePath)
+    {
+        string encodedRdaString = this.ToRda().ToString(); //serialize
+        File.WriteAllText(filePath, encodedRdaString);
+    }
+
+    //client calls this method to restore a Person object from an RDA string read from a file
+    public static Person ReadFromFile(string filePath)
+    {
+        string encodedRdaString = File.ReadAllText(filePath);
+        Rda rda = Rda.Parse(encodedRdaString);
+        Person person = new Person();  //an initial "empty" person object
+        person.FromRda(rda);  //restores the Person's properties here.
+        return person;
+    }
+}
+```
+
+**Takeaway**: The Person class (at application layer) implements two methods: the `ToRda()` method is where the object's essential properties and state are stored into an Rda container object, which represents a RDA string at the back; the `FromRda()` restores that essential state back to a Person object during deserialization. In between, the container is converted to a string for easy transport by a "courier" process. Conventional serialization systems typically decompose and serialize an object in its entirety, which adds overhead that isn't always necessary.
 
 
 ## Under construction ...
@@ -197,48 +300,7 @@ The "how-to" examples in the next section demonstrate the uses of these concepts
 
 
 
-# Getting Started
 
-You can start using Charian in your project in one of two ways: **install it as a package** (recommended for most users), or **include the source files directly** (useful if you want source-level transparency, need to target a framework not covered by the package, or prefer to avoid an external dependency).
-
-### Option 1: Install via package manager
-
-**C# (NuGet)**
-
-```
-dotnet add package Foldda.Charian
-```
-
-Or via the Package Manager Console:
-
-```
-Install-Package Foldda.Charian
-```
-
-Or add it directly to your `.csproj`:
-
-```xml
-<PackageReference Include="Foldda.Charian" Version="1.0.1" />
-```
-
-The package targets .NET 5.0, .NET Core 2.0, .NET Standard 2.0, and .NET Framework 4.6.1, so it should be compatible with most existing C# projects. View the package on [NuGet.org](https://www.nuget.org/packages/Foldda.Charian).
-
-**Python / Java**
-
-Python and Java packages are not yet published to PyPI or Maven Central. For now, use the source-inclusion method below for these languages.
-
-### Option 2: Include the source files directly
-
-Charian has no third-party dependencies, so integrating it is as simple as downloading two source files from this repo and adding them to your project. This approach simplifies your build process and gives you full transparency during debugging, when needed.
-
-1. Download the source files for your language from this repo:
-   - [C#](https://github.com/foldda/charian/blob/main/src/CSharp)
-   - [Java](https://github.com/foldda/charian/blob/main/src/Java)
-   - [Python](https://github.com/foldda/charian/blob/main/src/Python)
-2. Add the files to your project.
-3. Reference them as you would any other local source file — no additional configuration is required.
-
-> **Tip:** You can use the test cases in this repo as examples of how to use Charian.
 
 ## How-to: Transporting primitive data items in an RDA string
 
@@ -292,62 +354,7 @@ class RdaDemo1
 
 **Takeaway**: Primitive data is stored as strings. The sender and receiver are each expected to know where (placement) and what (type) the data items are within a container. The Rda container has no schema and performs no data validation — clients are responsible for type conversion and validation, and for [handling exceptions if unexpected data is encountered](#how-to-exception-handling).
 
-## How-to: Serializing a simple composite data object
 
-This example shows how to serialize a `Person` class that implements the `IRda` interface. The `Person` class implements the "packing" logic in `ToRda()` and the "unpacking" logic in `FromRda()`. These methods hide the class's internal data model, letting a client serialize and deserialize with simple calls, similar to the `SaveToFile()` and `ReadFromFile()` methods shown below.
-
-```csharp
-public class Person : IRda
-{
-    public string FirstName = "John";
-    public string LastName = "Smith";
-
-    //specify an allocated position in the RDA for storing each of the object's properties
-    public enum RDA_INDEX : int
-    {
-        FIRST_NAME = 0,
-        LAST_NAME = 1
-    }
-
-    //store the class's properties into an Rda object
-    public virtual Rda ToRda()
-    {
-        var rda = new Rda();  //create an RDA container
-
-        //stores each of the properties' value
-        rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue = this.FirstName;
-        rda[(int)RDA_INDEX.LAST_NAME].ScalarValue = this.LastName;
-        return rda;
-    }
-
-    //restore the class's properties from an RDA
-    public virtual IRda FromRda(Rda rda)
-    {
-        this.FirstName = rda[(int)RDA_INDEX.FIRST_NAME].ScalarValue;
-        this.LastName = rda[(int)RDA_INDEX.LAST_NAME].ScalarValue;
-        return this;
-    }
-
-    //client calls this method to serialize and save this Person object to a file
-    public void SaveToFile(string filePath)
-    {
-        string encodedRdaString = this.ToRda().ToString(); //serialize
-        File.WriteAllText(filePath, encodedRdaString);
-    }
-
-    //client calls this method to restore a Person object from an RDA string read from a file
-    public static Person ReadFromFile(string filePath)
-    {
-        string encodedRdaString = File.ReadAllText(filePath);
-        Rda rda = Rda.Parse(encodedRdaString);
-        Person person = new Person();  //an initial "empty" person object
-        person.FromRda(rda);  //restores the Person's properties here.
-        return person;
-    }
-}
-```
-
-**Takeaway**: `ToRda()` is where a sender packs its essential properties and state during serialization, and `FromRda()` is where a receiver unpacks a container and restores that essential state during deserialization. In between, the container is converted to a string for easy transport by a "courier" process. Conventional serialization systems typically decompose and serialize an object in its entirety, which adds overhead that isn't always necessary.
 
 ## How-to: Serializing a complex object with nested classes
 
