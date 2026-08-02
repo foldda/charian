@@ -15,10 +15,8 @@
 
 <!--- TABLE OF CONTENTS --->
 # Table of Contents
-1. [What Is Charian](#what-is-charian)
+1. [What Is Charian, And Why](#what-is-charian)
    - [A simple example](#a-simple-example)
-   - [Why Charian](#why-charian)
-   - [When to use Charian](#when-to-use-charian)
 2. [Getting Started](#getting-started)
    - [Installation](#installation)
    - [Example: serializing a simple data object](#example-serializing-a-simple-data-object)
@@ -30,10 +28,6 @@
 5. [License & Commercial Use](#license--commercial-use)
    - [Commercial licensing](#commercial-licensing)
 6. [Get Involved](#get-involved)
-   - [Write parser/encoder in more languages](#write-parserencoder-in-more-languages)
-   - [Write test cases](#write-test-cases)
-   - [Write documentation](#write-documentation)
-
 
 # What Is Charian
 
@@ -77,7 +71,7 @@ Just explicit, application-controlled serialization that remains robust as your 
 
 ### Why Charian
 
-Protobuf, Avro, and JSON Schema all solve data exchange by fixing a schema up front and generating code from it. That works well when both sides of a connection are owned by the same team and evolve together. Charian takes a different approach: it skips the schema entirely, so there's nothing to keep in sync in the first place. Instead, the connecting systems are responsible for managing the established, or evolved, data models — an approach known as [data exchange late-binding](#the-late-binding-analogy).
+Protobuf, Avro, and JSON Schema all solve data exchange by fixing a schema up front and generating code from it. That works well when both sides of a connection are owned by the same team and evolve together. Charian takes a different approach, known as [late-binding](#the-late-binding-analogy): it skips the schema entirely, so there's nothing to keep in sync in the first place. Instead, the connecting systems are responsible for managing the established, or evolved, data models.
 
 The core difference is **tight coupling vs. loose coupling**. Protobuf and Avro require both sides of a connection to share a schema — that shared contract is what enables their compactness and compile-time validation, but it also means both sides must stay synchronized as the data model changes. Charian removes the shared schema entirely, trading those benefits for structural independence between systems that don't evolve together.
 
