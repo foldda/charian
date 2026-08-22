@@ -10,7 +10,7 @@
 <div align="center">
 <img src="img/Charian-logo-orange-text.png" width="250" align="center">
 
-**_"Schema-independent integration through application-controlled late binding."_**
+**_"Schema-independent integration through application-controlled self-binding."_**
 </div>
 
 <!--- TABLE OF CONTENTS --->
@@ -20,9 +20,9 @@
 2. [Getting Started](#getting-started)
    - [Installation](#installation)
    - [Example: serializing a simple data object](#example-serializing-a-simple-data-object)
-3. [Core Concepts](#core-concepts)
-   - [The late-binding analogy](#the-late-binding-analogy)
-   - [Class Rda - an RDA encoder/parser](#class-rda---an-rda-encoderparser)
+3. [Understanding Self-Binding](#understanding-self-binding)
+   - [The moving-house analogy](#the-moving-house-analogy)
+   - [Class Rda - a generic data container](#class-rda---a-generic-data-container)
    - [Interface IRda - app-layer schema resolution](#interface-irda---app-layer-schema-resolution)
 4. [Use Cases](#use-cases)
 5. [License & Commercial Use](#license--commercial-use)
@@ -37,41 +37,34 @@ Unlike Protocol Buffers, Avro, or JSON Schema, Charian requires **no schema defi
 
 Built on the [**Recursive Delimited Array (RDA)**](https://github.com/foldda/rda) format, Charian serializes arbitrary object structures into a portable, language-independent text representation while remaining small enough to understand completely—its core implementation is approximately 800 lines of code with zero third-party dependencies.
 
-Therefore Charian provides:
+Charian serialization provides:
 
 * **No schema, ever** — no `.proto`/`.avsc` files, no code generation, no schema registry to keep in sync
-* **Late-binding data resolution** — each side interprets the data at read-time, so sender and receiver don't need to agree on a model in advance
 * **Structural independence** — a field added, removed, or reordered on one side doesn't break the other
 * **Recursive, self-similar containers** — an Rda can hold another Rda at any depth, so arbitrarily complex objects decompose the same simple way
 * **Multiple schema versions side-by-side** — pack several versions of the same dataset in one payload and let the receiver pick the right one
 * **Tiny footprint** — ~800 lines of code, zero third-party dependencies
+
+At the core of Charian is a pattern we call **self-binding**: an object resolves and restores its own state directly against a shared, generic container at runtime — reading only the fields it needs and tolerating whatever else is or isn't there — rather than requiring an exact, pre-agreed shape. It's an application of the well-established late-binding technique (deciding how data matches a type at runtime instead of compile time), aimed specifically at letting an object read and write itself from a shared, evolving data stream.
 
 ### A simple example
 
 ```csharp
 Person person = new Person("John", "Smith");
 
-// [sender] serialize ...
+// [sender] serialize ... person binds itself to an Rda object
 string text = person.ToRda().ToString();
 
-// [receiver] deserialize ...
+// [receiver] deserialize ... person restores itself from values in an Rda object
 Person restored = new Person();
 restored.FromRda(Rda.Parse(text));
 ```
 
-ToRda() - serialized, FromRda() - deserialized, that's all it takes.
-
-No schema files.
-
-No code generation.
-
-No serialization attributes.
-
-Just explicit, application-controlled serialization that remains robust as your software evolves.
+ToRda() - FromRda(), that's all it takes for self-binding object serialization in your application — no schema files, no code generation, no serialization attributes.
 
 ### Why Charian
 
-Protobuf, Avro, and JSON Schema all solve data exchange by fixing a schema up front and generating code from it. That works well when both sides of a connection are owned by the same team and evolve together. Charian takes a different approach, known as [late-binding](#the-late-binding-analogy): it skips the schema entirely, so there's nothing to keep in sync in the first place. Instead, the connecting systems are responsible for managing the established, or evolved, data models.
+Protobuf, Avro, and JSON Schema all solve data exchange by fixing a schema up front and generating code from it. That works well when both sides of a connection are owned by the same team and evolve together. Charian's [self-binding](#understanding-self-binding) approach skips the schema entirely, so there's nothing to keep in sync in the first place — instead, each object resolves its own state at read-time, and the connecting systems are responsible for managing the established, or evolved, data models.
 
 The core difference is **tight coupling vs. loose coupling**. Protobuf and Avro require both sides of a connection to share a schema — that shared contract is what enables their compactness and compile-time validation, but it also means both sides must stay synchronized as the data model changes. Charian removes the shared schema entirely, trading those benefits for structural independence between systems that don't evolve together.
 
@@ -87,7 +80,7 @@ The core difference is **tight coupling vs. loose coupling**. Protobuf and Avro 
 
 Charian is aimed at the specific pain point of **integration between systems you don't fully control** — connecting a legacy system to a modern one, exchanging data with a third-party vendor, or maintaining a pipeline where the data model on either end changes independently and without warning. In these situations, a shared schema becomes a liability: every change on one side risks a synchronized (and often coordinated, multi-team) update on the other, or the pipeline breaks.
 
-Because of late-binding, Charian allows flexible handling of data's schema changes, even processing data of multiple schema versions concurrently and dynamically. This trades the schema's built-in validation for structural independence — a fair trade when the alternative is fragile, tightly-coupled pipelines between systems that were never designed to evolve together.
+Charian allows flexible handling of data's schema changes, even processing data of multiple schema versions concurrently and dynamically. This trades the schema's built-in validation for structural independence — a fair trade when the alternative is fragile, tightly-coupled pipelines between systems that were never designed to evolve together.
 
 ### When to use Charian
 
@@ -152,7 +145,7 @@ Charian has no third-party dependencies, so integrating it is as simple as downl
 
 ## Example: serializing a simple data object
 
-This example shows how to serialize a `Person` class by implementing the `IRda` interface: the (data model) "packing" logic is `ToRda()` and the "unpacking" logic is in `FromRda()`. These methods hide the class's internal data model, letting a client serialize and deserialize with simple calls. The optional `SaveToFile()` and `ReadFromFile()` methods show how the serialized data can be exchanged.
+This example shows how to serialize a `Person` class using Charian, by implementing the `IRda` interface's self-binding `ToRda()` and `FromRda()` methods. These methods hide the class's internal data model, letting a client serialize and deserialize with simple calls. The optional `SaveToFile()` and `ReadFromFile()` methods show how the serialized data can be exchanged.
 
 ```csharp
 public class Person : IRda
@@ -207,35 +200,37 @@ public class Person : IRda
 
 **Takeaway**: The Person class (at application layer) implements two methods: the `ToRda()` method is where the object's essential properties and state are stored into an Rda container object, which represents a RDA string at the back; the `FromRda()` restores that essential state back to a Person object during deserialization. In between, the container is converted to a string for easy transport by a simple, conventional "courier" process, e.g. a file transfer. Other serialization systems typically decompose and serialize an object in its entirety, which adds overhead that isn't always necessary.
 
-# Core Concepts
+# Understanding Self-Binding
 
 Unlike schema-based formats, in Charian the transport layer does not impose restrictions on the structure of the data being carried, allowing loosely-coupled integration by moving data validation to the application layer.
 
-## The late-binding analogy
+## The moving-house analogy
 
 Imagine moving house.
 
-Furniture is disassembled, packed into boxes, transported, and then reassembled at the destination. The freight company never needs to know what is inside each box.
+Furniture is disassembled, packed into boxes, transported, and then reassembled at the destination. The freight company never needs to know what is inside each box — that's the mover's own job, at both ends.
 
-Data exchange can work the same way.
+**Self-binding** data exchange works the same way.
 
-Applications disassemble complex objects into generic RDA containers for transport and the receiving application reconstructs the objects after delivery.
+Applications disassemble complex objects into generic RDA containers for transport, and the receiving application reconstructs — binds — the objects itself after delivery. The Charian API's Rda class and its IRda interface are specifically designed to allow these operations.
 
-The Charian API's Rda class and its IRda interface are specifically designed to allow these operations.
+## Class Rda - a generic data container
 
-## Class Rda - an RDA encoder/parser
+The Rda class is modeled as a "one-size-fits-all" container object for storing arbitrary data. 
 
-The Rda class is modeled as a "container" object for storing data. It has a multidimensional space where each storage location in the space is uniquely addressed by an integer array index, and a client uses Getter/Setter methods to access a data item at a given address. 
+It has a multidimensional space where each storage location in the space is uniquely addressed by an integer array index, and a client uses Getter/Setter methods to access a data item at a given address. 
 
-an Rda container supports storing only two "data types" — a data item can be either a string or another Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string, and all composite data, like a class or an array, can be stored as an Rda object by recursively decomposing it into less complex structures or primitive data items.
+An Rda container supports storing only two "data types" — a data item can be either a string or another Rda (container) object. Charian assumes all primitive data, like an integer or a date, can be converted to a string, and all composite data, like a class or an array, can be stored as an Rda object by recursively decomposing it into less complex structures or primitive data items.
 
-The Rda class also implements methods that convert itself to and from an [RDA string](https://github.com/foldda/rda), so it can be used as a generic RDA parser/encoder.
+The Rda class also implements methods that convert itself to and from an [RDA string](https://github.com/foldda/rda), so it is also an RDA parser/encoder.
 
 For the full method signatures and a worked example of encoding and decoding an RDA string, see **[API.md](API.md#class-rda---an-rda-encoderparser)**.
 
 ## Interface IRda - app-layer schema resolution
 
-The IRda interface defines two methods: `ToRda()`, where a data object "packs" its properties and state into an Rda container, and `FromRda(Rda rda)`, where it "unpacks and restores" its properties and state from values stored in an Rda container. We've already seen the `Person` class implement these two methods above, in [Example: serializing a simple data object](#example-serializing-a-simple-data-object).
+The IRda interface is where a data object implements **self-binding**: in the `ToRda()` method a data object "packs" its properties and state into an Rda container, and in the `FromRda(Rda rda)` method the data object "unpacks and restores" its properties and state from values stored in an Rda container. 
+
+Self-binding moves properties resolution into the object's own code — rather than through a compiled schema or an external mapper that an application cannot adaptively change at runtime. We've already seen the `Person` class implement these two methods above, in [Example: serializing a simple data object](#example-serializing-a-simple-data-object).
 
 For an extended example showing how a more complex object with nested classes is packed and unpacked, and how to handle unexpected or evolving data during unpacking, see **[API.md](API.md#interface-irda---app-layer-schema-resolution)**.
 
@@ -289,7 +284,7 @@ Charian's API is relatively small, but more test cases would make it more rock-s
 
 ## Write documentation
 
-Richer and better documentation would help the Charian project convey its novel concepts, such as late-binding, into good understanding and practical use cases for programmers and systems developers.
+Richer and better documentation would help the Charian project convey its novel concepts, such as self-binding, into good understanding and practical use cases for programmers and systems developers.
 
 
 
