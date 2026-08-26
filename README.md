@@ -50,9 +50,9 @@ Charian works the same way: an object resolves and restores its own state direct
 
 [^1]: This idea is borrowed from the established late-binding technique—deciding how data matches a type at runtime rather than at compile time—and is applied specifically to allowing an object to read and write itself from a shared, evolving data stream.
 
-> _Self-binding_ means a data object decides how to map its own fields to and from the RDA container, instead of relying on an external schema or code generator.
-
 Boxes = RDA containers; freight company = any string-based communication; assembling furniture = self-binding.
+
+> _Self-binding_ means a data object decides how to map its own fields to and from the RDA container, instead of relying on an external schema or code generator.
 
 ### A simple example
 
@@ -67,13 +67,13 @@ Person restored = new Person();
 restored.FromRda(Rda.Parse(text));
 ```
 
-`ToRda()` and `FromRda()` are all that is required to serialize a self-binding object in your application as an RDA string - 
+As above, `ToRda()` and `FromRda()` are the self-binding calls that serialize the Person object to and from an RDA string - 
 
 ```
 |\|John|Smith
 ```
 
-No schema files, code generation, or serialization attributes involved.
+_No schema files, code generation, or serialization attributes involved._
 
 <div align="left">
 <img src="img/Charian_Schema-less_Data_Exchange.png" width="1024">
@@ -83,7 +83,8 @@ No schema files, code generation, or serialization attributes involved.
 
 [Comparing to **Protocol Buffers**, **Avro**, or similar technologies](docs/Why-Charian.md), choose **Charian** when:
 
-- Your applications evolve independently.
+- You require instant, lightweight, and flexible cross-application communication
+- Your application's data model evolves frequently and independently.
 - You integrate with third-party or legacy systems.
 - Maintaining shared schemas, or multiple schema versions, has become difficult.
 - Cross-language compatibility matters.
