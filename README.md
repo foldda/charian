@@ -75,20 +75,20 @@ As above, `ToRda()` and `FromRda()` are the self-binding calls that serialize th
 
 _No schema files, code generation, or serialization attributes involved._
 
-<div align="left">
-<img src="img/Charian_Schema-less_Data_Exchange.png" width="1024">
-</div>
-
 ### When to use Charian
 
 [Comparing to **Protocol Buffers**, **Avro**, or similar technologies](docs/Why-Charian.md), choose **Charian** when:
 
-- You require instant, lightweight, and flexible cross-application communication
+- You require instant, lightweight, and flexible cross-application communication.
 - Your application's data model evolves frequently and independently.
 - You integrate with third-party or legacy systems.
 - Maintaining shared schemas, or multiple schema versions, has become difficult.
 - Cross-language compatibility matters.
 - You prefer explicit serialization logic over generated code.
+
+<div align="left">
+<img src="img/Charian_Schema-less_Data_Exchange.png" width="1024">
+</div>
 
 # Getting Started
 
