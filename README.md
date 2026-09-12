@@ -33,7 +33,7 @@
 
 **Charian** (pronounced /ka-ri-en/) is a lightweight, dependency-free serialization library for instant cross-application communication. It is purpsoely designed for applications whose data models evolve independently.
 
-Unlike Protocol Buffers, Avro, or JSON Schema, which require adopting to a complex framework for shared schema definitions, code generation, and schema-version management, Charian serialization uses application-controlled data-model resolution which provides these benefits:
+Unlike Protocol Buffers, Avro, or JSON Schema, which require adopting to a complex framework for shared schema definitions, code generation, and schema-version management, Charian serialization uses application-controlled data-model resolution which has these benefits:
 
 - **No schema, no code gen** — no `.proto` or `.avsc` files, no code generation, and no schema registry to keep in sync.
 - **Resilience to data-model changes** — a field added, removed, or reordered in a data model on one side does not break the other.
@@ -46,11 +46,13 @@ Charian adopts an application-controlled data-model resolution pattern called **
 
 Imagine moving house. Furniture is disassembled, packed into boxes, transported, and then reassembled at the destination. The freight company never needs to know what is inside each box — that is the mover's job at both ends.
 
-Charian works the same way: an object resolves and restores its own state directly against a shared, generic container at runtime[^1]. The container can be serialized into a portable, language-independent text format called [**Recursive Delimited Array (RDA)**](https://github.com/foldda/rda) for easy transport.
+Charian works the same way: an object resolves and restores its own state directly against a shared, generic container at runtime[^1]. The container can be serialized into a portable, language-independent text format called [**RDA (Recursive Delimited Array)**](https://github.com/foldda/rda) for easy transport.
 
 [^1]: This idea is borrowed from the established late-binding technique—deciding how data matches a type at runtime rather than at compile time—and is applied specifically to allowing an object to read and write itself from a shared, evolving data stream.
 
-Boxes = RDA containers; freight company = any string-based communication; assembling furniture = self-binding.
+In the analogy—
+
+A freight company = any string-based communication; boxes = RDA containers; assembling furniture = self-binding.
 
 > _Self-binding_ means a data object decides how to map its own fields to and from the RDA container, instead of relying on an external schema or code generator.
 
@@ -67,7 +69,7 @@ Person restored = new Person();
 restored.FromRda(Rda.Parse(text));
 ```
 
-As above, `ToRda()` and `FromRda()` are the self-binding calls that serialize the Person object to and from an RDA string - 
+As above, `ToRda()` and `FromRda()` are the self-binding calls that serialize and deserialize the Person object to and from an RDA string - 
 
 ```
 |\|John|Smith
