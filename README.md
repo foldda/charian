@@ -9,7 +9,7 @@
 <div align="center">
 <img src="img/Charian-logo-orange-text.png" width="250" align="center">
 
-**_"Schema-independent integration through application-controlled serialization."_**
+**_"Flexible integration through application-controlled serialization."_**
 </div>
 
 <!--- TABLE OF CONTENTS --->
@@ -31,14 +31,16 @@
 
 # What Is Charian
 
-**Charian** (pronounced /ka-ri-en/) is a lightweight, dependency-free serialization library for instant cross-application communication. It is purpsoely designed for applications whose data models evolve independently.
+**Charian** (pronounced /ka-ri-en/) is a lightweight, dependency-free serialization library for cross-application communication. It is designed for applications whose data models evolve independently.
 
-Unlike Protocol Buffers, Avro, or JSON Schema, which require adopting to a complex framework for shared schema definitions, code generation, and schema-version management, Charian serialization uses application-controlled data-model resolution which has these benefits:
+Charian puts data-model resolution in application code, giving developers direct control over how objects are packed and restored:
 
-- **No schema, no code gen** — no `.proto` or `.avsc` files, no code generation, and no schema registry to keep in sync.
-- **Resilience to data-model changes** — a field added, removed, or reordered in a data model on one side does not break the other.
-- **Multiple versions side by side** — the receiving application can dynamically choose which version to use.
+- **No required external schema files or code generation** — define mappings in application code without requiring `.proto` or `.avsc` files, generated bindings, or a schema registry.
+- **Application-controlled compatibility** — preserve stable field positions or use version-aware mappings to accommodate data-model changes.
+- **Multiple versions side by side** — the receiving application can identify each version and apply the appropriate mapping.
 - **Tiny footprint** — approximately 800 lines of code and zero third-party dependencies.
+
+Applications still need a data contract: agreement about field positions, meanings, types, and version handling. That contract can live in packing and unpacking code or in optional schema objects interpreted at runtime. Charian does not require external schema files, but it does not eliminate the need to interpret data consistently or make arbitrary changes automatically compatible.
 
 ### Serialization by self-binding
 
@@ -54,7 +56,7 @@ In the analogy—
 
 A freight company = any string-based communication; boxes = RDA containers; assembling furniture = self-binding.
 
-> _Self-binding_ means a data object decides how to map its own fields to and from the RDA container, instead of relying on an external schema or code generator.
+> _Self-binding_ means a data object controls how its fields map to and from the RDA container. Its mapping logic can use fixed positions or consult optional schema objects at runtime; no external schema file or code generator is required.
 
 ### A simple example
 
@@ -75,7 +77,7 @@ As above, `ToRda()` and `FromRda()` are the self-binding calls that serialize an
 |\|John|Smith
 ```
 
-_No schema files, code generation, or serialization attributes involved._
+_This example uses no external schema files, code generation, or serialization attributes. Its data contract is defined in code: position 0 holds the first name and position 1 holds the last name._
 
 ### When to use Charian
 
@@ -84,7 +86,7 @@ _No schema files, code generation, or serialization attributes involved._
 - You require instant, lightweight, and flexible cross-application communication.
 - Your application's data model evolves frequently and independently.
 - You integrate with third-party or legacy systems.
-- Maintaining shared schemas, or multiple schema versions, has become difficult.
+- You prefer to manage data contracts and version handling in application code rather than through a shared schema-definition workflow.
 - Cross-language compatibility matters.
 - You prefer explicit serialization logic over generated code.
 
@@ -211,7 +213,7 @@ For the full method signatures and a worked example of encoding and decoding an 
 
 The `IRda` interface is where a data object applies the **self-binding** pattern when serialized. In `ToRda()`, a data object packs its properties and state into an Rda container; in `FromRda(Rda rda)`, the data object unpacks and restores its properties and state from values stored in an Rda container.
 
-Self-binding moves property resolution into the object's own code rather than using a compiled schema or an external mapper that an application cannot adapt at runtime. The `Person` class implements these two methods in [Example: serializing a simple data object](#example-serializing-a-simple-data-object).
+Self-binding puts property resolution in the object's own code. That code defines or interprets the data contract and decides how to handle supported versions, missing values, and conversion errors. The `Person` class implements these two methods in [Example: serializing a simple data object](#example-serializing-a-simple-data-object).
 
 For an extended example showing how a more complex object with nested classes is packed and unpacked, and how to handle unexpected or evolving data during unpacking, see [API.md](API.md#interface-irda--app-layer-schema-resolution).
 
@@ -219,7 +221,7 @@ For an extended example showing how a more complex object with nested classes is
 
 **Maintain compatibility.** As illustrated in the examples in [API.md](API.md), a `ComplexPerson` object can extend a `Person` object while remaining backward compatible. If some programs use `Person` while others use the evolved `ComplexPerson`, they can remain compatible when communicating over a network.
 
-**Cross-language data exchange.** Because the schemaless RDA string is language- and system-neutral, it can serve as a data container for transferring data flexibly across languages and platforms. Connected programs can deposit and consume data items stored in an RDA container without being constrained by a fixed data model. Each program can handle data conversion and related exceptions in its own packing and unpacking operations.
+**Cross-language data exchange.** Because the RDA text format is language- and system-neutral, it can serve as a data container across languages and platforms. Connected programs can use different internal data models while agreeing on the exchanged data's positions, meanings, and representations. Each program handles mapping, conversion, and related exceptions in its own packing and unpacking operations.
 
 For example, an RDA container packed by a Java program can contain the properties of a Java `Person`. A Python program can unpack those properties and use them to construct a Python `User` object, which may not have exactly the same properties as the Java `Person`. If an item is missing or conversion fails, the Python program can handle the exception—for example, by sending an alert or substituting a default value.
 
