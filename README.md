@@ -26,7 +26,7 @@
    - [Class Rda — a generic data container](#class-rda--a-generic-data-container)
    - [Interface IRda — app-layer schema resolution](#interface-irda--app-layer-schema-resolution)
 4. [Charian Use Cases](#charian-use-cases)
-5. [License & Commercial Use](#license--commercial-use)
+5. [License & Contact](#license--contact)
 6. [Get Involved](#get-involved)
 
 # What Is Charian
@@ -227,25 +227,13 @@ For example, an RDA container packed by a Java program can contain the propertie
 
 **Maintaining rich and diverse datasets in parallel.** RDA's unrestricted and recursive structure allows each Rda data item in a container to remain isolated. Multiple datasets, or different versions of the same dataset, can therefore be stored or sent in one container side by side, allowing the receiver to test and select the appropriate version.
 
-# License & Commercial Use
+# License & Contact
 
-Charian is open-source software released under the **GNU General Public License v3.0 (GPL-3.0)**.
+Charian is open-source software released under the **MIT License**.
 
-This means you are free to use, modify, and redistribute Charian under the terms of the GPL.
+This means you are free to use, modify, and redistribute Charian under the terms of the license.
 
-## Commercial licensing
-
-If you want to use Charian in a proprietary or closed-source product, or distribute it without the requirements of the GPL, a **commercial license** is available.
-
-Commercial licensing offers:
-
-- Permission for closed-source use.
-- Legal clarity for enterprise environments.
-- Optional support and long-term maintenance agreements.
-
-For commercial licensing inquiries, please contact **contact@foldda.com**.
-
-Open-source users are welcome and encouraged to use Charian under GPL-3.0.
+For licensing and other inquiries, please contact **contact@foldda.com**.
 
 # Get Involved
 
