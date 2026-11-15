@@ -215,11 +215,11 @@ The `IRda` interface is where a data object applies the **self-binding** pattern
 
 Self-binding puts property resolution in the object's own code. That code defines or interprets the data contract and decides how to handle supported versions, missing values, and conversion errors. The `Person` class implements these two methods in [Example: serializing a simple data object](#example-serializing-a-simple-data-object).
 
-For an extended example showing how a more complex object with nested classes is packed and unpacked, and how to handle unexpected or evolving data during unpacking, see [API.md](API.md#interface-irda--app-layer-schema-resolution).
+For an extended example showing how a more complex object with nested classes is packed and unpacked, and how to handle unexpected or evolving data during unpacking, see [API.md](docs/API.md#interface-irda--app-layer-schema-resolution).
 
 # Charian Use Cases
 
-**Maintain compatibility.** As illustrated in the examples in [API.md](API.md), a `ComplexPerson` object can extend a `Person` object while remaining backward compatible. If some programs use `Person` while others use the evolved `ComplexPerson`, they can remain compatible when communicating over a network.
+**Maintain compatibility.** As illustrated in the examples in [API.md](docs/API.md), a `ComplexPerson` object can extend a `Person` object while remaining backward compatible. If some programs use `Person` while others use the evolved `ComplexPerson`, they can remain compatible when communicating over a network.
 
 **Cross-language data exchange.** Because the RDA text format is language- and system-neutral, it can serve as a data container across languages and platforms. Connected programs can use different internal data models while agreeing on the exchanged data's positions, meanings, and representations. Each program handles mapping, conversion, and related exceptions in its own packing and unpacking operations.
 
